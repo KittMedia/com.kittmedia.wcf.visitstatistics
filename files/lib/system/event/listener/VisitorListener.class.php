@@ -1,7 +1,7 @@
 <?php
 namespace wcf\system\event\listener;
-use wcf\data\user\visitor\Visitor;
-use wcf\data\user\visitor\VisitorAction;
+use wcf\data\visitor\Visitor;
+use wcf\data\visitor\VisitorAction;
 use \wcf\system\WCF;
 use function strpos;
 use function substr;
@@ -21,6 +21,7 @@ class VisitorListener implements IParameterizedEventListener {
 	 * @inheritDoc
 	 */
 	public function execute($eventObj, $className, $eventName, array &$parameters) {
+		die('<pre>' . var_dump($className::getInstance()));
 		if (Visitor::skipTracking()) return;
 		
 		(new VisitorAction([], 'create', [

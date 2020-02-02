@@ -1,5 +1,5 @@
 <?php
-namespace wcf\data\user\visitor;
+namespace wcf\data\visitor;
 use wcf\data\DatabaseObjectEditor;
 
 /**
@@ -9,8 +9,9 @@ use wcf\data\DatabaseObjectEditor;
  * @copyright	2011-2020 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitors
+ * 
+ * @method	Visitor		getDecoratedObject()
  */
-
 class VisitorEditor extends DatabaseObjectEditor {
 	/**
 	 * @inheritDoc

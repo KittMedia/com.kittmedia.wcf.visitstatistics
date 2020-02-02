@@ -1,6 +1,6 @@
 <?php
-namespace wcf\data\user\visitor;
-use wcf\data\DatabaseObject;
+namespace wcf\data\visitor;
+use wcf\data\DatabaseObjectList;
 
 /**
  * Represents a list of user visitors.
@@ -9,6 +9,9 @@ use wcf\data\DatabaseObject;
  * @copyright	2011-2020 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitors
+ * 
+ * @method 	Visitor		current()
+ * @method 	Visitor[]	getObjects()
+ * @method 	Visitor|null	search($objectID) 
  */
-
-class Visitor extends DatabaseObject { }
+class VisitorList extends DatabaseObjectList { }
