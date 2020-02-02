@@ -21,7 +21,6 @@ class VisitorListener implements IParameterizedEventListener {
 	 * @inheritDoc
 	 */
 	public function execute($eventObj, $className, $eventName, array &$parameters) {
-		die('<pre>' . var_dump($className::getInstance()));
 		if (Visitor::skipTracking()) return;
 		
 		(new VisitorAction([], 'create', [
