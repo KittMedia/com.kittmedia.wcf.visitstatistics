@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="https://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.woltlab.com https://www.woltlab.com/XSD/tornado/eventListener.xsd">
+	<import>
+		<eventlistener>
+			<environment>user</environment>
+			<eventclassname>wcf\system\WCF</eventclassname>
+			<eventname>initialized</eventname>
+			<listenerclassname>wcf\system\event\listener\VisitorListener</listenerclassname>
+		</eventlistener>
+	</import>
+</data>
