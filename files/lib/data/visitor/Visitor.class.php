@@ -63,8 +63,13 @@ class Visitor extends DatabaseObject {
 			return true;
 		}
 		
-		// skip if it's an attachment|media request
+		// skip if it's an attachment request
 		if (strpos(WCF::getSession()->requestURI, 'attachment/') !== false) {
+			return true;
+		}
+		
+		// skip if it's an media request
+		if (strpos(WCF::getSession()->requestURI, 'media/') !== false) {
 			return true;
 		}
 		
