@@ -3,10 +3,9 @@
 	<import>
 		<eventlistener>
 			<environment>user</environment>
-			<eventclassname>wcf\page\AbstractPage</eventclassname>
-			<eventname>show</eventname>
+			<eventclassname>wcf\system\template\TemplateEngine</eventclassname>
+			<eventname>afterDisplay</eventname>
 			<listenerclassname>wcf\system\event\listener\VisitorListener</listenerclassname>
-			<inherit>1</inherit>
 		</eventlistener>
 	</import>
 </data>
