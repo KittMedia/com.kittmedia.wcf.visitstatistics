@@ -34,6 +34,20 @@ class Visitor extends DatabaseObject {
 	protected static $databaseTableIndexName = 'visitorID';
 	
 	/**
+	 * Hide the titles for certain requests.
+	 * 
+	 * @return	bool
+	 */
+	public static function hideTitle() {
+		// hide title of conversations
+		if (strpos(WCF::getSession()->requestURI, 'conversation/') !== false) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	/**
 	 * Skip tracking for certain visitors.
 	 * 
 	 * @return	bool

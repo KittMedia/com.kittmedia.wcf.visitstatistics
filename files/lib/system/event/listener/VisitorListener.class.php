@@ -34,6 +34,10 @@ class VisitorListener implements IParameterizedEventListener {
 			$title = preg_replace(self::REGEX_FILTER_HTML, '', WCF::getTPL()->get('pageTitle'));
 		}
 		
+		if (Visitor::hideTitle()) {
+			$title = WCF::getLanguage()->get('wcf.visitor.hidden');
+		}
+		
 		// get host
 		if (WCF::getActivePath() !== null) {
 			$urlParts = parse_url(WCF::getActivePath());

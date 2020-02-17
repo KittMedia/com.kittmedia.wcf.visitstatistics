@@ -12,4 +12,8 @@
 		<item name="wcf.acp.visitor.visitor"><![CDATA[Visitor]]></item>
 		<item name="wcf.acp.visitor.yesterday"><![CDATA[Yesterday]]></item>
 	</category>
+	
+	<category name="wcf.visitor">
+		<item name="wcf.visitor.hidden"><![CDATA[Hidden Title]]></item>
+	</category>
 </language>
