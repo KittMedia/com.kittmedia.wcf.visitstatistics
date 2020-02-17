@@ -8,7 +8,7 @@
 	$(function() {
 		WCF.Language.addObject({
 			'wcf.acp.stat.timeFormat.daily': '{lang}wcf.acp.stat.timeFormat.daily{/lang}',
-			'wcf.acp.stat.noData': '{lang}wcf.acp.stat.noData{/lang}'
+			'wcf.acp.stat.noData': '{lang}wcf.acp.stat.noData{/lang}',
 			'wcf.acp.visitor.visitor': '{lang}wcf.acp.visitor.visitor{/lang}'
 		});
 		

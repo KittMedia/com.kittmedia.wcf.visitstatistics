@@ -1,4 +1,19 @@
 /**
+ * Initialize KM namespace
+ */
+KM = { };
+
+/**
+ * Initialize KM.ACP namespace
+ */
+KM.ACP = { };
+
+/**
+ * Initialize KM.ACP.Stat namespace
+ */
+KM.ACP.Stat = { };
+
+/**
  * Shows the daily stat chart.
  */
 KM.ACP.Stat.VisitorChart = Class.extend({
