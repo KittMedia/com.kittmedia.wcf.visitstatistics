@@ -16,7 +16,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	/**
 	 * @inheritDoc
 	 */
-	protected $maxLifetime = 1;
+	protected $maxLifetime = 600;
 	
 	/**
 	 * Statistics
