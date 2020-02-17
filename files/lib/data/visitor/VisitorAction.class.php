@@ -40,7 +40,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$statement->execute();
 		
 		while ($row = $statement->fetchArray()) {
-			$data[0]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visitor');
+			$data[0]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits');
 			$data[0]['data'][] = [
 				$row['time'],
 				$row['count']

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <package name="com.kittmedia.wcf.visitors" xmlns="https://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.woltlab.com https://www.woltlab.com/XSD/tornado/package.xsd">
 	<packageinformation>
-		<packagename>Visitor Statistics</packagename>
-		<packagename language="de">Besucherstatistiken</packagename>
-		<packagedescription><![CDATA[Show how many visitors and page impressions you’ve got and what your most famous content is.]]></packagedescription>
-		<packagedescription language="de"><![CDATA[Zeige an, wie viele Besucher und Seitenaufrufe du hast und welche deine erfolgreichsten Inhalte sind.]]></packagedescription>
+		<packagename>KittMedia Visit Statistics</packagename>
+		<packagename language="de">KittMedia Besuchsstatistiken</packagename>
+		<packagedescription><![CDATA[Show how many visits you’ve got and what your most famous content is.]]></packagedescription>
+		<packagedescription language="de"><![CDATA[Zeige an, wie viele Seitenaufrufe du hast und welche deine erfolgreichsten Inhalte sind.]]></packagedescription>
 		<version>1.0.0 Alpha 2</version>
 		<date>2020-02-02</date>
 	</packageinformation>
