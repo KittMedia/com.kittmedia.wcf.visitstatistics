@@ -2,7 +2,7 @@
 <package name="com.kittmedia.wcf.visitors" xmlns="https://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.woltlab.com https://www.woltlab.com/XSD/tornado/package.xsd">
 	<packageinformation>
 		<packagename>Visitors Statistics</packagename>
-		<packagename language="de">Besucher-Statistiken</packagename>
+		<packagename language="de">Besucherstatistiken</packagename>
 		<packagedescription><![CDATA[Show how many visitors and page impressions you’ve got and what your most famous content is.]]></packagedescription>
 		<packagedescription language="de"><![CDATA[Zeige an, wie viele Besucher und Seitenaufrufe du hast und welche deine erfolgreichsten Inhalte sind.]]></packagedescription>
 		<version>1.0.0 Alpha 1</version>
@@ -26,7 +26,7 @@
 	<instructions type="install">
 		<!-- configuration -->
 		<instruction type="eventListener" />
-		<!--<instruction type="language" />-->
+		<instruction type="language" />
 		
 		<!-- files -->
 		<instruction type="file" />

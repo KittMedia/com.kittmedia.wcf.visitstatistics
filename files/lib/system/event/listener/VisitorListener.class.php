@@ -45,7 +45,7 @@ class VisitorListener implements IParameterizedEventListener {
 		
 		(new VisitorAction([], 'create', [
 			'data' => [
-				'requestUri' => $this->removeQueryParameters($_SERVER['REQUEST_URI']),
+				'requestURI' => $this->removeQueryParameters($_SERVER['REQUEST_URI']),
 				'title' => $title,
 				'host' => $host,
 				'isRegistered' => WCF::getSession()->userID ? 1 : 0,
@@ -57,11 +57,11 @@ class VisitorListener implements IParameterizedEventListener {
 	/**
 	 * Remove additional query parameters.
 	 * 
-	 * @param	string		$requestUri
+	 * @param	string		$requestURI
 	 * @return	string
 	 */
-	private function removeQueryParameters($requestUri) {
-		$parts = explode('&', $requestUri);
+	private function removeQueryParameters($requestURI) {
+		$parts = explode('&', $requestURI);
 		
 		foreach ($parts as $key => &$part) {
 			if (

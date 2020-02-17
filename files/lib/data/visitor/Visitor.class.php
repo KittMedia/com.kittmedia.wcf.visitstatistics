@@ -3,6 +3,7 @@ namespace wcf\data\visitor;
 use wcf\data\DatabaseObject;
 use wcf\system\WCF;
 use function filter_var;
+use function http_response_code;
 use function preg_match;
 use function strpos;
 use const FILTER_SANITIZE_STRING;
@@ -16,7 +17,7 @@ use const FILTER_SANITIZE_STRING;
  * @package	com.kittmedia.wcf.visitors
  * 
  * @property-read	integer		$visitorID unique id of the visitor
- * @property-read	string		$requestUri requested url of the visit
+ * @property-read	string		$requestURI requested url of the visit
  * @property-read	boolean		$isRegistered `1` if the visit was from an registered user; otherwise `0`
  * @property-read	integer		$time unix timestamp where the request has been performed 
  */
@@ -40,6 +41,11 @@ class Visitor extends DatabaseObject {
 	public static function skipTracking() {
 		// skip if there is no user agent
 		if (empty($_SERVER['HTTP_USER_AGENT'])) {
+			return true;
+		}
+		
+		// skip if there is a 403 or 404
+		if (http_response_code() === 403 || http_response_code() === 404) {
 			return true;
 		}
 		

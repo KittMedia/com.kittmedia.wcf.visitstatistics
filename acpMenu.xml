@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="https://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.woltlab.com https://www.woltlab.com/XSD/tornado/acpMenu.xsd">
+	<import>
+		<acpmenuitem name="wcf.acp.menu.link.visitor">
+			<parent>wcf.acp.menu.link.stat</parent>
+		</acpmenuitem>
+	</import>
+</data>

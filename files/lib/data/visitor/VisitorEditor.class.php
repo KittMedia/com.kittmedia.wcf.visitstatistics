@@ -1,5 +1,6 @@
 <?php
 namespace wcf\data\visitor;
+use kpps\system\cache\builder\VisitorCacheBuilder;
 use wcf\data\DatabaseObjectEditor;
 
 /**
@@ -17,4 +18,11 @@ class VisitorEditor extends DatabaseObjectEditor {
 	 * @inheritDoc
 	 */
 	protected static $baseClass = Visitor::class;
+	
+	/**
+	 * @inheritDoc
+	 */
+	public static function resetCache() {
+		VisitorCacheBuilder::getInstance()->reset();
+	}
 }

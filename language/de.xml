@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language xmlns="https://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.woltlab.com https://www.woltlab.com/XSD/tornado/language.xsd" languagecode="de">
+	<category name="wcf.acp.visitor">
+		<item name="wcf.acp.visitor.count"><![CDATA[Anzahl]]></item>
+		<item name="wcf.acp.visitor.lastUpdated"><![CDATA[Letzte Aktualisierung]]></item>
+		<item name="wcf.acp.visitor.overview.title"><![CDATA[Übersicht]]></item>
+		<item name="wcf.acp.visitor.request"><![CDATA[Anfrage]]></item>
+		<item name="wcf.acp.visitor.title"><![CDATA[Besucherstatistiken]]></item>
+		<item name="wcf.acp.visitor.today"><![CDATA[Heute]]></item>
+		<item name="wcf.acp.visitor.total"><![CDATA[Insgesamt]]></item>
+		<item name="wcf.acp.visitor.url.title"><![CDATA[Häufig angefragte URLs]]></item>
+		<item name="wcf.acp.visitor.visitor"><![CDATA[Besucher]]></item>
+		<item name="wcf.acp.visitor.yesterday"><![CDATA[Gestern]]></item>
+	</category>
+</language>
