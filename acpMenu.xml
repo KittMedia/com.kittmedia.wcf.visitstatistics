@@ -2,7 +2,10 @@
 <data xmlns="https://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.woltlab.com https://www.woltlab.com/XSD/tornado/acpMenu.xsd">
 	<import>
 		<acpmenuitem name="wcf.acp.menu.link.visitor">
+			<controller><![CDATA[wcf\acp\page\VisitorPage]]></controller>
+			<options>module_user_visitor</options>
 			<parent>wcf.acp.menu.link.stat</parent>
+			<permissions>admin.management.canViewLog</permissions>
 		</acpmenuitem>
 	</import>
 </data>

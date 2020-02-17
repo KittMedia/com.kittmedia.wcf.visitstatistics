@@ -12,6 +12,6 @@ use wcf\data\DatabaseObjectList;
  * 
  * @method 	Visitor		current()
  * @method 	Visitor[]	getObjects()
- * @method 	Visitor|null	search($objectID) 
+ * @method 	Visitor|null	search($objectID)
  */
 class VisitorList extends DatabaseObjectList { }

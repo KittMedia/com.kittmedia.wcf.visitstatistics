@@ -25,6 +25,7 @@ class VisitorListener implements IParameterizedEventListener {
 	 * @inheritDoc
 	 */
 	public function execute($eventObj, $className, $eventName, array &$parameters) {
+		if (!MODULE_USER_VISITOR) return;
 		if (Visitor::skipTracking()) return;
 		
 		// get title

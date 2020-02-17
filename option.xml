@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data xmlns="https://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.woltlab.com https://www.woltlab.com/XSD/tornado/option.xsd">
+	<import>
+		<options>
+			<!-- modules -->
+			<option name="module_user_visitor">
+				<categoryname>module.user</categoryname>
+				<optiontype>boolean</optiontype>
+				<defaultvalue>1</defaultvalue>
+			</option>
+			<!-- /modules -->
+		</options>
+	</import>
+</data>

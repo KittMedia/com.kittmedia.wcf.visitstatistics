@@ -28,6 +28,16 @@ class VisitorPage extends MultipleLinkPage {
 	/**
 	 * @inheritDoc
 	 */
+	public $neededModules = ['MODULE_USER_VISITOR'];
+	
+	/**
+	 * @inheritDoc
+	 */
+	public $neededPermissions = ['admin.management.canViewLog'];
+	
+	/**
+	 * @inheritDoc
+	 */
 	public $objectListClassName = VisitorList::class;
 	
 	/**

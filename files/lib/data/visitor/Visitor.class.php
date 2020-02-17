@@ -98,6 +98,11 @@ class Visitor extends DatabaseObject {
 			return true;
 		}
 		
+		// user group option
+		if (WCF::getSession()->getPermission('user.profile.visitor.exclude')) {
+			return true;
+		}
+		
 		return false;
 	}
 }
