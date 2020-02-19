@@ -35,6 +35,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 					time,
 					DAY(FROM_UNIXTIME(time)) AS daily
 			FROM		".Visitor::getDatabaseTableName()." AS ".Visitor::getDatabaseTableAlias()."
+			WHERE		time >= UNIX_TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
 			GROUP BY	daily";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();

@@ -1,7 +1,7 @@
 <?php
 namespace wcf\data\visitor;
-use kpps\system\cache\builder\VisitorCacheBuilder;
 use wcf\data\DatabaseObjectEditor;
+use wcf\system\cache\builder\VisitorCacheBuilder;
 
 /**
  * Provides functions to edit user visits.

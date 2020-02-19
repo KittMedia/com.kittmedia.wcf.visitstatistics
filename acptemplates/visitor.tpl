@@ -5,8 +5,8 @@
 <script data-relocate="true" src="{@$__wcf->getPath()}js/3rdParty/flot/jquery.flot.resize.js"></script>
 <script data-relocate="true" src="{@$__wcf->getPath()}js/KM.ACP.Stat.VisitorChart.js"></script>
 <script data-relocate="true">
-	$(function() {
-		WCF.Language.addObject({
+	require(['Language'], function(Language) {
+		Language.addObject({
 			'wcf.acp.stat.timeFormat.daily': '{lang}wcf.acp.stat.timeFormat.daily{/lang}',
 			'wcf.acp.stat.noData': '{lang}wcf.acp.stat.noData{/lang}',
 			'wcf.acp.visitor.visits': '{lang}wcf.acp.visitor.visits{/lang}'
@@ -21,6 +21,20 @@
 	dl.dataList {
 		display: flex;
 		flex-wrap: wrap;
+	}
+	
+	.dataFlexList {
+		margin-bottom: 30px;
+	}
+	
+	.dataFlexList > .dataList {
+		flex: 0 0 100%;
+	}
+	
+	@media (min-width: 768px) {
+		.dataFlexList > .dataList {
+			flex: 0 1 auto;
+		}
 	}
 	
 	dl.dataList > dt {
