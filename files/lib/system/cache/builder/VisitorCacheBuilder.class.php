@@ -62,7 +62,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		
 		// get the most requested URIs
 		$sql = "SELECT		*,
-       					COUNT(requestURI) AS requestCount
+					COUNT(requestURI) AS requestCount
 			FROM		".Visitor::getDatabaseTableName()." AS ".Visitor::getDatabaseTableAlias()."
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()
 			GROUP BY	requestURI
