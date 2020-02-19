@@ -1,11 +1,15 @@
 <?php
 namespace wcf\data\visitor;
+use wcf\action\AJAXProxyAction;
+use wcf\action\BackgroundQueuePerformAction;
 use wcf\data\DatabaseObject;
+use wcf\page\AttachmentPage;
+use wcf\page\ConversationPage;
+use wcf\page\MediaPage;
 use wcf\system\WCF;
 use function filter_var;
 use function http_response_code;
 use function preg_match;
-use function strpos;
 use const FILTER_SANITIZE_STRING;
 
 /**
@@ -16,9 +20,9 @@ use const FILTER_SANITIZE_STRING;
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitors
  * 
- * @property-read	integer		$visitorID unique id of the visitor
- * @property-read	string		$requestURI requested url of the visit
- * @property-read	boolean		$isRegistered `1` if the visit was from an registered user; otherwise `0`
+ * @property-read	integer		$visitorID unique ID of the visitor
+ * @property-read	string		$requestURI requested URL of the visit
+ * @property-read	boolean		$isRegistered `1` if the visit was from a registered user; otherwise `0`
  * @property-read	integer		$time unix timestamp where the request has been performed 
  */
 
@@ -40,7 +44,7 @@ class Visitor extends DatabaseObject {
 	 */
 	public static function hideTitle() {
 		// hide title of conversations
-		if (strpos(WCF::getSession()->requestURI, 'conversation/') !== false) {
+		if (WCF::getActivePage()->controller === ConversationPage::class) {
 			return true;
 		}
 		
@@ -79,22 +83,22 @@ class Visitor extends DatabaseObject {
 		}
 		
 		// skip if it's an ajax request
-		if (strpos(WCF::getSession()->requestURI, 'ajax-proxy/') !== false) {
+		if (WCF::getActivePage()->controller === AJAXProxyAction::class) {
 			return true;
 		}
 		
 		// skip if it's an attachment request
-		if (strpos(WCF::getSession()->requestURI, 'attachment/') !== false) {
+		if (WCF::getActivePage()->controller === AttachmentPage::class) {
 			return true;
 		}
 		
 		// skip if it's an media request
-		if (strpos(WCF::getSession()->requestURI, 'media/') !== false) {
+		if (WCF::getActivePage()->controller === MediaPage::class) {
 			return true;
 		}
 		
 		// skip if it's an background queue request
-		if (strpos(WCF::getSession()->requestURI, 'background-queue-perform/') !== false) {
+		if (WCF::getActivePage()->controller === BackgroundQueuePerformAction::class) {
 			return true;
 		}
 		
