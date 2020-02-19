@@ -89,8 +89,10 @@
 		<h2 class="sectionTitle">{lang}wcf.acp.visitor.url.title{/lang}</h2>
 		<table class="table">
 			<thead>
-				<th>{lang}wcf.acp.visitor.request{/lang}</th>
-				<th>{lang}wcf.acp.visitor.count{/lang}</th>
+				<tr>
+					<th>{lang}wcf.acp.visitor.request{/lang}</th>
+					<th>{lang}wcf.acp.visitor.count{/lang}</th>
+				</tr>
 			</thead>
 			<tbody>
 				{foreach from=$requestList item=visitor}
