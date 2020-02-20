@@ -10,6 +10,7 @@ use wcf\system\WCF;
 use function filter_var;
 use function http_response_code;
 use function preg_match;
+use function strpos;
 use const FILTER_SANITIZE_STRING;
 
 /**
@@ -28,12 +29,26 @@ use const FILTER_SANITIZE_STRING;
 
 class Visitor extends DatabaseObject {
 	/**
-	 * @inheritdoc
+	 * @var	array A list with user agents we want to skip
+	 */
+	private static $blockList = [
+		'bot',
+		'slurp',
+		'crawler',
+		'spider',
+		'curl',
+		'facebook',
+		'fetch',
+		'wget'
+	];
+	
+	/**
+	 * @inheritDoc
 	 */
 	protected static $databaseTableName = 'visitor';
 	
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 */
 	protected static $databaseTableIndexName = 'visitorID';
 	
@@ -80,6 +95,13 @@ class Visitor extends DatabaseObject {
 		// skip if the user agent lacks general information
 		if (!preg_match( '/(?:Windows|Macintosh|Linux|iPhone|iPad)/', $_SERVER['HTTP_USER_AGENT'])) {
 			return true;
+		}
+		
+		// skip basic bot user agents
+		foreach (self::$blockList as $identifier) {
+			if (strpos($_SERVER['HTTP_USER_AGENT'], $identifier) !== false) {
+				return true;
+			}
 		}
 		
 		// skip if it's an ajax request
