@@ -90,7 +90,7 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>{lang}wcf.acp.visitor.request{/lang}</th>
+					<th>{lang}wcf.acp.visitor.visitedUrls{/lang}</th>
 					<th>{lang}wcf.acp.visitor.count{/lang}</th>
 				</tr>
 			</thead>
