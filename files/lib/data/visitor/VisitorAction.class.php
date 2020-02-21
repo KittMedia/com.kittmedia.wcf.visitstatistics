@@ -39,7 +39,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		// get data
 		$data = [];
 		$sql = "SELECT		COUNT(*) AS count,
-					UNIX_TIMESTAMP(CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d 00:00:00'), '+00:00', ?)) AS dayTime
+					UNIX_TIMESTAMP(CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d 00:00:00'), @@session.time_zone, ?)) AS dayTime
 			FROM		".Visitor::getDatabaseTableName()." AS ".Visitor::getDatabaseTableAlias()."
 			WHERE		time >= UNIX_TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
 			GROUP BY	dayTime";
