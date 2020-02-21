@@ -60,7 +60,7 @@ class VisitorPage extends MultipleLinkPage {
 			'countTotal' => $this->data['countTotal'],
 			'countYesterday' => $this->data['countYesterday'],
 			'rebuildTime' => $this->data['rebuildTime'],
-			'requestList' => $this->data['requestList']
+			'requestList' => (!empty($this->data['requestList']) ? $this->data['requestList'] : [])
 		]);
 	}
 }

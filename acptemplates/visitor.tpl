@@ -87,22 +87,29 @@
 	
 	<section class="section">
 		<h2 class="sectionTitle">{lang}wcf.acp.visitor.url.title{/lang}</h2>
-		<table class="table">
-			<thead>
-				<tr>
-					<th>{lang}wcf.acp.visitor.visitedUrls{/lang}</th>
-					<th>{lang}wcf.acp.visitor.count{/lang}</th>
-				</tr>
-			</thead>
-			<tbody>
-				{foreach from=$requestList item=visitor}
+		
+		{hascontent}
+			<table class="table">
+				<thead>
 					<tr>
-						<td><a href="{$visitor->host}{$visitor->requestURI}">{$visitor->title}</a></td>
-						<td>{$visitor->requestCount}</td>
+						<th>{lang}wcf.acp.visitor.visitedUrls{/lang}</th>
+						<th>{lang}wcf.acp.visitor.count{/lang}</th>
 					</tr>
-				{/foreach}
-			</tbody>
-		</table>
+				</thead>
+				<tbody>
+					{content}
+						{foreach from=$requestList item=visitor}
+							<tr>
+								<td><a href="{$visitor->host}{$visitor->requestURI}">{$visitor->title}</a></td>
+								<td>{$visitor->requestCount}</td>
+							</tr>
+						{/foreach}
+					{/content}
+				</tbody>
+			</table>
+		{hascontentelse}
+			<p>{lang}wcf.acp.visitor.noVisit{/lang}</p>
+		{/hascontent}
 	</section>
 </div>
 
