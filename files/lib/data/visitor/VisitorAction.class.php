@@ -1,7 +1,10 @@
 <?php
 namespace wcf\data\visitor;
+use DateTime;
+use DateTimeZone;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\system\WCF;
+use const TIMEZONE;
 
 /**
  * Provides functions for user visits.
@@ -29,21 +32,24 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$sqlModeStatement = WCF::getDB()->prepareStatement("SET SESSION sql_mode = ?");
 		$sqlModeStatement->execute(['TRADITIONAL']);
 		
+		// get time zone
+		$time = new DateTime('now', new DateTimeZone(TIMEZONE));
+		$timezone = $time->format('P');
+		
 		// get data
 		$data = [];
 		$sql = "SELECT		COUNT(*) AS count,
-					time,
-					DAY(FROM_UNIXTIME(time)) AS daily
+					UNIX_TIMESTAMP(CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d 00:00:00'), '+00:00', ?)) AS dayTime
 			FROM		".Visitor::getDatabaseTableName()." AS ".Visitor::getDatabaseTableAlias()."
 			WHERE		time >= UNIX_TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
-			GROUP BY	daily";
+			GROUP BY	dayTime";
 		$statement = WCF::getDB()->prepareStatement($sql);
-		$statement->execute();
+		$statement->execute([$timezone]);
 		
 		while ($row = $statement->fetchArray()) {
 			$data[0]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits');
 			$data[0]['data'][] = [
-				$row['time'],
+				$row['dayTime'],
 				$row['count']
 			];
 		}
