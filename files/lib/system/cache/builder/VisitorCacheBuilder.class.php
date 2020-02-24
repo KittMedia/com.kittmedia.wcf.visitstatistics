@@ -29,9 +29,9 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	 * @inheritDoc
 	 */
 	protected function rebuild(array $parameters) {
-		$this->getTodayStatistics();
-		$this->getTotalStatistics();
-		$this->getYesterdayStatistics();
+		$this->calculateTodayStatistics();
+		$this->calculateTotalStatistics();
+		$this->calculateYesterdayStatistics();
 		
 		$this->statistics['rebuildTime'] = TIME_NOW;
 		
@@ -39,14 +39,12 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	}
 	
 	/**
-	 * Get statistics from today.
-	 * 
-	 * @return	mixed[]
+	 * Calculate statistics for today.
 	 */
-	protected function getTodayStatistics() {
+	protected function calculateTodayStatistics() {
 		// get today's count
 		$sql = "SELECT		COUNT(*)
-			FROM		".Visitor::getDatabaseTableName()." AS ".Visitor::getDatabaseTableAlias()."
+			FROM		".Visitor::getDatabaseTableName()."
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
@@ -63,7 +61,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		// get the most requested URIs
 		$sql = "SELECT		*,
 					COUNT(requestURI) AS requestCount
-			FROM		".Visitor::getDatabaseTableName()." AS ".Visitor::getDatabaseTableAlias()."
+			FROM		".Visitor::getDatabaseTableName()."
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()
 			GROUP BY	requestURI
 			ORDER BY	requestCount DESC, title";
@@ -76,40 +74,30 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		
 		// restore sql mode
 		$sqlModeStatement->execute([$currentSqlMode]);
-		
-		return $this->statistics;
 	}
 	
 	/**
-	 * Get total statistics.
-	 * 
-	 * @return	mixed[]
+	 * Calculate total statistics.
 	 */
-	protected function getTotalStatistics() {
+	protected function calculateTotalStatistics() {
 		// get total count
 		$sql = "SELECT		COUNT(*)
 			FROM		".Visitor::getDatabaseTableName()." AS ".Visitor::getDatabaseTableAlias();
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countTotal'] = StringUtil::formatNumeric($statement->fetchColumn());
-		
-		return $this->statistics;
 	}
 	
 	/**
-	 * Get statistics from yesterday.
-	 * 
-	 * @return	mixed[]
+	 * Calculate statistics for yesterday.
 	 */
-	protected function getYesterdayStatistics() {
+	protected function calculateYesterdayStatistics() {
 		// get yesterday's count
 		$sql = "SELECT		COUNT(*)
-			FROM		".Visitor::getDatabaseTableName()." AS ".Visitor::getDatabaseTableAlias()."
+			FROM		".Visitor::getDatabaseTableName()."
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE() - INTERVAL 1 DAY";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countYesterday'] = StringUtil::formatNumeric($statement->fetchColumn());
-		
-		return $this->statistics;
 	}
 }

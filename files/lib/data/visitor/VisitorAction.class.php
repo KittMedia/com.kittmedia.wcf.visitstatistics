@@ -40,14 +40,15 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$data = [];
 		$sql = "SELECT		COUNT(*) AS count,
 					UNIX_TIMESTAMP(CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d 00:00:00'), @@session.time_zone, ?)) AS dayTime
-			FROM		".Visitor::getDatabaseTableName()." AS ".Visitor::getDatabaseTableAlias()."
+			FROM		".Visitor::getDatabaseTableName()."
 			WHERE		time >= UNIX_TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
 			GROUP BY	dayTime";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute([$timezone]);
 		
+		$data[0]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits');
+		
 		while ($row = $statement->fetchArray()) {
-			$data[0]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits');
 			$data[0]['data'][] = [
 				$row['dayTime'],
 				$row['count']

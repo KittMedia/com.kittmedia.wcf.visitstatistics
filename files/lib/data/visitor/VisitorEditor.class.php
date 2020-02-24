@@ -1,6 +1,7 @@
 <?php
 namespace wcf\data\visitor;
 use wcf\data\DatabaseObjectEditor;
+use wcf\data\IEditableCachedObject;
 use wcf\system\cache\builder\VisitorCacheBuilder;
 
 /**
@@ -13,7 +14,7 @@ use wcf\system\cache\builder\VisitorCacheBuilder;
  * 
  * @method	Visitor		getDecoratedObject()
  */
-class VisitorEditor extends DatabaseObjectEditor {
+class VisitorEditor extends DatabaseObjectEditor implements IEditableCachedObject {
 	/**
 	 * @inheritDoc
 	 */
