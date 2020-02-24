@@ -125,7 +125,7 @@ class Visitor extends DatabaseObject {
 		}
 		
 		// user group option
-		if (WCF::getSession()->getPermission('user.profile.visitor.exclude')) {
+		if (!WCF::getSession()->getPermission('user.profile.visitor.include')) {
 			return true;
 		}
 		

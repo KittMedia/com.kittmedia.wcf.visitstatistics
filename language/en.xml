@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language xmlns="https://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.woltlab.com https://www.woltlab.com/XSD/tornado/language.xsd" languagecode="de">
 	<category name="wcf.acp.group">
-		<item name="wcf.acp.group.option.user.profile.visitor.exclude"><![CDATA[Exclude visits from visitor statistics]]></item>
+		<item name="wcf.acp.group.option.user.profile.visitor.include"><![CDATA[Include visits in visitor statistics]]></item>
 	</category>
 	
 	<category name="wcf.acp.menu">
