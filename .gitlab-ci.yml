@@ -1,0 +1,29 @@
+before_script:
+    - git clone --branch=master --depth=1 --quiet git@git.kittmedia.com:kittmedia-productions/wcf-buildscripts.git
+    - chmod +x wcf-buildscripts/*.sh
+
+stages:
+    - requirements
+    - optionals
+    - package
+    - application
+
+variables:
+    PACKAGE_NAME: "com.kittmedia.wcf.visitstatistics"
+    TEMP_DIR: "/home/gitlab-runner/temp"
+
+create_package:
+    stage: package
+    
+    script:
+    - cd wcf-buildscripts
+    - ./package.sh $PACKAGE_NAME
+    - cd ..
+    - cp $PACKAGE_NAME.tar.gz $TEMP_DIR
+    
+    only:
+    - master
+    
+    artifacts:
+        paths:
+        - $PACKAGE_NAME.*
