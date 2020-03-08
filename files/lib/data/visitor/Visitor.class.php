@@ -9,6 +9,7 @@ use wcf\page\MediaPage;
 use wcf\system\WCF;
 use function filter_var;
 use function http_response_code;
+use function is_object;
 use function preg_match;
 use function strpos;
 use const FILTER_SANITIZE_STRING;
@@ -102,6 +103,11 @@ class Visitor extends DatabaseObject {
 			if (strpos($_SERVER['HTTP_USER_AGENT'], $identifier) !== false) {
 				return true;
 			}
+		}
+		
+		// skip if we cannot be sure that it's a proper registered page
+		if (!is_object(WCF::getActivePage())) {
+			return true;
 		}
 		
 		// skip if it's an ajax request
