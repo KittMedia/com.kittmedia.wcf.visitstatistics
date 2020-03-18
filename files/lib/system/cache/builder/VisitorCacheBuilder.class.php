@@ -50,20 +50,11 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$statement->execute();
 		$this->statistics['countToday'] = StringUtil::formatNumeric($statement->fetchColumn());
 		
-		// change sql mode
-		$sql = "SELECT		@@sql_mode";
-		$statement = WCF::getDB()->prepareStatement($sql);
-		$statement->execute();
-		$currentSqlMode = $statement->fetchColumn();
-		$sqlModeStatement = WCF::getDB()->prepareStatement("SET SESSION sql_mode = ?");
-		$sqlModeStatement->execute(['TRADITIONAL']);
-		
 		// get the most requested URIs
-		$sql = "SELECT		*,
-					COUNT(requestURI) AS requestCount
+		$sql = "SELECT		requestURI, title, host, COUNT(*) AS requestCount
 			FROM		".Visitor::getDatabaseTableName()."
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()
-			GROUP BY	requestURI
+			GROUP BY	requestURI, title, host
 			ORDER BY	requestCount DESC, title";
 		$statement = WCF::getDB()->prepareStatement($sql, 20);
 		$statement->execute();
@@ -71,9 +62,6 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		while ($row = $statement->fetchArray()) {
 			$this->statistics['requestList'][] = (object) $row;
 		}
-		
-		// restore sql mode
-		$sqlModeStatement->execute([$currentSqlMode]);
 	}
 	
 	/**

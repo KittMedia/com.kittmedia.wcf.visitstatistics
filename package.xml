@@ -5,8 +5,8 @@
 		<packagename language="de">KittMedia Besuchsstatistiken</packagename>
 		<packagedescription><![CDATA[Show how many visits you’ve got and what your most famous content is.]]></packagedescription>
 		<packagedescription language="de"><![CDATA[Zeige an, wie viele Seitenaufrufe du hast und welche deine erfolgreichsten Inhalte sind.]]></packagedescription>
-		<version>1.0.1</version>
-		<date>2020-03-08</date>
+		<version>1.0.2</version>
+		<date>2020-03-18</date>
 	</packageinformation>
 	
 	<authorinformation>
@@ -38,6 +38,11 @@
 	</instructions>
 	
 	<instructions type="update" fromversion="1.0.0">
+		<!-- files -->
+		<instruction type="file" />
+	</instructions>
+	
+	<instructions type="update" fromversion="1.0.1">
 		<!-- files -->
 		<instruction type="file" />
 	</instructions>
