@@ -19,6 +19,11 @@ use const TIMEZONE;
  */
 class VisitorAction extends AbstractDatabaseObjectAction {
 	/**
+	 * @inheritDocs
+	 */
+	protected $requireACP = ['getData'];
+	
+	/**
 	 * Return daily click statistics.
 	 * 
 	 * @return	mixed[]
