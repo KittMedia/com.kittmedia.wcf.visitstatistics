@@ -5,7 +5,7 @@
 		<packagename language="de">KittMedia Besuchsstatistiken</packagename>
 		<packagedescription><![CDATA[Show how many visits you’ve got and what your most famous content is.]]></packagedescription>
 		<packagedescription language="de"><![CDATA[Zeige an, wie viele Seitenaufrufe du hast und welche deine erfolgreichsten Inhalte sind.]]></packagedescription>
-		<version>1.0.3 Alpha 1</version>
+		<version>1.0.3</version>
 		<date>2020-04-15</date>
 	</packageinformation>
 	
@@ -39,15 +39,18 @@
 	<instructions type="update" fromversion="1.0.0">
 		<!-- files -->
 		<instruction type="file" />
+		<instruction type="sql" run="standalone">update_1.0.3.sql</instruction>
 	</instructions>
 	
 	<instructions type="update" fromversion="1.0.1">
 		<!-- files -->
 		<instruction type="file" />
+		<instruction type="sql" run="standalone">update_1.0.3.sql</instruction>
 	</instructions>
 	
 	<instructions type="update" fromversion="1.0.2">
 		<!-- files -->
 		<instruction type="file" />
+		<instruction type="sql" run="standalone">update_1.0.3.sql</instruction>
 	</instructions>
 </package>
