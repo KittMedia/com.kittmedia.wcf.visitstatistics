@@ -3,6 +3,7 @@ namespace wcf\data\visitor;
 use wcf\action\AJAXProxyAction;
 use wcf\action\BackgroundQueuePerformAction;
 use wcf\data\DatabaseObject;
+use wcf\data\package\PackageCache;
 use wcf\page\AttachmentPage;
 use wcf\page\ConversationPage;
 use wcf\page\MediaPage;
@@ -60,7 +61,7 @@ class Visitor extends DatabaseObject {
 	 */
 	public static function hideTitle() {
 		// hide title of conversations
-		if (WCF::getActivePage()->controller === ConversationPage::class) {
+		if (PackageCache::getInstance()->getPackageID('com.woltlab.wcf.conversation') !== null && WCF::getActivePage()->controller === ConversationPage::class) {
 			return true;
 		}
 		
