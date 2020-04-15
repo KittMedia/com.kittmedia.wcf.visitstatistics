@@ -15,7 +15,7 @@ use const TIMEZONE;
  * @package	com.kittmedia.wcf.visitors
  * 
  * @method	VisitorEditor[]		getObjects()
- * @method	Visitor		        getSingleObject() 
+ * @method	Visitor			getSingleObject() 
  */
 class VisitorAction extends AbstractDatabaseObjectAction {
 	/**
@@ -24,14 +24,6 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 	 * @return	mixed[]
 	 */
 	public function getData() {
-		// change sql mode
-		$sql = "SELECT		@@sql_mode";
-		$statement = WCF::getDB()->prepareStatement($sql);
-		$statement->execute();
-		$currentSqlMode = $statement->fetchColumn();
-		$sqlModeStatement = WCF::getDB()->prepareStatement("SET SESSION sql_mode = ?");
-		$sqlModeStatement->execute(['TRADITIONAL']);
-		
 		// get time zone
 		$time = new DateTime('now', new DateTimeZone(TIMEZONE));
 		$timezone = $time->format('P');
@@ -54,9 +46,6 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				$row['count']
 			];
 		}
-		
-		// restore sql mode
-		$sqlModeStatement->execute([$currentSqlMode]);
 		
 		return $data;
 	}
