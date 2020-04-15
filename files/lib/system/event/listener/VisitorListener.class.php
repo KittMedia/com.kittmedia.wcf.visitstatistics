@@ -6,6 +6,7 @@ use \wcf\system\WCF;
 use wcf\util\StringUtil;
 use function explode;
 use function implode;
+use function mb_convert_encoding;
 use function parse_url;
 use function preg_replace;
 use const TIME_NOW;
@@ -48,9 +49,13 @@ class VisitorListener implements IParameterizedEventListener {
 			$host = WCF::getActiveApplication()->domainName;
 		}
 		
+		// convert to UTF-8
+		$requestURI = (!StringUtil::isUTF8($_SERVER['REQUEST_URI']) ? mb_convert_encoding($_SERVER['REQUEST_URI'], 'UTF-8') : $_SERVER['REQUEST_URI']);
+		$title = (!StringUtil::isUTF8($title) ? mb_convert_encoding($title, 'UTF-8') : $title);
+		
 		(new VisitorAction([], 'create', [
 			'data' => [
-				'requestURI' => StringUtil::truncate((!Visitor::hideTitle() ? $this->removeQueryParameters($_SERVER['REQUEST_URI']) : ''), 255),
+				'requestURI' => StringUtil::truncate((!Visitor::hideTitle() ? $this->removeQueryParameters($requestURI) : ''), 255),
 				'title' => StringUtil::truncate($title, 255),
 				'host' => StringUtil::truncate($host, 255),
 				'isRegistered' => WCF::getSession()->userID ? 1 : 0,
