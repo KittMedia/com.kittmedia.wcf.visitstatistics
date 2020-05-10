@@ -4,6 +4,7 @@ use DateTime;
 use DateTimeZone;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\system\WCF;
+use function is_array;
 use const TIMEZONE;
 
 /**
@@ -36,19 +37,52 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		// get data
 		$data = [];
 		$sql = "SELECT		COUNT(*) AS count,
-					UNIX_TIMESTAMP(CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d 00:00:00'), @@session.time_zone, ?)) AS dayTime
+					UNIX_TIMESTAMP(CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d 00:00:00'), @@session.time_zone, ?)) AS dayTime,
+					isRegistered
 			FROM		".Visitor::getDatabaseTableName()."
 			WHERE		time >= UNIX_TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
-			GROUP BY	dayTime";
+			GROUP BY	isRegistered, dayTime";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute([$timezone]);
 		
-		$data[0]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits');
+		$data[0]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.total');
+		$data[1]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.user');
+		$data[2]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.guest');
+		$counts = [];
 		
 		while ($row = $statement->fetchArray()) {
+			if (!isset($counts[$row['dayTime']])) {
+				$counts[$row['dayTime']] = [];
+			}
+			
+			if (!isset($counts[$row['dayTime']]['total'])) {
+				$counts[$row['dayTime']]['total'] = $row['count'];
+			}
+			else {
+				$counts[$row['dayTime']]['total'] += $row['count'];
+			}
+			
+			if ($row['isRegistered']) {
+				$counts[$row['dayTime']]['user'] = $row['count'];
+			}
+			else {
+				$counts[$row['dayTime']]['guest'] = $row['count'];
+			}
+		}
+		
+		// separate data for each data
+		foreach ($counts as $dayTime => $count) {
 			$data[0]['data'][] = [
-				$row['dayTime'],
-				$row['count']
+				$dayTime,
+				$count['total'] ?? 0
+			];
+			$data[1]['data'][] = [
+				$dayTime,
+				$count['user'] ?? 0
+			];
+			$data[2]['data'][] = [
+				$dayTime,
+				$count['guest'] ?? 0
 			];
 		}
 		
