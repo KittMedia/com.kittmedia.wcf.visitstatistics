@@ -56,6 +56,11 @@ class VisitorPage extends MultipleLinkPage {
 		parent::assignVariables();
 		
 		WCF::getTPL()->assign([
+			'countAverage' => $this->data['countAverage'],
+			'countLastMonth' => $this->data['countLastMonth'],
+			'countLastWeek' => $this->data['countLastWeek'],
+			'countThisMonth' => $this->data['countThisMonth'],
+			'countThisWeek' => $this->data['countThisWeek'],
 			'countToday' => $this->data['countToday'],
 			'countTotal' => $this->data['countTotal'],
 			'countYesterday' => $this->data['countYesterday'],

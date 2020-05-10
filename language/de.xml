@@ -13,11 +13,16 @@
 	</category>
 	
 	<category name="wcf.acp.visitor">
+		<item name="wcf.acp.visitor.average"><![CDATA[Durchschnitt]]></item>
 		<item name="wcf.acp.visitor.count"><![CDATA[Anzahl]]></item>
+		<item name="wcf.acp.visitor.lastMonth"><![CDATA[Letzten Monat]]></item>
 		<item name="wcf.acp.visitor.lastUpdated"><![CDATA[Letzte Aktualisierung]]></item>
+		<item name="wcf.acp.visitor.lastWeek"><![CDATA[Letzte Woche]]></item>
 		<item name="wcf.acp.visitor.noVisit"><![CDATA[Es gibt heute noch keine besuchte Seite.]]></item>
 		<item name="wcf.acp.visitor.overview.title"><![CDATA[Übersicht]]></item>
 		<item name="wcf.acp.visitor.request"><![CDATA[Anfrage]]></item>
+		<item name="wcf.acp.visitor.thisMonth"><![CDATA[Diesen Monat]]></item>
+		<item name="wcf.acp.visitor.thisWeek"><![CDATA[Diese Woche]]></item>
 		<item name="wcf.acp.visitor.title"><![CDATA[Besuchsstatistiken]]></item>
 		<item name="wcf.acp.visitor.today"><![CDATA[Heute]]></item>
 		<item name="wcf.acp.visitor.total"><![CDATA[Insgesamt]]></item>
