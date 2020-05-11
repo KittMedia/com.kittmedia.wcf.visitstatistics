@@ -15,6 +15,7 @@
 	<category name="wcf.acp.visitor">
 		<item name="wcf.acp.visitor.average"><![CDATA[Average]]></item>
 		<item name="wcf.acp.visitor.count"><![CDATA[Count]]></item>
+		<item name="wcf.acp.visitor.language"><![CDATA[Language]]></item>
 		<item name="wcf.acp.visitor.lastMonth"><![CDATA[Last Month]]></item>
 		<item name="wcf.acp.visitor.lastUpdated"><![CDATA[Last updated]]></item>
 		<item name="wcf.acp.visitor.lastWeek"><![CDATA[Last Week]]></item>

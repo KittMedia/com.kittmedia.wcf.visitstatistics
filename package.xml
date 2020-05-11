@@ -36,21 +36,10 @@
 		<instruction type="sql" />
 	</instructions>
 	
-	<instructions type="update" fromversion="1.0.0">
+	<instructions type="update" fromversion="1.0.3">
 		<!-- files -->
+		<instruction type="acpTemplate" />
 		<instruction type="file" />
-		<instruction type="sql" run="standalone">update_1.0.3.sql</instruction>
-	</instructions>
-	
-	<instructions type="update" fromversion="1.0.1">
-		<!-- files -->
-		<instruction type="file" />
-		<instruction type="sql" run="standalone">update_1.0.3.sql</instruction>
-	</instructions>
-	
-	<instructions type="update" fromversion="1.0.2">
-		<!-- files -->
-		<instruction type="file" />
-		<instruction type="sql" run="standalone">update_1.0.3.sql</instruction>
+		<instruction type="sql" run="standalone">update_1.1.0.sql</instruction>
 	</instructions>
 </package>

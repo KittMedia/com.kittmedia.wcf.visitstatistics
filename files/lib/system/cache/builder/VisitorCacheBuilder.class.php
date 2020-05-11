@@ -142,10 +142,10 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$this->statistics['countToday'] = StringUtil::formatNumeric($statement->fetchColumn());
 		
 		// get the most requested URIs
-		$sql = "SELECT		requestURI, title, host, COUNT(*) AS requestCount
+		$sql = "SELECT		requestURI, title, host, languageID, pageID, pageObjectID, COUNT(*) AS requestCount
 			FROM		".Visitor::getDatabaseTableName()."
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()
-			GROUP BY	requestURI, title, host
+			GROUP BY	requestURI, title, host, languageID, pageID, pageObjectID
 			ORDER BY	requestCount DESC, title";
 		$statement = WCF::getDB()->prepareStatement($sql, 20);
 		$statement->execute();

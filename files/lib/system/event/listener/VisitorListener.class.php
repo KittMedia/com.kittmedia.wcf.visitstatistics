@@ -2,7 +2,8 @@
 namespace wcf\system\event\listener;
 use wcf\data\visitor\Visitor;
 use wcf\data\visitor\VisitorAction;
-use \wcf\system\WCF;
+use wcf\system\language\LanguageFactory;
+use wcf\system\WCF;
 use wcf\util\StringUtil;
 use function explode;
 use function implode;
@@ -20,7 +21,7 @@ use const TIME_NOW;
  * @package	com.kittmedia.wcf.visitors
  */
 class VisitorListener implements IParameterizedEventListener {
-	const REGEX_FILTER_HTML = '/\<\w[^<>]*?\>([^<>]+?\<\/\w+?\>)?|\<\/\w+?\>/';
+	const REGEX_FILTER_HTML = '/\<\w[^<>]*?\>([^<>]+?)\<\/\w+?\>?|\<\/\w+?\>/';
 	
 	/**
 	 * @inheritDoc
@@ -29,11 +30,10 @@ class VisitorListener implements IParameterizedEventListener {
 		if (!MODULE_USER_VISITOR) return;
 		if (Visitor::skipTracking()) return;
 		
-		// get title
-		$title = preg_replace(self::REGEX_FILTER_HTML, '', WCF::getTPL()->get('contentTitle'));
+		$title = preg_replace(self::REGEX_FILTER_HTML, "$1", WCF::getTPL()->get('contentTitle'));
 		
 		if (!$title) {
-			$title = preg_replace(self::REGEX_FILTER_HTML, '', WCF::getTPL()->get('pageTitle'));
+			$title = preg_replace(self::REGEX_FILTER_HTML, "$1", WCF::getTPL()->get('pageTitle'));
 		}
 		
 		if (Visitor::hideTitle()) {
@@ -59,6 +59,9 @@ class VisitorListener implements IParameterizedEventListener {
 				'title' => StringUtil::truncate($title, 255),
 				'host' => StringUtil::truncate($host, 255),
 				'isRegistered' => WCF::getSession()->userID ? 1 : 0,
+				'languageID' => (!empty(WCF::getSession()->getLanguageID()) ? WCF::getSession()->getLanguageID() : LanguageFactory::getInstance()->getDefaultLanguageID()),
+				'pageID' => (!empty(WCF::getActivePage()->pageID) ? WCF::getActivePage()->pageID : null),
+				'pageObjectID' => (!empty($_REQUEST['id']) ? $_REQUEST['id'] : null),
 				'time' => TIME_NOW
 			]
 		]))->executeAction();

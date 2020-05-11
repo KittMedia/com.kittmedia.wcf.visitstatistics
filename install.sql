@@ -5,6 +5,9 @@ CREATE TABLE wcf1_visitor (
 	title		VARCHAR(255)		NOT NULL,
 	host		VARCHAR(255)		NOT NULL,
 	isRegistered	TINYINT(1)		NOT NULL DEFAULT 0,
+	languageID	INT(10)			NOT NULL DEFAULT 1,
+	pageID		INT(10)			DEFAULT NULL,
+	pageObjectID	INT(10)			DEFAULT NULL,
 	time		INT(10)			NOT NULL,
 	
 	KEY (time)
