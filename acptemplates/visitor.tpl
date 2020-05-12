@@ -172,7 +172,7 @@
 				</tbody>
 			</table>
 		{hascontentelse}
-			<p>{lang}wcf.acp.visitor.noVisit{/lang}</p>
+			<p class="info">{lang}wcf.acp.visitor.noVisit{/lang}</p>
 		{/hascontent}
 	</section>
 </div>

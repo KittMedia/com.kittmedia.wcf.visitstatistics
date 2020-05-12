@@ -2,7 +2,6 @@
 namespace wcf\acp\page;
 use wcf\data\page\PageCache;
 use wcf\data\user\online\UserOnline;
-use wcf\data\user\User;
 use wcf\data\visitor\VisitorList;
 use wcf\page\MultipleLinkPage;
 use wcf\system\cache\builder\VisitorCacheBuilder;
@@ -54,8 +53,11 @@ class VisitorPage extends MultipleLinkPage {
 		parent::readData();
 		
 		$this->data = VisitorCacheBuilder::getInstance()->getData();
-		$user = new User(WCF::getUser()->getUserID(), null);
-		$userOnline = new UserOnline($user);
+		$userOnline = new UserOnline(WCF::getUser());
+		
+		if (empty($this->data['requestList'])) {
+			return;
+		}
 		
 		// prepare additional data
 		foreach ($this->data['requestList'] as &$request) {
