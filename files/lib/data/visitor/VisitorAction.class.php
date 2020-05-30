@@ -4,7 +4,9 @@ use DateTime;
 use DateTimeZone;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\system\WCF;
+use function date;
 use function is_array;
+use function strtotime;
 use const TIMEZONE;
 
 /**
@@ -36,12 +38,10 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		
 		// get data
 		$data = [];
-		$sql = "SELECT		COUNT(*) AS count,
-					UNIX_TIMESTAMP(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d')) AS dayTime,
-					isRegistered
-			FROM		".Visitor::getDatabaseTableName()."
-			WHERE		time >= UNIX_TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
-			GROUP BY	isRegistered, dayTime";
+		$sql = "SELECT		counter, date, isRegistered
+			FROM		".Visitor::getDatabaseTableName()."_daily
+			WHERE		date >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
+			GROUP BY	isRegistered, date";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		
@@ -51,25 +51,52 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$counts = [];
 		
 		while ($row = $statement->fetchArray()) {
-			// respect timezone
-			$row['dayTime'] += $timezone;
+			// to timestamp
+			$row['dayTime'] = strtotime($row['date']) + $timezone;
 			
 			if (!isset($counts[$row['dayTime']])) {
 				$counts[$row['dayTime']] = [];
 			}
 			
 			if (!isset($counts[$row['dayTime']]['total'])) {
-				$counts[$row['dayTime']]['total'] = $row['count'];
+				$counts[$row['dayTime']]['total'] = $row['counter'];
 			}
 			else {
-				$counts[$row['dayTime']]['total'] += $row['count'];
+				$counts[$row['dayTime']]['total'] += $row['counter'];
 			}
 			
 			if ($row['isRegistered']) {
-				$counts[$row['dayTime']]['user'] = $row['count'];
+				$counts[$row['dayTime']]['user'] = $row['counter'];
 			}
 			else {
-				$counts[$row['dayTime']]['guest'] = $row['count'];
+				$counts[$row['dayTime']]['guest'] = $row['counter'];
+			}
+		}
+		
+		// get today's data
+		$sql = "SELECT		COUNT(*) AS counter,
+					DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d') AS date,
+					isRegistered
+			FROM		".Visitor::getDatabaseTableName()."
+			WHERE		time >= UNIX_TIMESTAMP(CURDATE())
+			GROUP BY	isRegistered, date";
+		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement->execute();
+		$todayTimestamp = strtotime(date('Y-m-d')) + $timezone;
+		$counts[$todayTimestamp] = [
+			'guest' => 0,
+			'total' => 0,
+			'user' => 0
+		];
+		
+		while($row = $statement->fetchArray()) {
+			$counts[$todayTimestamp]['total'] += $row['counter'];
+			
+			if ($row['isRegistered']) {
+				$counts[$todayTimestamp]['user'] = $row['counter'];
+			}
+			else {
+				$counts[$todayTimestamp]['guest'] = $row['counter'];
 			}
 		}
 		

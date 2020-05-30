@@ -79,10 +79,10 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	 */
 	protected function calculateLastMonthStatistics() {
 		// get last month's count
-		$sql = "SELECT		COUNT(*)
-			FROM		".Visitor::getDatabaseTableName()."
-			WHERE		MONTH(FROM_UNIXTIME(time)) = MONTH(CURDATE() - INTERVAL 1 MONTH)
-			AND		YEAR(FROM_UNIXTIME(time)) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
+		$sql = "SELECT		SUM(counter)
+			FROM		".Visitor::getDatabaseTableName()."_daily
+			WHERE		MONTH(date) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+			AND		YEAR(date) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countLastMonth'] = StringUtil::formatNumeric($statement->fetchColumn());
@@ -93,10 +93,10 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	 */
 	protected function calculateLastWeekStatistics() {
 		// get last week's count
-		$sql = "SELECT		COUNT(*)
-			FROM		".Visitor::getDatabaseTableName()."
-			WHERE		FROM_UNIXTIME(time) >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) + 6 DAY
-			AND		FROM_UNIXTIME(time) < CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) - 1 DAY";
+		$sql = "SELECT		SUM(counter)
+			FROM		".Visitor::getDatabaseTableName()."_daily
+			WHERE		date >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) + 6 DAY
+			AND		date < CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) - 1 DAY";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countLastWeek'] = StringUtil::formatNumeric($statement->fetchColumn());
@@ -107,10 +107,10 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	 */
 	protected function calculateThisMonthStatistics() {
 		// get this month's count
-		$sql = "SELECT		COUNT(*)
-			FROM		".Visitor::getDatabaseTableName()."
-			WHERE		MONTH(FROM_UNIXTIME(time)) = MONTH(CURDATE())
-			AND		YEAR(FROM_UNIXTIME(time)) = YEAR(CURDATE())";
+		$sql = "SELECT		SUM(counter)
+			FROM		".Visitor::getDatabaseTableName()."_daily
+			WHERE		MONTH(date) = MONTH(CURDATE())
+			AND		YEAR(date) = YEAR(CURDATE())";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countThisMonth'] = StringUtil::formatNumeric($statement->fetchColumn());
@@ -121,9 +121,9 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	 */
 	protected function calculateThisWeekStatistics() {
 		// get this week's count
-		$sql = "SELECT		COUNT(*)
-			FROM		".Visitor::getDatabaseTableName()."
-			WHERE		YEARWEEK(FROM_UNIXTIME(time), 1) = YEARWEEK(CURDATE(), 1)";
+		$sql = "SELECT		SUM(counter)
+			FROM		".Visitor::getDatabaseTableName()."_daily
+			WHERE		YEARWEEK(date, 1) = YEARWEEK(CURDATE(), 1)";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countThisWeek'] = StringUtil::formatNumeric($statement->fetchColumn());
@@ -160,8 +160,8 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	 */
 	protected function calculateTotalStatistics() {
 		// get total count
-		$sql = "SELECT		COUNT(*)
-			FROM		".Visitor::getDatabaseTableName()." AS ".Visitor::getDatabaseTableAlias();
+		$sql = "SELECT		SUM(counter)
+			FROM		".Visitor::getDatabaseTableName()."_daily";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countTotal'] = StringUtil::formatNumeric($statement->fetchColumn());
@@ -172,9 +172,9 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	 */
 	protected function calculateYesterdayStatistics() {
 		// get yesterday's count
-		$sql = "SELECT		COUNT(*)
-			FROM		".Visitor::getDatabaseTableName()."
-			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE() - INTERVAL 1 DAY";
+		$sql = "SELECT		SUM(counter)
+			FROM		".Visitor::getDatabaseTableName()."_daily
+			WHERE		DATE(date) = CURDATE() - INTERVAL 1 DAY";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countYesterday'] = StringUtil::formatNumeric($statement->fetchColumn());
