@@ -31,21 +31,23 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 	public function getData() {
 		// get time zone
 		$time = new DateTime('now', new DateTimeZone(TIMEZONE));
-		$timezone = $time->format('P');
+		$timezone = $time->format('Z');
 		
 		// get data
 		$data = [];
 		$sql = "SELECT		COUNT(*) AS count,
-					UNIX_TIMESTAMP(CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d 00:00:00'), @@session.time_zone, ?)) AS dayTime
+					UNIX_TIMESTAMP(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d')) AS dayTime
 			FROM		".Visitor::getDatabaseTableName()."
 			WHERE		time >= UNIX_TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
 			GROUP BY	dayTime";
 		$statement = WCF::getDB()->prepareStatement($sql);
-		$statement->execute([$timezone]);
+		$statement->execute();
 		
 		$data[0]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits');
 		
 		while ($row = $statement->fetchArray()) {
+			// respect timezone
+			$row['dayTime'] += $timezone;
 			$data[0]['data'][] = [
 				$row['dayTime'],
 				$row['count']
