@@ -15,8 +15,7 @@ use const WCF_N;
  * @package	com.kittmedia.wcf.visitors
  */
 class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventListener {
-	// TODO: move to options
-	const DELETE_AFTER = 30;
+	const DELETE_AFTER = 7;
 	
 	/**
 	 * @inheritDoc
