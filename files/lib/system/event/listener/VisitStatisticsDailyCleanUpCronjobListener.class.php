@@ -2,6 +2,7 @@
 namespace wcf\system\event\listener;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
+use function date;
 use const TIME_NOW;
 use const WCF_N;
 
@@ -24,7 +25,8 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 		$lastDay = $this->getLastProcessedDay();
 		
 		$this->setDailyStats($lastDay);
-		//$this->deleteVisits();
+		$this->setURLStats($lastDay);
+		$this->deleteVisits();
 	}
 	
 	/**
@@ -67,9 +69,38 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 					COUNT(*) AS counter,
 					isRegistered
 			FROM		".Visitor::getDatabaseTableName()."
-			WHERE		time >= UNIX_TIMESTAMP(?)
+			WHERE		time BETWEEN UNIX_TIMESTAMP(?) AND UNIX_TIMESTAMP(?)
 			GROUP BY	isRegistered, date";
 		$statement = WCF::getDB()->prepareStatement($sql);
-		$statement->execute([$day ?: 0]);
+		$statement->execute([
+			$day ?: 0,
+			date('Y-m-d')
+		]);
+	}
+	
+	/**
+	 * Set the URL stats.
+	 * 
+	 * @param	string		$day
+	 */
+	protected function setURLStats($day) {
+		$sql = "INSERT INTO	wcf".WCF_N."_visitor_url
+					(requestURI, title, host, counter, isRegistered, languageID, pageID, pageObjectID)
+			SELECT		requestURI,
+					title,
+					host,
+					COUNT(*) AS counter,
+					isRegistered,
+					languageID,
+					pageID,
+					pageObjectID
+			FROM		".Visitor::getDatabaseTableName()."
+			WHERE		time BETWEEN UNIX_TIMESTAMP(?) AND UNIX_TIMESTAMP(?)
+			GROUP BY	requestURI, title, host, isRegistered, languageID, pageID, pageObjectID";
+		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement->execute([
+			$day ?: 0,
+			date('Y-m-d')
+		]);
 	}
 }

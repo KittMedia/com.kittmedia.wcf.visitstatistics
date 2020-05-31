@@ -5,7 +5,6 @@ use DateTimeZone;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\system\WCF;
 use function date;
-use function is_array;
 use function strtotime;
 use const TIMEZONE;
 

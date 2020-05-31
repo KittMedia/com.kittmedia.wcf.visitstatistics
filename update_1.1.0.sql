@@ -8,15 +8,19 @@ CREATE TABLE wcf1_visitor_daily (
 	UNIQUE KEY (date, isRegistered)
 );
 
-DROP TABLE wcf1_visitor_url_daily;
-CREATE TABLE wcf1_visitor_url_daily (
+DROP TABLE wcf1_visitor_url;
+CREATE TABLE wcf1_visitor_url (
 	visitID		INT(10)		NOT NULL	AUTO_INCREMENT PRIMARY KEY,
 	requestURI	VARCHAR(255)	NOT NULL,
-	date		DATE		NOT NULL,
+	title		VARCHAR(255)	NOT NULL,
+	host		VARCHAR(255)	NOT NULL,
 	counter		INT(10)		NOT NULL DEFAULT 0,
 	isRegistered	TINYINT(1)	NOT NULL DEFAULT 0,
+	languageID	INT(10)		DEFAULT NULL,
+	pageID		INT(10)		DEFAULT NULL,
+	pageObjectID	INT(10)		DEFAULT NULL,
 	
-	UNIQUE KEY (requestURI, date, isRegistered)
+	KEY (requestURI)
 );
 
 ALTER TABLE wcf1_visitor ADD languageID INT(10) DEFAULT NULL;
