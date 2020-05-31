@@ -33,7 +33,7 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	 */
 	protected function deleteVisits() {
 		$sql = "DELETE FROM	".Visitor::getDatabaseTableName()."
-			WHERE		time < UNIX_TIMESTAMP(?)";
+			WHERE		time < ?";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute([
 			TIME_NOW - 86400 * self::DELETE_AFTER
@@ -72,7 +72,7 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			GROUP BY	isRegistered, date";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute([
-			$day ?: 0,
+			$day ?: '1970-01-01',
 			date('Y-m-d')
 		]);
 	}
@@ -98,7 +98,7 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			GROUP BY	requestURI, title, host, isRegistered, languageID, pageID, pageObjectID";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute([
-			$day ?: 0,
+			$day ?: '1970-01-01',
 			date('Y-m-d')
 		]);
 	}

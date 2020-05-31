@@ -36,10 +36,13 @@
 		<instruction type="sql" />
 	</instructions>
 	
-	<instructions type="update" fromversion="1.0.3">
+	<instructions type="update" fromversion="1.0.4">
 		<!-- files -->
 		<instruction type="acpTemplate" />
 		<instruction type="file" />
 		<instruction type="sql" run="standalone">update_1.1.0.sql</instruction>
+		
+		<!-- post update -->
+		<instruction type="script">acp/update_1.1.0_com.kittmedia.wcf.visitstatistics.php</instruction>
 	</instructions>
 </package>
