@@ -12,7 +12,7 @@ use const WCF_N;
  * @author	Matthias Kittsteiner
  * @copyright	2011-2020 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
- * @package	com.kittmedia.wcf.visitors
+ * @package	com.kittmedia.wcf.visitstatistics
  */
 class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventListener {
 	const DELETE_AFTER = 7;

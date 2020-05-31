@@ -10,7 +10,7 @@ use wcf\system\cache\builder\VisitorCacheBuilder;
  * @author	Matthias Kittsteiner
  * @copyright	2011-2020 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
- * @package	com.kittmedia.wcf.visitors
+ * @package	com.kittmedia.wcf.visitstatistics
  * 
  * @method	Visitor		getDecoratedObject()
  */
