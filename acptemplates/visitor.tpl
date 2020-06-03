@@ -163,7 +163,7 @@
 					{content}
 						{foreach from=$requestList item=visitor}
 							<tr>
-								<td><a href="{$visitor->host}{$visitor->requestURI}">{$visitor->title}</a></td>
+								<td><a href="{$visitor->host}{$visitor->requestURI}">{@$visitor->title}</a></td>
 								<td>{$visitor->language}</td>
 								<td>{$visitor->requestCount}</td>
 							</tr>

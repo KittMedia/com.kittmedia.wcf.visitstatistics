@@ -6,6 +6,7 @@ use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
 use function explode;
+use function html_entity_decode;
 use function implode;
 use function mb_convert_encoding;
 use function parse_url;
@@ -30,10 +31,10 @@ class VisitorListener implements IParameterizedEventListener {
 		if (!MODULE_USER_VISITOR) return;
 		if (Visitor::skipTracking()) return;
 		
-		$title = preg_replace(self::REGEX_FILTER_HTML, "$1", WCF::getTPL()->get('contentTitle'));
+		$title = html_entity_decode(preg_replace(self::REGEX_FILTER_HTML, "$1", WCF::getTPL()->get('contentTitle')));
 		
 		if (!$title) {
-			$title = preg_replace(self::REGEX_FILTER_HTML, "$1", WCF::getTPL()->get('pageTitle'));
+			$title = html_entity_decode(preg_replace(self::REGEX_FILTER_HTML, "$1", WCF::getTPL()->get('pageTitle')));
 		}
 		
 		if (Visitor::hideTitle()) {
