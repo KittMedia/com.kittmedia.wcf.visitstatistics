@@ -3,6 +3,7 @@ namespace wcf\system\event\listener;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use function date;
+use function strtotime;
 use const TIME_NOW;
 use const WCF_N;
 
@@ -62,6 +63,10 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	 * @param	string		$day
 	 */
 	protected function setDailyStats($day) {
+		if (!empty($day)) {
+			$day = date('Y-m-d', strtotime($day . ' +1 day'));
+		}
+		
 		$sql = "INSERT INTO	wcf".WCF_N."_visitor_daily
 					(date, counter, isRegistered)
 			SELECT		DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d') AS date,
@@ -83,6 +88,10 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	 * @param	string		$day
 	 */
 	protected function setURLStats($day) {
+		if (!empty($day)) {
+			$day = date('Y-m-d', strtotime($day . ' +1 day'));
+		}
+		
 		$sql = "INSERT INTO	wcf".WCF_N."_visitor_url
 					(requestURI, title, host, counter, isRegistered, languageID, pageID, pageObjectID)
 			SELECT		requestURI,
