@@ -44,7 +44,6 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		
-		$data[0]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.total');
 		$data[1]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.user');
 		$data[2]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.guest');
 		$counts = [];
@@ -55,13 +54,6 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			
 			if (!isset($counts[$row['dayTime']])) {
 				$counts[$row['dayTime']] = [];
-			}
-			
-			if (!isset($counts[$row['dayTime']]['total'])) {
-				$counts[$row['dayTime']]['total'] = $row['counter'];
-			}
-			else {
-				$counts[$row['dayTime']]['total'] += $row['counter'];
 			}
 			
 			if ($row['isRegistered']) {
@@ -84,13 +76,10 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$todayTimestamp = strtotime(date('Y-m-d')) + $timezone;
 		$counts[$todayTimestamp] = [
 			'guest' => 0,
-			'total' => 0,
 			'user' => 0
 		];
 		
 		while($row = $statement->fetchArray()) {
-			$counts[$todayTimestamp]['total'] += $row['counter'];
-			
 			if ($row['isRegistered']) {
 				$counts[$todayTimestamp]['user'] = $row['counter'];
 			}
@@ -101,10 +90,6 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		
 		// separate data for each data
 		foreach ($counts as $dayTime => $count) {
-			$data[0]['data'][] = [
-				$dayTime,
-				$count['total'] ?? 0
-			];
 			$data[1]['data'][] = [
 				$dayTime,
 				$count['user'] ?? 0

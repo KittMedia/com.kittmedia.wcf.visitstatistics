@@ -3,6 +3,7 @@
 <script data-relocate="true" src="{@$__wcf->getPath()}js/3rdParty/flot/jquery.flot.js"></script>
 <script data-relocate="true" src="{@$__wcf->getPath()}js/3rdParty/flot/jquery.flot.time.js"></script>
 <script data-relocate="true" src="{@$__wcf->getPath()}js/3rdParty/flot/jquery.flot.resize.js"></script>
+<script data-relocate="true" src="{@$__wcf->getPath()}js/3rdParty/flot/jquery.flot.stack.js"></script>
 <script data-relocate="true" src="{@$__wcf->getPath()}js/KM.ACP.Stat.VisitorChart.js"></script>
 <script data-relocate="true">
 	require(['Language'], function(Language) {

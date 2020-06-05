@@ -29,7 +29,6 @@
 		<item name="wcf.acp.visitor.total"><![CDATA[Total]]></item>
 		<item name="wcf.acp.visitor.url.title"><![CDATA[Frequently visited pages]]></item>
 		<item name="wcf.acp.visitor.visits.guest"><![CDATA[Guest Visits]]></item>
-		<item name="wcf.acp.visitor.visits.total"><![CDATA[Visits Total]]></item>
 		<item name="wcf.acp.visitor.visits.user"><![CDATA[User Visits]]></item>
 		<item name="wcf.acp.visitor.visitedUrls"><![CDATA[Visited Pages]]></item>
 		<item name="wcf.acp.visitor.yesterday"><![CDATA[Yesterday]]></item>
