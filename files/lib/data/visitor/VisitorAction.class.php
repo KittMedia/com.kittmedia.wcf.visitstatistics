@@ -21,7 +21,7 @@ use const TIMEZONE;
  */
 class VisitorAction extends AbstractDatabaseObjectAction {
 	/**
-	 * @inheritDocs
+	 * @inheritDoc
 	 */
 	protected $requireACP = ['getData'];
 	
