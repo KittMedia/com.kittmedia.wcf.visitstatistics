@@ -1,10 +1,13 @@
 <?php
 namespace wcf\system\event\listener;
+use DateTime;
+use DateTimeZone;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use function date;
 use function strtotime;
 use const TIME_NOW;
+use const TIMEZONE;
 use const WCF_N;
 
 /**
@@ -35,10 +38,25 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	protected function deleteVisits() {
 		$sql = "DELETE FROM	".Visitor::getDatabaseTableName()."
 			WHERE		time < ?";
-		$statement = WCF::getDB()->prepareStatement($sql);
-		$statement->execute([
+		WCF::getDB()->prepareStatement($sql)->execute([
 			TIME_NOW - 86400 * self::DELETE_AFTER
 		]);
+	}
+	
+	/**
+	 * Get the first datetime from SQL.
+	 * 
+	 * Depending on the timezone, FROM_UNIXTIME(0) returns something different,
+	 * so we need the live value.
+	 * 
+	 * @return	string
+	 */
+	protected function getFirstSQLDate() {
+		$sql = "SELECT	FROM_UNIXTIME(0)";
+		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement->execute();
+		
+		return $statement->fetchSingleColumn();
 	}
 	
 	/**
@@ -66,6 +84,9 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 		if (!empty($day)) {
 			$day = date('Y-m-d', strtotime($day . ' +1 day'));
 		}
+		else {
+			$day = $this->getFirstSQLDate();
+		}
 		
 		$sql = "INSERT INTO	wcf".WCF_N."_visitor_daily
 					(date, counter, isRegistered)
@@ -75,9 +96,8 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			FROM		".Visitor::getDatabaseTableName()."
 			WHERE		time BETWEEN UNIX_TIMESTAMP(?) AND UNIX_TIMESTAMP(?)
 			GROUP BY	isRegistered, date";
-		$statement = WCF::getDB()->prepareStatement($sql);
-		$statement->execute([
-			$day ?: '1970-01-01',
+		WCF::getDB()->prepareStatement($sql)->execute([
+			$day,
 			date('Y-m-d')
 		]);
 	}
@@ -90,6 +110,9 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	protected function setURLStats($day) {
 		if (!empty($day)) {
 			$day = date('Y-m-d', strtotime($day . ' +1 day'));
+		}
+		else {
+			$day = $this->getFirstSQLDate();
 		}
 		
 		$sql = "INSERT INTO	wcf".WCF_N."_visitor_url
@@ -105,9 +128,8 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			FROM		".Visitor::getDatabaseTableName()."
 			WHERE		time BETWEEN UNIX_TIMESTAMP(?) AND UNIX_TIMESTAMP(?)
 			GROUP BY	requestURI, title, host, isRegistered, languageID, pageID, pageObjectID";
-		$statement = WCF::getDB()->prepareStatement($sql);
-		$statement->execute([
-			$day ?: '1970-01-01',
+		WCF::getDB()->prepareStatement($sql)->execute([
+			$day,
 			date('Y-m-d')
 		]);
 	}

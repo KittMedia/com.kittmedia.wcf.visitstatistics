@@ -40,7 +40,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$sql = "SELECT		counter, date, isRegistered
 			FROM		".Visitor::getDatabaseTableName()."_daily
 			WHERE		date >= DATE_SUB(CURDATE(), INTERVAL 1 YEAR)
-			GROUP BY	isRegistered, date";
+			GROUP BY	isRegistered, date, counter";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		
