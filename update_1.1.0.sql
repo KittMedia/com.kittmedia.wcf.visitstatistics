@@ -1,18 +1,3 @@
-DROP TABLE wcf1_visitor;
-CREATE TABLE wcf1_visitor (
-	visitorID	INT(10)			NOT NULL	AUTO_INCREMENT	PRIMARY KEY,
-	requestURI	VARCHAR(255)		NOT NULL,
-	title		VARCHAR(255)		NOT NULL,
-	host		VARCHAR(255)		NOT NULL,
-	isRegistered	TINYINT(1)		NOT NULL DEFAULT 0,
-	languageID	INT(10)			DEFAULT NULL,
-	pageID		INT(10)			DEFAULT NULL,
-	pageObjectID	INT(10)			DEFAULT NULL,
-	time		INT(10)			NOT NULL,
-	
-	KEY (time)
-);
-
 DROP TABLE wcf1_visitor_daily;
 CREATE TABLE wcf1_visitor_daily (
 	visitID		INT(10)		NOT NULL	AUTO_INCREMENT PRIMARY KEY,
@@ -37,6 +22,10 @@ CREATE TABLE wcf1_visitor_url (
 	
 	KEY (requestURI)
 );
+
+ALTER TABLE wcf1_visitor ADD languageID INT(10) DEFAULT NULL;
+ALTER TABLE wcf1_visitor ADD pageID INT(10) DEFAULT NULL;
+ALTER TABLE wcf1_visitor ADD pageObjectID INT(10) DEFAULT NULL;
 
 ALTER TABLE wcf1_visitor ADD FOREIGN KEY (languageID) REFERENCES wcf1_language (languageID) ON DELETE SET NULL;
 ALTER TABLE wcf1_visitor ADD FOREIGN KEY (pageID) REFERENCES wcf1_page (pageID) ON DELETE SET NULL;

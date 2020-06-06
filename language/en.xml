@@ -13,16 +13,23 @@
 	</category>
 	
 	<category name="wcf.acp.visitor">
+		<item name="wcf.acp.visitor.average"><![CDATA[Average]]></item>
 		<item name="wcf.acp.visitor.count"><![CDATA[Count]]></item>
+		<item name="wcf.acp.visitor.language"><![CDATA[Language]]></item>
+		<item name="wcf.acp.visitor.lastMonth"><![CDATA[Last Month]]></item>
 		<item name="wcf.acp.visitor.lastUpdated"><![CDATA[Last updated]]></item>
+		<item name="wcf.acp.visitor.lastWeek"><![CDATA[Last Week]]></item>
 		<item name="wcf.acp.visitor.noVisit"><![CDATA[There is no visited page today yet.]]></item>
 		<item name="wcf.acp.visitor.overview.title"><![CDATA[Overview]]></item>
 		<item name="wcf.acp.visitor.request"><![CDATA[Request]]></item>
+		<item name="wcf.acp.visitor.thisMonth"><![CDATA[This Month]]></item>
+		<item name="wcf.acp.visitor.thisWeek"><![CDATA[This Week]]></item>
 		<item name="wcf.acp.visitor.title"><![CDATA[Visit Statistics]]></item>
 		<item name="wcf.acp.visitor.today"><![CDATA[Today]]></item>
 		<item name="wcf.acp.visitor.total"><![CDATA[Total]]></item>
 		<item name="wcf.acp.visitor.url.title"><![CDATA[Frequently visited pages]]></item>
-		<item name="wcf.acp.visitor.visits"><![CDATA[Visits]]></item>
+		<item name="wcf.acp.visitor.visits.guest"><![CDATA[Guest Visits]]></item>
+		<item name="wcf.acp.visitor.visits.user"><![CDATA[User Visits]]></item>
 		<item name="wcf.acp.visitor.visitedUrls"><![CDATA[Visited Pages]]></item>
 		<item name="wcf.acp.visitor.yesterday"><![CDATA[Yesterday]]></item>
 	</category>

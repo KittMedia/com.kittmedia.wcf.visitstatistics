@@ -39,13 +39,46 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 	_success: function(data) {
 		var $minTickSize = [1, "day"];
 		var $timeFormat = WCF.Language.get('wcf.acp.stat.timeFormat.daily');
+		var $data = [ ];
+		
+		for (var $key in data.returnValues) {
+			var $row = data.returnValues[$key];
+			
+			for (var $i = 0; $i < $row.data.length; $i++) {
+				$row.data[$i][0] *= 1000;
+			}
+			
+			$data.push($row);
+		}
+		
+		var $lineGap = 1;
+		
+		if (window.matchMedia('(min-width: 768px)').matches) {
+			$lineGap = 3;
+		}
+		
+		if (window.matchMedia('(min-width: 1280px)').matches) {
+			$lineGap = 4;
+		}
+		
+		var $lineWidth = Math.round((document.querySelector('.contentHeader + .section').clientWidth - 150) / $data[0].data.length - $lineGap, 0);
 		var options = {
+			colors: [
+				"#3a6d9c",
+				"#b0c8e0",
+			],
 			series: {
-				lines: {
+				stack: true,
+				bars: {
+					align: "left",
+					lineWidth: $lineWidth,
 					show: true
 				},
 				points: {
-					show: true
+					fill: false,
+					lineWidth: 0,
+					radius: 0,
+					show: true,
 				}
 			},
 			grid: {
@@ -65,18 +98,6 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 				}
 			}
 		};
-		
-		var $data = [ ];
-		
-		for (var $key in data.returnValues) {
-			var $row = data.returnValues[$key];
-			
-			for (var $i = 0; $i < $row.data.length; $i++) {
-				$row.data[$i][0] *= 1000;
-			}
-			
-			$data.push($row);
-		}
 		
 		$.plot("#chart", $data, options);
 		
