@@ -69,7 +69,12 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			$diffDays = date_diff($firstDate, $today);
 			
 			// calculate average
-			$this->statistics['countAverage'] = StringUtil::formatNumeric(round(intval(str_replace( [',', '.'], '', $this->statistics['countTotal'] )) / $diffDays->days, 2));
+			if ($diffDays->days) {
+				$this->statistics['countAverage'] = StringUtil::formatNumeric(round(intval(str_replace([',', '.'], '', $this->statistics['countTotal'])) / $diffDays->days, 2));
+			}
+			else {
+				$this->statistics['countAverage'] = 0;
+			}
 		}
 	}
 	
