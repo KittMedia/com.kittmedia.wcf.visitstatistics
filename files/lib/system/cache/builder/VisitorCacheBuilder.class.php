@@ -57,15 +57,14 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		}
 		else {
 			// get first date
-			$sql = "SELECT		time
-				FROM		".Visitor::getDatabaseTableName()."
-				ORDER BY	time ASC";
+			$sql = "SELECT		date
+				FROM		".Visitor::getDatabaseTableName()."_daily
+				ORDER BY	date ASC";
 			$statement = WCF::getDB()->prepareStatement($sql, 1);
 			$statement->execute();
 			
 			// get day difference
-			$firstDate = new DateTime();
-			$firstDate->setTimestamp($statement->fetchColumn());
+			$firstDate = new DateTime($statement->fetchColumn());
 			$today = new DateTime();
 			$diffDays = date_diff($firstDate, $today);
 			
