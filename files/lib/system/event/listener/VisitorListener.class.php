@@ -56,7 +56,7 @@ class VisitorListener implements IParameterizedEventListener {
 		
 		(new VisitorAction([], 'create', [
 			'data' => [
-				'requestURI' => StringUtil::truncate((!Visitor::hideTitle() ? $this->removeQueryParameters($requestURI) : ''), 255),
+				'requestURI' => StringUtil::truncate((!Visitor::hideTitle() ? $this->removeQueryParameters($requestURI) : ''), 191),
 				'title' => StringUtil::truncate($title, 255),
 				'host' => StringUtil::truncate($host, 255),
 				'isRegistered' => WCF::getSession()->userID ? 1 : 0,
