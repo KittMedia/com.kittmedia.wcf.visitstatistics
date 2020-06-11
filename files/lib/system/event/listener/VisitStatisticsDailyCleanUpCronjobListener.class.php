@@ -1,13 +1,10 @@
 <?php
 namespace wcf\system\event\listener;
-use DateTime;
-use DateTimeZone;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use function date;
 use function strtotime;
 use const TIME_NOW;
-use const TIMEZONE;
 use const WCF_N;
 
 /**
@@ -65,10 +62,8 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	 * @return	string
 	 */
 	protected function getLastProcessedDay() {
-		$sql = "SELECT		date
-			FROM		wcf".WCF_N."_visitor_daily
-			ORDER BY	date DESC
-			LIMIT 1";
+		$sql = "SELECT		MAX(date)
+			FROM		wcf".WCF_N."_visitor_daily";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		
