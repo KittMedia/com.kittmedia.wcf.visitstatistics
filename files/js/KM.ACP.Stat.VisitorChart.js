@@ -65,7 +65,7 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 		var $lineWidth = Math.min(Math.round((document.querySelector('.contentHeader + .section').clientWidth - 150) / $data[0].data.length - $lineGap, 0), 40);
 		
 		// set maximum/minimum date to prevent data overlapping with chart border
-		var $minDate = new Date(Math.min($data[0]['data'][0][0], $data[1]['data'][0][0]));
+		var $minDate = new Date(Math.min($data[0].data[0][0], $data[1].data[0][0]));
 		var $maxDate = new Date();
 		$minDate.setHours(-3, -10, 0, 0);
 		$maxDate.setHours(10, 0, 0, 0);
@@ -118,7 +118,7 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 				if (item) {
 					span.style.setProperty('top', item.pageY + 'px', '');
 					span.style.setProperty('left', item.pageX + 'px', '');
-					$("#chartTooltip").html(item.series.xaxis.tickFormatter(item.datapoint[0], item.series.xaxis) + ', ' + WCF.String.formatNumeric(item.datapoint[1]) + ' ' + item.series.label).show();
+					$("#chartTooltip").html(item.series.xaxis.tickFormatter(item.datapoint[0], item.series.xaxis) + ', ' + WCF.String.formatNumeric(item.datapoint[1] - item.datapoint[2]) + ' ' + item.series.label).show();
 					UiAlignment.set($("#chartTooltip")[0], span, {
 						verticalOffset: 5,
 						horizontal: 'center'
