@@ -157,7 +157,7 @@
 					<tr>
 						<th>{lang}wcf.acp.visitor.visitedUrls{/lang}</th>
 						<th width="100">{lang}wcf.acp.visitor.language{/lang}</th>
-						<th width="100">{lang}wcf.acp.visitor.count{/lang}</th>
+						<th class="columnDigits" width="100">{lang}wcf.acp.visitor.count{/lang}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -166,7 +166,7 @@
 							<tr>
 								<td><a href="{$visitor->host}{$visitor->requestURI}">{@$visitor->title}</a></td>
 								<td>{$visitor->language}</td>
-								<td>{$visitor->requestCount}</td>
+								<td class="columnDigits">{$visitor->requestCount}</td>
 							</tr>
 						{/foreach}
 					{/content}

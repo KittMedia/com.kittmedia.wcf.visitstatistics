@@ -30,7 +30,7 @@
 		<item name="wcf.acp.visitor.url.title"><![CDATA[Häufig besuchte Seiten]]></item>
 		<item name="wcf.acp.visitor.visits.guest"><![CDATA[Besuche von Gästen]]></item>
 		<item name="wcf.acp.visitor.visits.user"><![CDATA[Besuche von registrierten Benutzern]]></item>
-		<item name="wcf.acp.visitor.visitedUrls"><![CDATA[Besuchte Seiten]]></item>
+		<item name="wcf.acp.visitor.visitedUrls"><![CDATA[Seite]]></item>
 		<item name="wcf.acp.visitor.yesterday"><![CDATA[Gestern]]></item>
 	</category>
 	
