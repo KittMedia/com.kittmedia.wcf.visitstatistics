@@ -61,7 +61,15 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 			$lineGap = 4;
 		}
 		
-		var $lineWidth = Math.round((document.querySelector('.contentHeader + .section').clientWidth - 150) / $data[0].data.length - $lineGap, 0);
+		// maximum line width: 40
+		var $lineWidth = Math.min(Math.round((document.querySelector('.contentHeader + .section').clientWidth - 150) / $data[0].data.length - $lineGap, 0), 40);
+		
+		// set maximum/minimum date to prevent data overlapping with chart border
+		var $minDate = new Date(Math.min($data[0]['data'][0][0], $data[1]['data'][0][0]));
+		var $maxDate = new Date();
+		$minDate.setHours(-3, -10, 0, 0);
+		$maxDate.setHours(10, 0, 0, 0);
+		
 		var options = {
 			colors: [
 				"#3a6d9c",
@@ -70,7 +78,6 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 			series: {
 				stack: true,
 				bars: {
-					align: "left",
 					lineWidth: $lineWidth,
 					show: true
 				},
@@ -78,17 +85,19 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 					fill: false,
 					lineWidth: 0,
 					radius: 0,
-					show: true,
+					show: true
 				}
 			},
 			grid: {
 				hoverable: true
 			},
 			xaxis: {
-				mode: "time",
+				max: $maxDate.getTime(),
+				min: $minDate.getTime(),
 				minTickSize: $minTickSize,
-				timeformat: $timeFormat,
-				monthNames: WCF.Language.get('__monthsShort')
+				mode: "time",
+				monthNames: WCF.Language.get('__monthsShort'),
+				timeformat: $timeFormat
 			},
 			yaxis: {
 				min: 0,
