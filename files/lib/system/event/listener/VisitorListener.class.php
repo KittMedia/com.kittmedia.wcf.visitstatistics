@@ -61,8 +61,8 @@ class VisitorListener implements IParameterizedEventListener {
 				'host' => StringUtil::truncate($host, 255),
 				'isRegistered' => WCF::getSession()->userID ? 1 : 0,
 				'languageID' => (!empty(WCF::getSession()->getLanguageID()) ? WCF::getSession()->getLanguageID() : LanguageFactory::getInstance()->getDefaultLanguageID()),
-				'pageID' => (!empty(WCF::getActivePage()->pageID) ? WCF::getActivePage()->pageID : null),
-				'pageObjectID' => (!empty($_REQUEST['id']) ? $_REQUEST['id'] : null),
+				'pageID' => (!empty(WCF::getActivePage()->pageID) ? (int) WCF::getActivePage()->pageID : null),
+				'pageObjectID' => (!empty($_REQUEST['id']) && (int) $_REQUEST['id'] ? (int) $_REQUEST['id'] : null),
 				'time' => TIME_NOW
 			]
 		]))->executeAction();
