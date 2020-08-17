@@ -1,10 +1,13 @@
 <?php
 namespace wcf\system\event\listener;
+use DateTime;
+use DateTimeZone;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use function date;
 use function strtotime;
 use const TIME_NOW;
+use const TIMEZONE;
 use const WCF_N;
 
 /**
@@ -27,6 +30,19 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 		$this->setDailyStats($lastDay);
 		$this->setURLStats($lastDay);
 		$this->deleteVisits();
+	}
+	
+	/**
+	 * Delete old daily stats.
+	 * 
+	 * @param	int	$minDate
+	 */
+	protected function deleteOldDailyStats($minDate) {
+		$sql = "DELETE FROM	wcf".WCF_N."_visitor_daily
+			WHERE		date >= ?";
+		WCF::getDB()->prepareStatement($sql)->execute([
+			date('Y-m-d', $minDate)
+		]);
 	}
 	
 	/**
@@ -77,23 +93,35 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	 */
 	protected function setDailyStats($day) {
 		if (!empty($day)) {
-			$day = date('Y-m-d', strtotime($day . ' +1 day'));
+			$day = strtotime($day . ' +1 day');
+			
+			// get at least the previous 7 days
+			if ($day > strtotime('-7 day')) {
+				$day = strtotime('-7 day');
+			}
 		}
 		else {
 			$day = $this->getFirstSQLDate();
 		}
 		
+		// delete old stats of the last 7 days
+		$this->deleteOldDailyStats($day);
+		
+		// get time zone
+		$time = new DateTime('now', new DateTimeZone(TIMEZONE));
+		$timeZone = $time->format('P');
 		$sql = "INSERT INTO	wcf".WCF_N."_visitor_daily
 					(date, counter, isRegistered)
-			SELECT		DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d') AS date,
+			SELECT		CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d'), @@SESSION.time_zone, ?) AS date,
 					COUNT(*) AS counter,
 					isRegistered
 			FROM		".Visitor::getDatabaseTableName()."
-			WHERE		time BETWEEN UNIX_TIMESTAMP(?) AND UNIX_TIMESTAMP(?)
+			WHERE		time BETWEEN ? AND ?
 			GROUP BY	isRegistered, date";
 		WCF::getDB()->prepareStatement($sql)->execute([
+			$timeZone,
 			$day,
-			date('Y-m-d')
+			strtotime('yesterday 23:59:59')
 		]);
 	}
 	
@@ -104,7 +132,11 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	 */
 	protected function setURLStats($day) {
 		if (!empty($day)) {
-			$day = date('Y-m-d', strtotime($day . ' +1 day'));
+			$day = strtotime($day . ' +1 day');
+			
+			if (strtotime(date('Y-m-d', $day) . ' +1 day') > strtotime('yesterday 23:59:59')) {
+				return;
+			}
 		}
 		else {
 			$day = $this->getFirstSQLDate();
@@ -121,11 +153,11 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 					pageID,
 					pageObjectID
 			FROM		".Visitor::getDatabaseTableName()."
-			WHERE		time BETWEEN UNIX_TIMESTAMP(?) AND UNIX_TIMESTAMP(?)
+			WHERE		time BETWEEN ? AND ?
 			GROUP BY	requestURI, title, host, isRegistered, languageID, pageID, pageObjectID";
 		WCF::getDB()->prepareStatement($sql)->execute([
 			$day,
-			date('Y-m-d')
+			strtotime('yesterday 23:59:59')
 		]);
 	}
 }
