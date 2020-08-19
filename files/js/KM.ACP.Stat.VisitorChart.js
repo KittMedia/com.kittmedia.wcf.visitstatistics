@@ -67,7 +67,7 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 		// set maximum/minimum date to prevent data overlapping with chart border
 		var $minDate = new Date(Math.min($data[0].data[0][0], $data[1].data[0][0]));
 		var $maxDate = new Date();
-		$minDate.setHours(-3, -10, 0, 0);
+		$minDate.setHours(-6, -10, 0, 0);
 		$maxDate.setHours(10, 0, 0, 0);
 		
 		var options = {
