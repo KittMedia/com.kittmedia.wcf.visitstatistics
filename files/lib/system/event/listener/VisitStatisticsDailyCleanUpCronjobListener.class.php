@@ -101,7 +101,7 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			}
 		}
 		else {
-			$day = $this->getFirstSQLDate();
+			$day = strtotime($this->getFirstSQLDate());
 		}
 		
 		// delete old stats of the last 7 days
@@ -139,7 +139,7 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			}
 		}
 		else {
-			$day = $this->getFirstSQLDate();
+			$day = strtotime($this->getFirstSQLDate());
 		}
 		
 		$sql = "INSERT INTO	wcf".WCF_N."_visitor_url
