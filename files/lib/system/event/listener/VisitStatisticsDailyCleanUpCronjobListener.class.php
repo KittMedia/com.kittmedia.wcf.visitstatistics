@@ -110,14 +110,14 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 		// get time zone
 		$time = new DateTime('now', new DateTimeZone(TIMEZONE));
 		$timeZone = $time->format('P');
-		$sql = "INSERT INTO	wcf".WCF_N."_visitor_daily
-					(date, counter, isRegistered)
-			SELECT		CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d'), @@SESSION.time_zone, ?) AS date,
-					COUNT(*) AS counter,
-					isRegistered
-			FROM		".Visitor::getDatabaseTableName()."
-			WHERE		time BETWEEN ? AND ?
-			GROUP BY	isRegistered, date";
+		$sql = "INSERT IGNORE INTO	wcf".WCF_N."_visitor_daily
+						(date, counter, isRegistered)
+			SELECT			CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d'), @@SESSION.time_zone, ?) AS date,
+						COUNT(*) AS counter,
+						isRegistered
+			FROM			".Visitor::getDatabaseTableName()."
+			WHERE			time BETWEEN ? AND ?
+			GROUP BY		isRegistered, date";
 		WCF::getDB()->prepareStatement($sql)->execute([
 			$timeZone,
 			$day,
