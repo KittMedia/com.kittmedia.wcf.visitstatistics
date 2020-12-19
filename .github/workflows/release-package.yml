@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: WoltLab Suite Package Creation
-        uses: KittMedia/action-wsc-package-create@v1
+        uses: KittMedia/action-wsc-package-create@main
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
