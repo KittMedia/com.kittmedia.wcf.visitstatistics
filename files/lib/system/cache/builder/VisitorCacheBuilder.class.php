@@ -14,7 +14,7 @@ use const TIME_NOW;
  * Caches visitor related statistics.
  * 
  * @author	Matthias Kittsteiner
- * @copyright	2011-2020 KittMedia
+ * @copyright	2021 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  */
@@ -37,8 +37,8 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$this->calculateLastMonthStatistics();
 		$this->calculateLastWeekStatistics();
 		$this->calculateThisMonthStatistics();
-		$this->calculateThisWeekStatistics();
 		$this->calculateTodayStatistics();
+		$this->calculateThisWeekStatistics();
 		$this->calculateTotalStatistics();
 		$this->calculateYesterdayStatistics();
 		$this->calculateAverageStatistics();
@@ -131,6 +131,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countThisWeek'] = StringUtil::formatNumeric($statement->fetchColumn());
+		$this->statistics['countThisWeek'] += $this->statistics['countToday'];
 	}
 	
 	/**
