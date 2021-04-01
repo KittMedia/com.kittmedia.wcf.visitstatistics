@@ -147,7 +147,28 @@
 		
 		<div id="chart" style="height: 400px"></div>
 	</section>
-	
+</div>
+
+<div class="section">
+	<section class="section">
+		<h2 class="sectionTitle">{lang}wcf.acp.visitor.settings.title{/lang}</h2>
+		
+		<dl>
+			<dt><label for="startDate">{lang}wcf.acp.visitor.stat.period{/lang}</label></dt>
+			<dd>
+				<input type="date" id="startDate" name="startDate" value="{$startDate}" data-placeholder="{lang}wcf.acp.visitor.stat.period.start{/lang}" data-disable-clear="true">
+				&ndash;
+				<input type="date" id="endDate" name="endDate" value="{$endDate}" data-placeholder="{lang}wcf.acp.visitor.stat.period.end{/lang}" data-disable-clear="true">
+			</dd>
+		</dl>
+	</section>
+</div>
+
+<div class="formSubmit">
+	<button class="buttonPrimary" id="visitorStatRefreshButton">{lang}wcf.global.button.refresh{/lang}</button>
+</div>
+
+<div class="section">
 	<section class="section">
 		<h2 class="sectionTitle">{lang}wcf.acp.visitor.url.title{/lang}</h2>
 		

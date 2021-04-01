@@ -31,13 +31,16 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 			actionName: 'getData',
 			parameters: {
 				dateGrouping: 'daily',
+				endDate: $('#endDateDatePicker').val(),
+				startDate: $('#startDateDatePicker').val(),
 			}
 		});
+		$('#visitorStatRefreshButton').click($.proxy(this._refresh, this));
 		this._proxy.sendRequest();
 	},
 	
 	_success: function(data) {
-		var $minTickSize = [1, "day"];
+		var $minTickSize = [1, 'day'];
 		var $timeFormat = WCF.Language.get('wcf.acp.stat.timeFormat.daily');
 		var $data = [ ];
 		
@@ -52,23 +55,14 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 		}
 		
 		var $lineGap = 1;
-		
-		if (window.matchMedia('(min-width: 768px)').matches) {
-			$lineGap = 3;
-		}
-		
-		if (window.matchMedia('(min-width: 1280px)').matches) {
-			$lineGap = 4;
-		}
-		
 		// maximum line width: 40
 		var $lineWidth = Math.min(Math.round((document.querySelector('.contentHeader + .section').clientWidth - 150) / $data[0].data.length - $lineGap, 0), 40);
 		
 		// set maximum/minimum date to prevent data overlapping with chart border
 		var $minDate = new Date(Math.min($data[0].data[0][0], $data[1].data[0][0]));
-		var $maxDate = new Date();
-		$minDate.setHours(-6, -10, 0, 0);
-		$maxDate.setHours(10, 0, 0, 0);
+		var $maxDate = new Date($data[0].data[$data[0].data.length - 1][0]);
+		$minDate.setHours(-9, -10, 0, 0);
+		$maxDate.setHours(13, 0, 0, 0);
 		
 		var options = {
 			colors: [

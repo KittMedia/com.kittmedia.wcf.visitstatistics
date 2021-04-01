@@ -1,5 +1,6 @@
 <?php
 namespace wcf\acp\page;
+use DateInterval;
 use wcf\data\page\PageCache;
 use wcf\data\user\online\UserOnline;
 use wcf\data\visitor\VisitorList;
@@ -9,6 +10,7 @@ use wcf\system\event\listener\VisitorListener;
 use wcf\system\language\LanguageFactory;
 use wcf\system\page\handler\IOnlineLocationPageHandler;
 use wcf\system\WCF;
+use wcf\util\DateUtil;
 use function preg_replace;
 
 /**
@@ -32,6 +34,12 @@ class VisitorPage extends MultipleLinkPage {
 	public $data = [];
 	
 	/**
+	 * End date (yyyy-mm-dd)
+	 * @var	string
+	 */
+	public $endDate = '';
+	
+	/**
 	 * @inheritDoc
 	 */
 	public $neededModules = ['MODULE_USER_VISITOR'];
@@ -47,6 +55,12 @@ class VisitorPage extends MultipleLinkPage {
 	public $objectListClassName = VisitorList::class;
 	
 	/**
+	 * Start date (yyyy-mm-dd)
+	 * @var	string
+	 */
+	public $startDate = '';
+	
+	/**
 	 * @inheritDoc
 	 */
 	public function readData() {
@@ -54,6 +68,13 @@ class VisitorPage extends MultipleLinkPage {
 		
 		$this->data = VisitorCacheBuilder::getInstance()->getData();
 		$userOnline = new UserOnline(WCF::getUser());
+		
+		// set default values
+		$d = DateUtil::getDateTimeByTimestamp(TIME_NOW);
+		$d->setTimezone(WCF::getUser()->getTimeZone());
+		$this->endDate = $d->format('Y-m-d');
+		$d->sub(new DateInterval('P2M'));
+		$this->startDate = $d->format('Y-m-d');
 		
 		if (empty($this->data['requestList'])) {
 			return;
@@ -104,8 +125,10 @@ class VisitorPage extends MultipleLinkPage {
 			'countToday' => $this->data['countToday'],
 			'countTotal' => $this->data['countTotal'],
 			'countYesterday' => $this->data['countYesterday'],
+			'endDate' => $this->endDate,
 			'rebuildTime' => $this->data['rebuildTime'],
-			'requestList' => (!empty($this->data['requestList']) ? $this->data['requestList'] : [])
+			'requestList' => (!empty($this->data['requestList']) ? $this->data['requestList'] : []),
+			'startDate' => $this->startDate
 		]);
 	}
 	

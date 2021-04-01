@@ -22,6 +22,8 @@
 		<item name="wcf.acp.visitor.noVisit"><![CDATA[Currently there are no visited pages for today.]]></item>
 		<item name="wcf.acp.visitor.overview.title"><![CDATA[Overview]]></item>
 		<item name="wcf.acp.visitor.request"><![CDATA[Request]]></item>
+		<item name="wcf.acp.visitor.settings.title"><![CDATA[Settings]]></item>
+		<item name="wcf.acp.visitor.stat.period"><![CDATA[Period]]></item>
 		<item name="wcf.acp.visitor.thisMonth"><![CDATA[This Month]]></item>
 		<item name="wcf.acp.visitor.thisWeek"><![CDATA[This Week]]></item>
 		<item name="wcf.acp.visitor.title"><![CDATA[Visit Statistics]]></item>
