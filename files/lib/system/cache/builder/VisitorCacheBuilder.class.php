@@ -177,9 +177,9 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	 */
 	protected function calculateYesterdayStatistics() {
 		// get yesterday's count
-		$sql = "SELECT		SUM(counter)
-			FROM		".Visitor::getDatabaseTableName()."_daily
-			WHERE		DATE(date) = CURDATE() - INTERVAL 1 DAY";
+		$sql = "SELECT		COUNT(*)
+			FROM		".Visitor::getDatabaseTableName()."
+			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE() - INTERVAL 1 DAY";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countYesterday'] = StringUtil::formatNumeric($statement->fetchColumn());
