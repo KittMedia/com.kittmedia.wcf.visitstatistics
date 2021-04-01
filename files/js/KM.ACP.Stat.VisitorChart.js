@@ -31,8 +31,10 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 			actionName: 'getData',
 			parameters: {
 				dateGrouping: 'daily',
+				displayGuests: $('#displayGuests').is(':checked') ? 1 : 0,
+				displayRegistered: $('#displayRegistered').is(':checked') ? 1 : 0,
 				endDate: $('#endDateDatePicker').val(),
-				startDate: $('#startDateDatePicker').val(),
+				startDate: $('#startDateDatePicker').val()
 			}
 		});
 		$('#visitorStatRefreshButton').click($.proxy(this._refresh, this));

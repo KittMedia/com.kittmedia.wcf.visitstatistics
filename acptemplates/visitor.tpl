@@ -160,6 +160,11 @@
 				&ndash;
 				<input type="date" id="endDate" name="endDate" value="{$endDate}" data-placeholder="{lang}wcf.acp.visitor.stat.period.end{/lang}" data-disable-clear="true">
 			</dd>
+			<dt><label for="startDate">{lang}wcf.acp.visitor.stat.display{/lang}</label></dt>
+			<dd>
+				<label><input type="checkbox" id="displayGuests" name="displayGuests" value="{$displayGuests}"{if $displayGuests} checked{/if}> {lang}wcf.acp.visitor.stat.displayGuests{/lang}</label>
+				<label><input type="checkbox" id="displayRegistered" name="displayRegistered" value="{$displayRegistered}"{if $displayRegistered} checked{/if}> {lang}wcf.acp.visitor.stat.displayRegistered{/lang}</label>
+			</dd>
 		</dl>
 	</section>
 </div>

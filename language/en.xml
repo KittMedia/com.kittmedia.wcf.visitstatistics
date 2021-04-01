@@ -23,6 +23,9 @@
 		<item name="wcf.acp.visitor.overview.title"><![CDATA[Overview]]></item>
 		<item name="wcf.acp.visitor.request"><![CDATA[Request]]></item>
 		<item name="wcf.acp.visitor.settings.title"><![CDATA[Settings]]></item>
+		<item name="wcf.acp.visitor.stat.display"><![CDATA[Display]]></item>
+		<item name="wcf.acp.visitor.stat.displayGuests"><![CDATA[Guests]]></item>
+		<item name="wcf.acp.visitor.stat.displayRegistered"><![CDATA[Registered Users]]></item>
 		<item name="wcf.acp.visitor.stat.period"><![CDATA[Period]]></item>
 		<item name="wcf.acp.visitor.thisMonth"><![CDATA[This Month]]></item>
 		<item name="wcf.acp.visitor.thisWeek"><![CDATA[This Week]]></item>

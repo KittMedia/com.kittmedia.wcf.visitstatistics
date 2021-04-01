@@ -17,7 +17,7 @@ use function preg_replace;
  * Shows the visitor page in admin control panel.
  * 
  * @author	Matthias Kittsteiner
- * @copyright	2011-2020 KittMedia
+ * @copyright	2021 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  */
@@ -32,6 +32,18 @@ class VisitorPage extends MultipleLinkPage {
 	 * @var	array
 	 */
 	public $data = [];
+	
+	/**
+	 * Whether guest data should be displayed or not
+	 * @var	bool
+	 */
+	public $displayGuests = true;
+	
+	/**
+	 * Whether data of registered users should be displayed or not
+	 * @var	bool
+	 */
+	public $displayRegistered = true;
 	
 	/**
 	 * End date (yyyy-mm-dd)
@@ -125,6 +137,8 @@ class VisitorPage extends MultipleLinkPage {
 			'countToday' => $this->data['countToday'],
 			'countTotal' => $this->data['countTotal'],
 			'countYesterday' => $this->data['countYesterday'],
+			'displayGuests' => $this->displayGuests,
+			'displayRegistered' => $this->displayRegistered,
 			'endDate' => $this->endDate,
 			'rebuildTime' => $this->data['rebuildTime'],
 			'requestList' => (!empty($this->data['requestList']) ? $this->data['requestList'] : []),

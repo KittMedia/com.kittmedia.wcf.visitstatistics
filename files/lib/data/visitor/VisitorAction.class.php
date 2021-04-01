@@ -9,14 +9,13 @@ use wcf\system\WCF;
 use function date;
 use function preg_match;
 use function strtotime;
-use const TIME_NOW;
 use const TIMEZONE;
 
 /**
  * Provides functions for user visits.
  * 
  * @author	Matthias Kittsteiner
- * @copyright	2011-2020 KittMedia
+ * @copyright	2021 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  * 
@@ -40,6 +39,17 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$timezone = $time->format('Z');
 		
 		$conditionBuilder = new PreparedStatementConditionBuilder();
+		
+		// display only guests
+		if ($this->parameters['displayGuests'] && !$this->parameters['displayRegistered']) {
+			$conditionBuilder->add('isRegistered = ?', [0]);
+		}
+		
+		// display only registered users
+		if (!$this->parameters['displayGuests'] && $this->parameters['displayRegistered']) {
+			$conditionBuilder->add('isRegistered = ?', [1]);
+		}
+		
 		$conditionBuilder->add('date BETWEEN ? AND ?', [$this->parameters['startDate'], $this->parameters['endDate']]);
 		
 		// get data
@@ -71,16 +81,30 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			}
 		}
 		
+		$conditionBuilder = new PreparedStatementConditionBuilder();
+		
+		// display only guests
+		if ($this->parameters['displayGuests'] && !$this->parameters['displayRegistered']) {
+			$conditionBuilder->add('isRegistered = ?', [0]);
+		}
+		
+		// display only registered users
+		if (!$this->parameters['displayGuests'] && $this->parameters['displayRegistered']) {
+			$conditionBuilder->add('isRegistered = ?', [1]);
+		}
+		
+		$conditionBuilder->add('time >= UNIX_TIMESTAMP(CURDATE())');
+		
 		// get today's data
 		if ( strtotime($this->parameters['endDate']) >= strtotime('today midnight') ) {
 			$sql = "SELECT		COUNT(*) AS counter,
 						DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d') AS date,
 						isRegistered
 				FROM		" . Visitor::getDatabaseTableName() . "
-				WHERE		time >= UNIX_TIMESTAMP(CURDATE())
+				" . $conditionBuilder . "
 				GROUP BY	isRegistered, date";
 			$statement = WCF::getDB()->prepareStatement($sql);
-			$statement->execute();
+			$statement->execute($conditionBuilder->getParameters());
 			$todayTimestamp = strtotime(date('Y-m-d')) + $timezone;
 			$counts[$todayTimestamp] = [
 				'guest' => 0,
