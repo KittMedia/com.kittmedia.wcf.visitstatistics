@@ -156,7 +156,9 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$statement->execute();
 		
 		while ($row = $statement->fetchArray()) {
-			$this->statistics['requestList'][] = (object) $row;
+			$data = (object) $row;
+			$data->requestCount = StringUtil::formatNumeric($data->requestCount);
+			$this->statistics['requestList'][] = $data;
 		}
 	}
 	
@@ -170,6 +172,20 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countTotal'] = StringUtil::formatNumeric($statement->fetchColumn());
+		
+		// get the most requested URIs
+		$sql = "SELECT		requestURI, title, host, languageID, pageID, pageObjectID, SUM(counter) AS requestCount
+			FROM		".Visitor::getDatabaseTableName()."_url
+			GROUP BY	requestURI, title, host, languageID, pageID, pageObjectID
+			ORDER BY	requestCount DESC, title";
+		$statement = WCF::getDB()->prepareStatement($sql, 20);
+		$statement->execute();
+		
+		while ($row = $statement->fetchArray()) {
+			$data = (object) $row;
+			$data->requestCount = StringUtil::formatNumeric($data->requestCount);
+			$this->statistics['requestListAll'][] = $data;
+		}
 	}
 	
 	/**

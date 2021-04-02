@@ -98,6 +98,23 @@
 		font-size: 34px;
 		text-align: center;
 	}
+	
+	@media (min-width: 1024px) {
+		.flexSection {
+			align-items: flex-start;
+			display: flex;
+			flex-wrap: nowrap;
+			justify-content: space-between;
+		}
+		
+		.flexSection > .section {
+			flex: 0 0 calc(50% - 20px);
+		}
+		
+		.flexSection > .section:first-child + .section {
+			margin-top: 0;
+		}
+	}
 </style>
 
 <header class="contentHeader">
@@ -173,9 +190,9 @@
 	<button class="buttonPrimary" id="visitorStatRefreshButton">{lang}wcf.global.button.refresh{/lang}</button>
 </div>
 
-<div class="section">
+<div class="section flexSection">
 	<section class="section">
-		<h2 class="sectionTitle">{lang}wcf.acp.visitor.url.title{/lang}</h2>
+		<h2 class="sectionTitle">{lang}wcf.acp.visitor.url.title.today{/lang}</h2>
 		
 		{hascontent}
 			<table class="table">
@@ -199,7 +216,36 @@
 				</tbody>
 			</table>
 		{hascontentelse}
-			<p class="info">{lang}wcf.acp.visitor.noVisit{/lang}</p>
+			<p class="info">{lang}wcf.acp.visitor.noVisit.today{/lang}</p>
+		{/hascontent}
+	</section>
+	
+	<section class="section">
+		<h2 class="sectionTitle">{lang}wcf.acp.visitor.url.title.all{/lang}</h2>
+		
+		{hascontent}
+			<table class="table">
+				<thead>
+					<tr>
+						<th>{lang}wcf.acp.visitor.visitedUrls{/lang}</th>
+						<th width="100">{lang}wcf.acp.visitor.language{/lang}</th>
+						<th class="columnDigits" width="100">{lang}wcf.acp.visitor.count{/lang}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{content}
+						{foreach from=$requestListAll item=visitor}
+							<tr>
+								<td><a href="{$visitor->host}{$visitor->requestURI}">{@$visitor->title}</a></td>
+								<td>{$visitor->language}</td>
+								<td class="columnDigits">{$visitor->requestCount}</td>
+							</tr>
+						{/foreach}
+					{/content}
+				</tbody>
+			</table>
+		{hascontentelse}
+			<p class="info">{lang}wcf.acp.visitor.noVisit.all{/lang}</p>
 		{/hascontent}
 	</section>
 </div>

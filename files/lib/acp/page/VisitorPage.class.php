@@ -94,31 +94,11 @@ class VisitorPage extends MultipleLinkPage {
 		
 		// prepare additional data
 		foreach ($this->data['requestList'] as &$request) {
-			// get language
-			if (!empty($request->languageID)) {
-				$request->language = LanguageFactory::getInstance()->getLanguage($request->languageID);
-			}
-			else {
-				$request->language = '';
-			}
-			
-			// get title from user online
-			// falls back to stored title
-			if (empty($request->pageID)) {
-				continue;
-			}
-			
-			if (!empty($request->pageObjectID)) {
-				/** @var int $userOnline */
-				$userOnline->pageObjectID = $request->pageObjectID;
-			}
-			
-			$page = PageCache::getInstance()->getPage($request->pageID);
-			$title = $this->getTitle($page, $userOnline);
-			
-			if (!empty($title)) {
-				$request->title = preg_replace(VisitorListener::REGEX_FILTER_HTML, "$1", $title);
-			}
+			$request = $this->getRequestData($request, $userOnline);
+		}
+		
+		foreach ($this->data['requestListAll'] as &$request) {
+			$request = $this->getRequestData($request, $userOnline);
 		}
 	}
 	
@@ -142,8 +122,46 @@ class VisitorPage extends MultipleLinkPage {
 			'endDate' => $this->endDate,
 			'rebuildTime' => $this->data['rebuildTime'],
 			'requestList' => (!empty($this->data['requestList']) ? $this->data['requestList'] : []),
+			'requestListAll' => (!empty($this->data['requestListAll']) ? $this->data['requestListAll'] : []),
 			'startDate' => $this->startDate
 		]);
+	}
+	
+	/**
+	 * Get request data like language and title.
+	 * 
+	 * @param	object		$request
+	 * @param	UserOnline	$userOnline
+	 * @return	object
+	 */
+	private function getRequestData($request, $userOnline) {
+		// get language
+		if (!empty($request->languageID)) {
+			$request->language = LanguageFactory::getInstance()->getLanguage($request->languageID);
+		}
+		else {
+			$request->language = '';
+		}
+		
+		// get title from user online
+		// falls back to stored title
+		if (empty($request->pageID)) {
+			return $request;
+		}
+		
+		if (!empty($request->pageObjectID)) {
+			/** @var int $userOnline */
+			$userOnline->pageObjectID = $request->pageObjectID;
+		}
+		
+		$page = PageCache::getInstance()->getPage($request->pageID);
+		$title = $this->getTitle($page, $userOnline);
+		
+		if (!empty($title)) {
+			$request->title = preg_replace(VisitorListener::REGEX_FILTER_HTML, "$1", $title);
+		}
+		
+		return $request;
 	}
 	
 	/**
