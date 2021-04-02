@@ -130,8 +130,9 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			WHERE		YEARWEEK(date, 1) = YEARWEEK(CURDATE(), 1)";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
-		$this->statistics['countThisWeek'] = StringUtil::formatNumeric($statement->fetchColumn());
+		$this->statistics['countThisWeek'] = $statement->fetchColumn();
 		$this->statistics['countThisWeek'] += $this->statistics['countToday'];
+		$this->statistics['countThisWeek'] = StringUtil::formatNumeric($this->statistics['countThisWeek']);
 	}
 	
 	/**
