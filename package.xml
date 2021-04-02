@@ -26,6 +26,9 @@
 		<!-- configuration -->
 		<instruction type="acpMenu" />
 		<instruction type="eventListener" />
+		<instruction type="objectTypeDefinition" /> <!-- don't resort -->
+		<instruction type="objectType" />
+		<instruction type="box" /> <!-- don't resort -->
 		<instruction type="option" />
 		<instruction type="userGroupOption" />
 		<instruction type="language" />
@@ -34,10 +37,19 @@
 		<instruction type="acpTemplate" />
 		<instruction type="file" />
 		<instruction type="sql" />
+		<instruction type="template" />
 	</instructions>
 	
-	<instructions type="update" fromversion="1.1.3">
+	<instructions type="update" fromversion="1.1.4">
+		<!-- configuration -->
+		<instruction type="objectTypeDefinition" /> <!-- don't resort -->
+		<instruction type="objectType" />
+		<instruction type="box" /> <!-- don't resort -->
+		<instruction type="language" />
+		
 		<!-- files -->
+		<instruction type="acpTemplate" />
 		<instruction type="file" />
+		<instruction type="template" />
 	</instructions>
 </package>

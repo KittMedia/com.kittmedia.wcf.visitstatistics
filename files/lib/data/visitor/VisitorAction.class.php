@@ -29,6 +29,11 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 	protected $requireACP = ['getData'];
 	
 	/**
+	 * @inheritDoc
+	 */
+	protected $resetCache = ['delete', 'toggle', 'update', 'updatePosition'];
+	
+	/**
 	 * Return daily click statistics.
 	 * 
 	 * @return	mixed[]

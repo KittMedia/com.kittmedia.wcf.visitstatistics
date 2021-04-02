@@ -130,6 +130,8 @@ class VisitorPage extends MultipleLinkPage {
 	/**
 	 * Get request data like language and title.
 	 * 
+	 * @since	1.2.0
+	 * 
 	 * @param	object		$request
 	 * @param	UserOnline	$userOnline
 	 * @return	object

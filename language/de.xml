@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language xmlns="https://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.woltlab.com https://www.woltlab.com/XSD/tornado/language.xsd" languagecode="de">
+	<category name="wcf.acp.box">
+		<item name="wcf.acp.box.boxController.com.kittmedia.wcf.visitstatistics.visits"><![CDATA[Aufrufe]]></item>
+	</category>
+	
 	<category name="wcf.acp.group">
 		<item name="wcf.acp.group.option.user.profile.visitor.include"><![CDATA[Aufrufe in den Besuchsstatistiken zählen]]></item>
 	</category>
@@ -28,6 +32,7 @@
 		<item name="wcf.acp.visitor.stat.displayGuests"><![CDATA[Gäste]]></item>
 		<item name="wcf.acp.visitor.stat.displayRegistered"><![CDATA[Registrierte Benutzer]]></item>
 		<item name="wcf.acp.visitor.stat.period"><![CDATA[Zeitraum]]></item>
+		<item name="wcf.acp.visitor.statisticType"><![CDATA[Folgende Statistik-Typen nicht anzeigen]]></item>
 		<item name="wcf.acp.visitor.thisMonth"><![CDATA[Diesen Monat]]></item>
 		<item name="wcf.acp.visitor.thisWeek"><![CDATA[Diese Woche]]></item>
 		<item name="wcf.acp.visitor.title"><![CDATA[Besuchsstatistiken]]></item>
@@ -43,5 +48,15 @@
 	
 	<category name="wcf.visitor">
 		<item name="wcf.visitor.hidden"><![CDATA[Versteckter Titel]]></item>
+		<item name="wcf.visitor.lastUpdated"><![CDATA[Letzte Aktualisierung]]></item>
+		<item name="wcf.visitor.visits.average"><![CDATA[Durchschnitt]]></item>
+		<item name="wcf.visitor.visits.average.perDay"><![CDATA[pro Tag]]></item>
+		<item name="wcf.visitor.visits.lastMonth"><![CDATA[Letzten Monat]]></item>
+		<item name="wcf.visitor.visits.lastWeek"><![CDATA[Letzte Woche]]></item>
+		<item name="wcf.visitor.visits.thisMonth"><![CDATA[Diesen Monat]]></item>
+		<item name="wcf.visitor.visits.thisWeek"><![CDATA[Diese Woche]]></item>
+		<item name="wcf.visitor.visits.today"><![CDATA[Heute]]></item>
+		<item name="wcf.visitor.visits.total"><![CDATA[Insgesamt]]></item>
+		<item name="wcf.visitor.visits.yesterday"><![CDATA[Gestern]]></item>
 	</category>
 </language>
