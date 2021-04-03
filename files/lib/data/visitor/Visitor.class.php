@@ -121,12 +121,12 @@ class Visitor extends DatabaseObject {
 			return true;
 		}
 		
-		// skip if it's an media request
+		// skip if it's a media request
 		if (WCF::getActivePage()->controller === MediaPage::class) {
 			return true;
 		}
 		
-		// skip if it's an background queue request
+		// skip if it's a background queue request
 		if (WCF::getActivePage()->controller === BackgroundQueuePerformAction::class) {
 			return true;
 		}
