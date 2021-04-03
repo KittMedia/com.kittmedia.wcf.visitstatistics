@@ -5,8 +5,8 @@
 		<packagename language="de">KittMedia Besuchsstatistiken</packagename>
 		<packagedescription><![CDATA[Show how many visits you’ve got and what your most famous content is.]]></packagedescription>
 		<packagedescription language="de"><![CDATA[Zeige an, wie viele Seitenaufrufe du hast und welche deine erfolgreichsten Inhalte sind.]]></packagedescription>
-		<version>1.1.4</version>
-		<date>2020-10-28</date>
+		<version>1.2.0</version>
+		<date>2021-04-03</date>
 	</packageinformation>
 	
 	<authorinformation>
