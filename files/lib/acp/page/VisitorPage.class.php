@@ -93,12 +93,16 @@ class VisitorPage extends MultipleLinkPage {
 		}
 		
 		// prepare additional data
-		foreach ($this->data['requestList'] as &$request) {
-			$request = $this->getRequestData($request, $userOnline);
+		if (!empty($this->data['requestList'])) {
+			foreach ($this->data['requestList'] as &$request) {
+				$request = $this->getRequestData($request, $userOnline);
+			}
 		}
 		
-		foreach ($this->data['requestListAll'] as &$request) {
-			$request = $this->getRequestData($request, $userOnline);
+		if (!empty($this->data['requestListAll'])) {
+			foreach ($this->data['requestListAll'] as &$request) {
+				$request = $this->getRequestData($request, $userOnline);
+			}
 		}
 	}
 	
