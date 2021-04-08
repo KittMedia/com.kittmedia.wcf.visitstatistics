@@ -3,6 +3,8 @@ namespace wcf\system\box;
 use wcf\system\cache\builder\VisitorCacheBuilder;
 use wcf\system\WCF;
 use function array_merge;
+use function count;
+use function is_array;
 use function ucfirst;
 
 /**
@@ -37,12 +39,15 @@ class VisitStatisticsVisitsBoxController extends AbstractDatabaseObjectListBoxCo
 	 */
 	protected function getTemplate() {
 		$conditions = $this->getBox()->getConditions();
-		$conditionData = reset($conditions)->conditionData;
 		$templateData = array_merge(VisitorCacheBuilder::getInstance()->getData(), ['position' => $this->getBox()->position]);
 		
-		if (!empty($conditionData['types'])) {
-			foreach ($conditionData['types'] as $condition => $value) {
-				$templateData['hide' . ucfirst($condition)] = $value;
+		if (count($conditions)) {
+			$conditionData = reset($conditions)->conditionData;
+			
+			if (!empty($conditionData['types'])) {
+				foreach ($conditionData['types'] as $condition => $value) {
+					$templateData['hide' . ucfirst($condition)] = $value;
+				}
 			}
 		}
 		
