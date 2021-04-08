@@ -4,6 +4,7 @@ use DateTime;
 use wcf\data\visitor\Visitor;
 use \wcf\system\WCF;
 use wcf\util\StringUtil;
+use function array_merge;
 use function date_diff;
 use function intval;
 use function round;
@@ -155,6 +156,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			ORDER BY	requestCount DESC, title";
 		$statement = WCF::getDB()->prepareStatement($sql, 20);
 		$statement->execute();
+		$this->statistics['requestList'] = [];
 		
 		while ($row = $statement->fetchArray()) {
 			$data = (object) $row;
@@ -181,12 +183,15 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			ORDER BY	requestCount DESC, title";
 		$statement = WCF::getDB()->prepareStatement($sql, 20);
 		$statement->execute();
+		$this->statistics['requestListAll'] = [];
 		
 		while ($row = $statement->fetchArray()) {
 			$data = (object) $row;
 			$data->requestCount = StringUtil::formatNumeric($data->requestCount);
 			$this->statistics['requestListAll'][] = $data;
 		}
+		
+		$this->statistics['requestListAll'] = array_merge($this->statistics['requestListAll'], $this->statistics['requestList']);
 	}
 	
 	/**
