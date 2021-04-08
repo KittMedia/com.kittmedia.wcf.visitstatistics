@@ -126,6 +126,7 @@ class VisitorPage extends MultipleLinkPage {
 			'displayGuests' => $this->displayGuests,
 			'displayRegistered' => $this->displayRegistered,
 			'endDate' => $this->endDate,
+			'isMultilingual' => count(LanguageFactory::getInstance()->getContentLanguages()) > 1 ? true : false,
 			'rebuildTime' => $this->data['rebuildTime'],
 			'requestList' => (!empty($this->data['requestList']) ? $this->data['requestList'] : []),
 			'requestListAll' => (!empty($this->data['requestListAll']) ? $this->data['requestListAll'] : []),

@@ -199,7 +199,7 @@
 				<thead>
 					<tr>
 						<th>{lang}wcf.acp.visitor.visitedUrls{/lang}</th>
-						<th width="100">{lang}wcf.acp.visitor.language{/lang}</th>
+						{if $isMultilingual}<th width="100">{lang}wcf.acp.visitor.language{/lang}</th>{/if}
 						<th class="columnDigits" width="100">{lang}wcf.acp.visitor.count{/lang}</th>
 					</tr>
 				</thead>
@@ -208,7 +208,7 @@
 						{foreach from=$requestList item=visitor}
 							<tr>
 								<td><a href="{$visitor->host}{$visitor->requestURI}">{@$visitor->title}</a></td>
-								<td>{$visitor->language}</td>
+								{if $isMultilingual}<td>{$visitor->language}</td>{/if}
 								<td class="columnDigits">{$visitor->requestCount}</td>
 							</tr>
 						{/foreach}
@@ -228,7 +228,7 @@
 				<thead>
 					<tr>
 						<th>{lang}wcf.acp.visitor.visitedUrls{/lang}</th>
-						<th width="100">{lang}wcf.acp.visitor.language{/lang}</th>
+						{if $isMultilingual}<th width="100">{lang}wcf.acp.visitor.language{/lang}</th>{/if}
 						<th class="columnDigits" width="100">{lang}wcf.acp.visitor.count{/lang}</th>
 					</tr>
 				</thead>
@@ -237,7 +237,7 @@
 						{foreach from=$requestListAll item=visitor}
 							<tr>
 								<td><a href="{$visitor->host}{$visitor->requestURI}">{@$visitor->title}</a></td>
-								<td>{$visitor->language}</td>
+								{if $isMultilingual}<td>{$visitor->language}</td>{/if}
 								<td class="columnDigits">{$visitor->requestCount}</td>
 							</tr>
 						{/foreach}
