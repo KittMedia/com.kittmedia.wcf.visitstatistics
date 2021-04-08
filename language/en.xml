@@ -32,6 +32,8 @@
 		<item name="wcf.acp.visitor.stat.displayGuests"><![CDATA[Guests]]></item>
 		<item name="wcf.acp.visitor.stat.displayRegistered"><![CDATA[Registered Users]]></item>
 		<item name="wcf.acp.visitor.stat.period"><![CDATA[Period]]></item>
+		<item name="wcf.acp.visitor.stat.period.end"><![CDATA[from]]></item>
+		<item name="wcf.acp.visitor.stat.period.start"><![CDATA[to]]></item>
 		<item name="wcf.acp.visitor.statisticType"><![CDATA[Hide the following statistic types]]></item>
 		<item name="wcf.acp.visitor.thisMonth"><![CDATA[This Month]]></item>
 		<item name="wcf.acp.visitor.thisWeek"><![CDATA[This Week]]></item>
