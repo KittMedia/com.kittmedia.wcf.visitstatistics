@@ -4,7 +4,6 @@ use wcf\system\cache\builder\VisitorCacheBuilder;
 use wcf\system\WCF;
 use function array_merge;
 use function count;
-use function is_array;
 use function ucfirst;
 
 /**
@@ -39,7 +38,20 @@ class VisitStatisticsVisitsBoxController extends AbstractDatabaseObjectListBoxCo
 	 */
 	protected function getTemplate() {
 		$conditions = $this->getBox()->getConditions();
-		$templateData = array_merge(VisitorCacheBuilder::getInstance()->getData(), ['position' => $this->getBox()->position]);
+		$templateData = array_merge(
+			VisitorCacheBuilder::getInstance()->getData(),
+			[
+				'hideAverage' => false,
+				'hideLastMonth' => false,
+				'hideLastWeek' => false,
+				'hideThisMonth' => false,
+				'hideThisWeek' => false,
+				'hideToday' => false,
+				'hideTotal' => false,
+				'hideYesterday' => false,
+				'position' => $this->getBox()->position
+			]
+		);
 		
 		if (count($conditions)) {
 			$conditionData = reset($conditions)->conditionData;
