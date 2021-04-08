@@ -1,6 +1,7 @@
 <?php
 namespace wcf\acp\page;
 use DateInterval;
+use wcf\data\package\PackageCache;
 use wcf\data\page\PageCache;
 use wcf\data\user\online\UserOnline;
 use wcf\data\visitor\VisitorList;
@@ -113,6 +114,7 @@ class VisitorPage extends MultipleLinkPage {
 		parent::assignVariables();
 		
 		WCF::getTPL()->assign([
+			'assetVersion' => PackageCache::getInstance()->getPackageByIdentifier('com.kittmedia.wcf.visitstatistics')->updateDate,
 			'countAverage' => $this->data['countAverage'],
 			'countLastMonth' => $this->data['countLastMonth'],
 			'countLastWeek' => $this->data['countLastWeek'],
