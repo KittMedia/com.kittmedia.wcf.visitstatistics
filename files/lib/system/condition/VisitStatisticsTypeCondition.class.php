@@ -2,7 +2,6 @@
 namespace wcf\system\condition;
 use wcf\data\condition\Condition;
 use wcf\system\WCF;
-use wcf\util\ArrayUtil;
 use function in_array;
 use function is_array;
 
