@@ -27,9 +27,18 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	
 	/**
 	 * Statistics
-	 * @var		mixed[]|null
+	 * @var		mixed[]
 	 */
-	protected $statistics = null;
+	protected $statistics = [
+		'countAverage' => 0,
+		'countLastMonth' => 0,
+		'countLastWeek' => 0,
+		'countThisMonth' => 0,
+		'countThisWeek' => 0,
+		'countToday' => 0,
+		'countTotal' => 0,
+		'countYesterday' => 0,
+	];
 	
 	/**
 	 * @inheritDoc
@@ -54,29 +63,28 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	 */
 	protected function calculateAverageStatistics() {
 		if (empty($this->statistics['countTotal'])) {
-			$this->statistics['countAverage'] = 0;
+			return;
+		}
+		
+		// get first date
+		$sql = "SELECT		date
+			FROM		".Visitor::getDatabaseTableName()."_daily
+			ORDER BY	date ASC";
+		$statement = WCF::getDB()->prepareStatement($sql, 1);
+		$statement->execute();
+		
+		// get day difference
+		$firstDate = new DateTime($statement->fetchColumn());
+		$today = new DateTime();
+		$diffDays = date_diff($firstDate, $today);
+		
+		// calculate average
+		if ($diffDays->days) {
+			// add 1 day for today
+			$this->statistics['countAverage'] = StringUtil::formatNumeric(round(intval(str_replace([',', '.'], '', $this->statistics['countTotal'])) / ($diffDays->days + 1), 2));
 		}
 		else {
-			// get first date
-			$sql = "SELECT		date
-				FROM		".Visitor::getDatabaseTableName()."_daily
-				ORDER BY	date ASC";
-			$statement = WCF::getDB()->prepareStatement($sql, 1);
-			$statement->execute();
-			
-			// get day difference
-			$firstDate = new DateTime($statement->fetchColumn());
-			$today = new DateTime();
-			$diffDays = date_diff($firstDate, $today);
-			
-			// calculate average
-			if ($diffDays->days) {
-				// add 1 day for today
-				$this->statistics['countAverage'] = StringUtil::formatNumeric(round(intval(str_replace([',', '.'], '', $this->statistics['countTotal'])) / ($diffDays->days + 1), 2));
-			}
-			else {
-				$this->statistics['countAverage'] = $this->statistics['countTotal'];
-			}
+			$this->statistics['countAverage'] = $this->statistics['countTotal'];
 		}
 	}
 	
