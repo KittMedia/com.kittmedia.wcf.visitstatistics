@@ -12,6 +12,7 @@ use wcf\system\language\LanguageFactory;
 use wcf\system\page\handler\IOnlineLocationPageHandler;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
+use wcf\util\StringUtil;
 use function preg_replace;
 
 /**
@@ -113,23 +114,41 @@ class VisitorPage extends MultipleLinkPage {
 	public function assignVariables() {
 		parent::assignVariables();
 		
+		if (!empty($this->data['requestList'])) {
+			foreach ($this->data['requestList'] as &$request) {
+				$request->requestCount = StringUtil::formatNumeric($request->requestCount);
+			}
+		}
+		else {
+			$this->data['requestList'] = [];
+		}
+		
+		if (!empty($this->data['requestListAll'])) {
+			foreach ($this->data['requestListAll'] as &$request) {
+				$request->requestCount = StringUtil::formatNumeric($request->requestCount);
+			}
+		}
+		else {
+			$this->data['requestListAll'] = [];
+		}
+		
 		WCF::getTPL()->assign([
 			'assetVersion' => PackageCache::getInstance()->getPackageByIdentifier('com.kittmedia.wcf.visitstatistics')->updateDate,
-			'countAverage' => $this->data['countAverage'],
-			'countLastMonth' => $this->data['countLastMonth'],
-			'countLastWeek' => $this->data['countLastWeek'],
-			'countThisMonth' => $this->data['countThisMonth'],
-			'countThisWeek' => $this->data['countThisWeek'],
-			'countToday' => $this->data['countToday'],
-			'countTotal' => $this->data['countTotal'],
-			'countYesterday' => $this->data['countYesterday'],
+			'countAverage' => StringUtil::formatNumeric($this->data['countAverage']),
+			'countLastMonth' => StringUtil::formatNumeric($this->data['countLastMonth']),
+			'countLastWeek' => StringUtil::formatNumeric($this->data['countLastWeek']),
+			'countThisMonth' => StringUtil::formatNumeric($this->data['countThisMonth']),
+			'countThisWeek' => StringUtil::formatNumeric($this->data['countThisWeek']),
+			'countToday' => StringUtil::formatNumeric($this->data['countToday']),
+			'countTotal' => StringUtil::formatNumeric($this->data['countTotal']),
+			'countYesterday' => StringUtil::formatNumeric($this->data['countYesterday']),
 			'displayGuests' => $this->displayGuests,
 			'displayRegistered' => $this->displayRegistered,
 			'endDate' => $this->endDate,
 			'isMultilingual' => count(LanguageFactory::getInstance()->getContentLanguages()) > 1 ? true : false,
 			'rebuildTime' => $this->data['rebuildTime'],
-			'requestList' => (!empty($this->data['requestList']) ? $this->data['requestList'] : []),
-			'requestListAll' => (!empty($this->data['requestListAll']) ? $this->data['requestListAll'] : []),
+			'requestList' => $this->data['requestList'],
+			'requestListAll' => $this->data['requestListAll'],
 			'startDate' => $this->startDate
 		]);
 	}

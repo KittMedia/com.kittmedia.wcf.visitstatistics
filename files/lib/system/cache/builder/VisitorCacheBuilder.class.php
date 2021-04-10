@@ -3,12 +3,9 @@ namespace wcf\system\cache\builder;
 use DateTime;
 use wcf\data\visitor\Visitor;
 use \wcf\system\WCF;
-use wcf\util\StringUtil;
 use function array_merge;
 use function date_diff;
-use function intval;
 use function round;
-use function str_replace;
 use const TIME_NOW;
 
 /**
@@ -37,7 +34,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		'countThisWeek' => 0,
 		'countToday' => 0,
 		'countTotal' => 0,
-		'countYesterday' => 0,
+		'countYesterday' => 0
 	];
 	
 	/**
@@ -81,7 +78,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		// calculate average
 		if ($diffDays->days) {
 			// add 1 day for today
-			$this->statistics['countAverage'] = StringUtil::formatNumeric(round(intval(str_replace([',', '.'], '', $this->statistics['countTotal'])) / ($diffDays->days + 1), 2));
+			$this->statistics['countAverage'] = round($this->statistics['countTotal'] / ($diffDays->days + 1), 2);
 		}
 		else {
 			$this->statistics['countAverage'] = $this->statistics['countTotal'];
@@ -99,7 +96,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			AND		YEAR(date) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
-		$this->statistics['countLastMonth'] = StringUtil::formatNumeric($statement->fetchColumn());
+		$this->statistics['countLastMonth'] = (int) $statement->fetchColumn();
 	}
 	
 	/**
@@ -113,7 +110,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			AND		date < CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) - 1 DAY";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
-		$this->statistics['countLastWeek'] = StringUtil::formatNumeric($statement->fetchColumn());
+		$this->statistics['countLastWeek'] = (int) $statement->fetchColumn();
 	}
 	
 	/**
@@ -128,7 +125,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			AND		date < CURDATE()";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
-		$this->statistics['countThisMonth'] = StringUtil::formatNumeric($statement->fetchColumn() + $this->statistics['countToday']);
+		$this->statistics['countThisMonth'] = (int) $statement->fetchColumn() + $this->statistics['countToday'];
 	}
 	
 	/**
@@ -142,7 +139,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			AND		date < CURDATE()";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
-		$this->statistics['countThisWeek'] = StringUtil::formatNumeric($statement->fetchColumn() + $this->statistics['countToday']);
+		$this->statistics['countThisWeek'] = (int) $statement->fetchColumn() + $this->statistics['countToday'];
 	}
 	
 	/**
@@ -155,7 +152,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
-		$this->statistics['countToday'] = StringUtil::formatNumeric($statement->fetchColumn());
+		$this->statistics['countToday'] = (int) $statement->fetchColumn();
 		
 		// get the most requested URIs
 		$sql = "SELECT		requestURI, title, host, languageID, pageID, pageObjectID, COUNT(*) AS requestCount
@@ -169,7 +166,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		
 		while ($row = $statement->fetchArray()) {
 			$data = (object) $row;
-			$data->requestCount = StringUtil::formatNumeric($data->requestCount);
+			$data->requestCount = (int) $data->requestCount;
 			$this->statistics['requestList'][] = $data;
 		}
 	}
@@ -184,7 +181,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			WHERE		date < CURDATE()";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
-		$this->statistics['countTotal'] = StringUtil::formatNumeric($statement->fetchColumn() + $this->statistics['countToday']);
+		$this->statistics['countTotal'] = (int) $statement->fetchColumn() + $this->statistics['countToday'];
 		
 		// get the most requested URIs
 		$sql = "SELECT		requestURI, title, host, languageID, pageID, pageObjectID, SUM(counter) AS requestCount
@@ -197,7 +194,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		
 		while ($row = $statement->fetchArray()) {
 			$data = (object) $row;
-			$data->requestCount = StringUtil::formatNumeric($data->requestCount);
+			$data->requestCount = (int) $data->requestCount;
 			$this->statistics['requestListAll'][] = $data;
 		}
 		
@@ -214,6 +211,6 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE() - INTERVAL 1 DAY";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
-		$this->statistics['countYesterday'] = StringUtil::formatNumeric($statement->fetchColumn());
+		$this->statistics['countYesterday'] = (int) $statement->fetchColumn();
 	}
 }
