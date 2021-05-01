@@ -56,15 +56,16 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 			$data.push($row);
 		}
 		
-		var $lineGap = 1;
-		// maximum line width: 40
-		var $lineWidth = Math.min(Math.round((document.querySelector('.contentHeader + .section').clientWidth - 150) / $data[0].data.length - $lineGap, 0), 40);
-		
 		// set maximum/minimum date to prevent data overlapping with chart border
 		var $minDate = new Date(Math.min($data[0].data[0][0], $data[1].data[0][0]));
 		var $maxDate = new Date($data[0].data[$data[0].data.length - 1][0]);
 		$minDate.setHours(-9, -10, 0, 0);
 		$maxDate.setHours(13, 0, 0, 0);
+		var $diffInDays = ($maxDate - $minDate) / (1000 * 3600 * 24);
+		
+		var $lineGap = 1;
+		// maximum line width: 40
+		var $lineWidth = Math.min(Math.round((document.querySelector('.contentHeader + .section').clientWidth - 150) / $diffInDays - $lineGap, 0), 40);
 		
 		var options = {
 			colors: [
