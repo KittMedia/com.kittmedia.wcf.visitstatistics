@@ -3,7 +3,6 @@ namespace wcf\system\cache\builder;
 use DateTime;
 use wcf\data\visitor\Visitor;
 use \wcf\system\WCF;
-use function array_merge;
 use function date_diff;
 use function round;
 use const TIME_NOW;
@@ -198,7 +197,20 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			$this->statistics['requestListAll'][] = $data;
 		}
 		
-		$this->statistics['requestListAll'] = array_merge($this->statistics['requestListAll'], $this->statistics['requestList']);
+		// cumulate overall data with the data from today
+		foreach ($this->statistics['requestListAll'] as &$allRequest) {
+			foreach ($this->statistics['requestList'] as $request) {
+				if (
+					$allRequest->requestURI === $request->requestURI
+					&& $allRequest->title === $request->title
+					&& $allRequest->languageID === $request->languageID
+					&& $allRequest->pageID === $request->pageID
+					&& $allRequest->pageObjectID === $request->pageObjectID
+				) {
+					$allRequest->requestCount += $request->requestCount;
+				}
+			}
+		}
 	}
 	
 	/**
