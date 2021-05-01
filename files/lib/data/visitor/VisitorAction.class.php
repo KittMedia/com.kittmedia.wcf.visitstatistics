@@ -126,6 +126,9 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			}
 		}
 		
+		// sort data ASC by day
+		ksort($counts);
+		
 		// separate data for each data
 		foreach ($counts as $dayTime => $count) {
 			$data[1]['data'][] = [
