@@ -24,7 +24,7 @@ jobs:
           path: ${{ github.event.repository.name }}.tar.gz
       # Notification via Slack
       - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
+        uses: rtCamp/action-slack-notify@master
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_USERNAME: ${{ github.event.repository.name }}
