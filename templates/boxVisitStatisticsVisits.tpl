@@ -39,7 +39,7 @@
 	<ul class="inlineList dotSeparated">
 		{if !$hideToday}<li>{$countToday} {lang}wcf.visitor.visits.today{/lang}</li>{/if}
 		{if !$hideYesterday}<li>{$countYesterday} {lang}wcf.visitor.visits.yesterday{/lang}</li>{/if}
-		{if !$hideThisWeek}<li>{$countLastWeek} {lang}wcf.visitor.visits.thisWeek{/lang}</li>{/if}
+		{if !$hideThisWeek}<li>{$countThisWeek} {lang}wcf.visitor.visits.thisWeek{/lang}</li>{/if}
 		{if !$hideLastWeek}<li>{$countLastWeek} {lang}wcf.visitor.visits.lastWeek{/lang}</li>{/if}
 		{if !$hideThisMonth}<li>{$countThisMonth} {lang}wcf.visitor.visits.thisMonth{/lang}</li>{/if}
 		{if !$hideLastMonth}<li>{$countLastMonth} {lang}wcf.visitor.visits.lastMonth{/lang}</li>{/if}
