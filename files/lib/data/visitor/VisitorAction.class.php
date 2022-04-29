@@ -6,16 +6,17 @@ use wcf\data\AbstractDatabaseObjectAction;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\UserInputException;
 use wcf\system\WCF;
-use function date;
+use wcf\util\DateUtil;
 use function preg_match;
 use function strtotime;
+use const TIME_NOW;
 use const TIMEZONE;
 
 /**
  * Provides functions for user visits.
  * 
  * @author	Matthias Kittsteiner
- * @copyright	2021 KittMedia
+ * @copyright	2022 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  * 
@@ -40,8 +41,11 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 	 */
 	public function getData() {
 		// get time zone
-		$time = new DateTime('now', new DateTimeZone(TIMEZONE));
-		$timezone = $time->format('Z');
+		$dateTime = DateUtil::getDateTimeByTimestamp(TIME_NOW);
+		$dateTime->setTimezone(new DateTimeZone(TIMEZONE));
+		// add timezone offset since it's being used inside JavaScript
+		// where the timestamp represents the current timezone, not GMT
+		$todayTimestamp = $dateTime->setTime(0, 0)->getTimestamp() + $dateTime->format('Z');
 		
 		$conditionBuilder = new PreparedStatementConditionBuilder();
 		
@@ -72,7 +76,11 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		
 		while ($row = $statement->fetchArray()) {
 			// to timestamp
-			$row['dayTime'] = strtotime($row['date']) + $timezone;
+			$dayTime = DateTime::createFromFormat( 'Y-m-d', $row['date'] );
+			$dayTime->setTimezone(new DateTimeZone(TIMEZONE));
+			// add timezone offset since it's being used inside JavaScript
+			// where the timestamp represents the current timezone, not GMT
+			$row['dayTime'] = $dayTime->setTime(0, 0)->getTimestamp() + $dayTime->format('Z');
 			
 			if (!isset($counts[$row['dayTime']])) {
 				$counts[$row['dayTime']] = [];
@@ -110,7 +118,6 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				GROUP BY	isRegistered, date";
 			$statement = WCF::getDB()->prepareStatement($sql);
 			$statement->execute($conditionBuilder->getParameters());
-			$todayTimestamp = strtotime(date('Y-m-d')) + $timezone;
 			$counts[$todayTimestamp] = [
 				'guest' => 0,
 				'user' => 0

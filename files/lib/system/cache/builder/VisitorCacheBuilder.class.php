@@ -1,17 +1,19 @@
 <?php
 namespace wcf\system\cache\builder;
 use DateTime;
+use DateTimeZone;
 use wcf\data\visitor\Visitor;
-use \wcf\system\WCF;
-use function date_diff;
+use wcf\system\WCF;
+use wcf\util\DateUtil;
 use function round;
 use const TIME_NOW;
+use const TIMEZONE;
 
 /**
  * Caches visitor related statistics.
  * 
  * @author	Matthias Kittsteiner
- * @copyright	2021 KittMedia
+ * @copyright	2022 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  */
@@ -70,9 +72,9 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$statement->execute();
 		
 		// get day difference
-		$firstDate = new DateTime($statement->fetchColumn());
-		$today = new DateTime();
-		$diffDays = date_diff($firstDate, $today);
+		$firstDate = new DateTime($statement->fetchColumn(), new DateTimeZone(TIMEZONE));
+		$today = DateUtil::getDateTimeByTimestamp(TIME_NOW);
+		$diffDays = $firstDate->diff($today);
 		
 		// calculate average
 		if ($diffDays->days) {

@@ -1,11 +1,12 @@
 <?php
 namespace wcf\system\event\listener;
+use DateInterval;
 use DateTime;
 use DateTimeZone;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
+use wcf\util\DateUtil;
 use function date;
-use function strtotime;
 use const TIME_NOW;
 use const TIMEZONE;
 use const WCF_N;
@@ -14,7 +15,7 @@ use const WCF_N;
  * Clean up data daily.
  * 
  * @author	Matthias Kittsteiner
- * @copyright	2011-2020 KittMedia
+ * @copyright	2022 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  */
@@ -49,10 +50,12 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	 * Delete old visits from main visitor table.
 	 */
 	protected function deleteVisits() {
+		$dateTime = DateUtil::getDateTimeByTimestamp(TIME_NOW);
+		$dateTime->setTimezone(new DateTimeZone(TIMEZONE));
 		$sql = "DELETE FROM	".Visitor::getDatabaseTableName()."
 			WHERE		time < ?";
 		WCF::getDB()->prepareStatement($sql)->execute([
-			TIME_NOW - 86400 * self::DELETE_AFTER
+			$dateTime->getTimestamp() - DateInterval::createFromDateString(self::DELETE_AFTER . ' day')
 		]);
 	}
 	
@@ -93,23 +96,30 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	 */
 	protected function setDailyStats($day) {
 		if (!empty($day)) {
-			$day = strtotime($day . ' +1 day');
+			$day = DateTime::createFromFormat('Y-m-d', $day);
+			$day->setTimezone(new DateTimeZone(TIMEZONE));
+			$sevenDaysAgo = $day->sub(DateInterval::createFromDateString('-7 day'));
+			$day->add(DateInterval::createFromDateString('1 day'));
 			
 			// get at least the previous 7 days
-			if ($day > strtotime('-7 day')) {
-				$day = strtotime('-7 day');
+			if ($day > $sevenDaysAgo) {
+				$day = $sevenDaysAgo;
 			}
 		}
 		else {
-			$day = strtotime($this->getFirstSQLDate());
+			$day = DateTime::createFromFormat('Y-m-d', $this->getFirstSQLDate());
+			$day->setTimezone(new DateTimeZone(TIMEZONE));
 		}
+		
+		$yesterday = new DateTime();
+		$yesterday->setTimezone(new DateTimeZone(TIMEZONE));
+		$yesterday->setTime(23, 59, 59);
+		$yesterday->modify('-24 hour');
 		
 		// delete old stats of the last 7 days
 		$this->deleteOldDailyStats($day);
 		
 		// get time zone
-		$time = new DateTime('now', new DateTimeZone(TIMEZONE));
-		$timeZone = $time->format('P');
 		$sql = "INSERT IGNORE INTO	wcf".WCF_N."_visitor_daily
 						(date, counter, isRegistered)
 			SELECT			CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d'), @@SESSION.time_zone, ?) AS date,
@@ -119,9 +129,9 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			WHERE			time BETWEEN ? AND ?
 			GROUP BY		isRegistered, date";
 		WCF::getDB()->prepareStatement($sql)->execute([
-			$timeZone,
+			$day->format('P'),
 			$day,
-			strtotime('yesterday 23:59:59')
+			$yesterday->getTimestamp()
 		]);
 	}
 	
@@ -132,15 +142,25 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	 */
 	protected function setURLStats($day) {
 		if (!empty($day)) {
-			$day = strtotime($day . ' +1 day');
+			$day = DateTime::createFromFormat('Y-m-d', $day);
+			$day->setTimezone(new DateTimeZone(TIMEZONE));
+			$sevenDaysAgo = $day->sub(DateInterval::createFromDateString('-7 day'));
+			$day->add(DateInterval::createFromDateString('1 day'));
 			
-			if (strtotime(date('Y-m-d', $day) . ' +1 day') > strtotime('yesterday 23:59:59')) {
-				return;
+			// get at least the previous 7 days
+			if ($day > $sevenDaysAgo) {
+				$day = $sevenDaysAgo;
 			}
 		}
 		else {
-			$day = strtotime($this->getFirstSQLDate());
+			$day = DateTime::createFromFormat('Y-m-d', $this->getFirstSQLDate());
+			$day->setTimezone(new DateTimeZone(TIMEZONE));
 		}
+		
+		$yesterday = new DateTime();
+		$yesterday->setTimezone(new DateTimeZone(TIMEZONE));
+		$yesterday->setTime(23, 59, 59);
+		$yesterday->modify('-24 hour');
 		
 		$sql = "INSERT INTO	wcf".WCF_N."_visitor_url
 					(requestURI, title, host, counter, isRegistered, languageID, pageID, pageObjectID)
@@ -157,7 +177,7 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			GROUP BY	requestURI, title, host, isRegistered, languageID, pageID, pageObjectID";
 		WCF::getDB()->prepareStatement($sql)->execute([
 			$day,
-			strtotime('yesterday 23:59:59')
+			$yesterday->getTimestamp()
 		]);
 	}
 }

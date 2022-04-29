@@ -1,6 +1,7 @@
 <?php
 namespace wcf\acp\page;
 use DateInterval;
+use DateTimeZone;
 use wcf\data\package\PackageCache;
 use wcf\data\page\PageCache;
 use wcf\data\user\online\UserOnline;
@@ -14,12 +15,14 @@ use wcf\system\WCF;
 use wcf\util\DateUtil;
 use wcf\util\StringUtil;
 use function preg_replace;
+use const TIME_NOW;
+use const TIMEZONE;
 
 /**
  * Shows the visitor page in admin control panel.
  * 
  * @author	Matthias Kittsteiner
- * @copyright	2021 KittMedia
+ * @copyright	2022 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  */
@@ -85,7 +88,7 @@ class VisitorPage extends MultipleLinkPage {
 		
 		// set default values
 		$d = DateUtil::getDateTimeByTimestamp(TIME_NOW);
-		$d->setTimezone(WCF::getUser()->getTimeZone());
+		$d->setTimezone(new DateTimeZone(TIMEZONE));
 		$this->endDate = $d->format('Y-m-d');
 		$d->sub(new DateInterval('P2M'));
 		$this->startDate = $d->format('Y-m-d');

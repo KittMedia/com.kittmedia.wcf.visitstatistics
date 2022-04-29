@@ -1,9 +1,11 @@
 <?php
 namespace wcf\system\event\listener;
+use DateTimeZone;
 use wcf\data\visitor\Visitor;
 use wcf\data\visitor\VisitorAction;
 use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
+use wcf\util\DateUtil;
 use wcf\util\StringUtil;
 use function explode;
 use function html_entity_decode;
@@ -12,12 +14,13 @@ use function mb_convert_encoding;
 use function parse_url;
 use function preg_replace;
 use const TIME_NOW;
+use const TIMEZONE;
 
 /**
  * Add new user visits.
  * 
  * @author	Matthias Kittsteiner
- * @copyright	2011-2020 KittMedia
+ * @copyright	2022 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  */
@@ -63,7 +66,7 @@ class VisitorListener implements IParameterizedEventListener {
 				'languageID' => (!empty(WCF::getLanguage()->getObjectID()) ? WCF::getLanguage()->getObjectID() : LanguageFactory::getInstance()->getDefaultLanguageID()),
 				'pageID' => (!empty(WCF::getActivePage()->pageID) ? (int) WCF::getActivePage()->pageID : null),
 				'pageObjectID' => (!empty($_REQUEST['id']) && (int) $_REQUEST['id'] ? (int) $_REQUEST['id'] : null),
-				'time' => TIME_NOW
+				'time' => (DateUtil::getDateTimeByTimestamp(TIME_NOW))->setTimezone(new DateTimeZone(TIMEZONE))->getTimestamp()
 			]
 		]))->executeAction();
 	}
