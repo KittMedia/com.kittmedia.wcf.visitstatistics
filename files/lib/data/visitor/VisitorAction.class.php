@@ -118,17 +118,22 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				GROUP BY	isRegistered, date";
 			$statement = WCF::getDB()->prepareStatement($sql);
 			$statement->execute($conditionBuilder->getParameters());
-			$counts[$todayTimestamp] = [
-				'guest' => 0,
-				'user' => 0
-			];
+			$counts[$todayTimestamp] = [];
+			
+			if ($this->parameters['displayGuests']) {
+				$counts[$todayTimestamp]['guest'] = 0;
+			}
+			
+			if ($this->parameters['displayRegistered']) {
+				$counts[$todayTimestamp]['user'] = 0;
+			}
 		}
 		
 		while($row = $statement->fetchArray()) {
-			if ($row['isRegistered']) {
+			if ($row['isRegistered'] && $this->parameters['displayRegistered']) {
 				$counts[$todayTimestamp]['user'] = $row['counter'];
 			}
-			else {
+			else if ($this->parameters['displayGuests']) {
 				$counts[$todayTimestamp]['guest'] = $row['counter'];
 			}
 		}
@@ -138,14 +143,25 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		
 		// separate data for each data
 		foreach ($counts as $dayTime => $count) {
-			$data[1]['data'][] = [
-				$dayTime,
-				$count['user'] ?? 0
-			];
-			$data[2]['data'][] = [
-				$dayTime,
-				$count['guest'] ?? 0
-			];
+			if ($this->parameters['displayRegistered']) {
+				$data[1]['data'][] = [
+					$dayTime,
+					$count['user'] ?? 0
+				];
+			}
+			else {
+				unset($data[1]);
+			}
+			
+			if ($this->parameters['displayGuests']) {
+				$data[2]['data'][] = [
+					$dayTime,
+					$count['guest'] ?? 0
+				];
+			}
+			else {
+				unset($data[2]);
+			}
 		}
 		
 		return $data;
