@@ -22,6 +22,8 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 			success: $.proxy(this._success, this)
 		});
 		
+		$('#visitorStatRefreshButton').click($.proxy(this._refresh, this));
+		
 		this._refresh();
 	},
 	
@@ -37,7 +39,6 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 				startDate: $('#startDateDatePicker').val()
 			}
 		});
-		$('#visitorStatRefreshButton').click($.proxy(this._refresh, this));
 		this._proxy.sendRequest();
 	},
 	
