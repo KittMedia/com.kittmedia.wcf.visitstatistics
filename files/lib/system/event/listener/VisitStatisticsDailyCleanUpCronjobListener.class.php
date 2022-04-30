@@ -36,13 +36,13 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	/**
 	 * Delete old daily stats.
 	 * 
-	 * @param	int	$minDate
+	 * @param	DateTime	$minDate
 	 */
 	protected function deleteOldDailyStats($minDate) {
 		$sql = "DELETE FROM	wcf".WCF_N."_visitor_daily
 			WHERE		date >= ?";
 		WCF::getDB()->prepareStatement($sql)->execute([
-			date('Y-m-d', $minDate)
+			$minDate->format('Y-m-d')
 		]);
 	}
 	
