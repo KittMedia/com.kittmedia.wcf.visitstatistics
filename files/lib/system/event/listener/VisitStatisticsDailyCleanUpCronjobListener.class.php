@@ -98,8 +98,11 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 		if (!empty($day)) {
 			$day = DateTime::createFromFormat('Y-m-d', $day);
 			$day->setTimezone(new DateTimeZone(TIMEZONE));
-			$sevenDaysAgo = $day->sub(DateInterval::createFromDateString('-7 day'));
-			$day->add(DateInterval::createFromDateString('1 day'));
+			$day->setTime(0, 0);
+			$sevenDaysAgo = new DateTime();
+			$sevenDaysAgo->setTimezone(new DateTimeZone(TIMEZONE));
+			$sevenDaysAgo->modify('-7 day');
+			$sevenDaysAgo->setTime(0, 0);
 			
 			// get at least the previous 7 days
 			if ($day > $sevenDaysAgo) {
@@ -113,8 +116,8 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 		
 		$yesterday = new DateTime();
 		$yesterday->setTimezone(new DateTimeZone(TIMEZONE));
-		$yesterday->setTime(23, 59, 59);
 		$yesterday->modify('-24 hour');
+		$yesterday->setTime(23, 59, 59);
 		
 		// delete old stats of the last 7 days
 		$this->deleteOldDailyStats($day);
