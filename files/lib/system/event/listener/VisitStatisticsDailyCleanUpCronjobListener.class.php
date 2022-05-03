@@ -6,7 +6,6 @@ use DateTimeZone;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
-use function date;
 use const TIME_NOW;
 use const TIMEZONE;
 use const WCF_N;
@@ -52,10 +51,11 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 	protected function deleteVisits() {
 		$dateTime = DateUtil::getDateTimeByTimestamp(TIME_NOW);
 		$dateTime->setTimezone(new DateTimeZone(TIMEZONE));
+		$dateTime->sub(DateInterval::createFromDateString(self::DELETE_AFTER . ' day'));
 		$sql = "DELETE FROM	".Visitor::getDatabaseTableName()."
 			WHERE		time < ?";
 		WCF::getDB()->prepareStatement($sql)->execute([
-			$dateTime->getTimestamp() - DateInterval::createFromDateString(self::DELETE_AFTER . ' day')
+			$dateTime->getTimestamp()
 		]);
 	}
 	
@@ -130,7 +130,7 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			GROUP BY		isRegistered, date";
 		WCF::getDB()->prepareStatement($sql)->execute([
 			$day->format('P'),
-			$day,
+			$day->getTimestamp(),
 			$yesterday->getTimestamp()
 		]);
 	}
@@ -176,7 +176,7 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			WHERE		time BETWEEN ? AND ?
 			GROUP BY	requestURI, title, host, isRegistered, languageID, pageID, pageObjectID";
 		WCF::getDB()->prepareStatement($sql)->execute([
-			$day,
+			$day->getTimestamp(),
 			$yesterday->getTimestamp()
 		]);
 	}
