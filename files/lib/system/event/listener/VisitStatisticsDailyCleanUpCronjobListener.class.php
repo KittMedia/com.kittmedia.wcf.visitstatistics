@@ -110,7 +110,7 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			}
 		}
 		else {
-			$day = DateTime::createFromFormat('Y-m-d', $this->getFirstSQLDate());
+			$day = DateTime::createFromFormat('Y-m-d H:i:s', $this->getFirstSQLDate());
 			$day->setTimezone(new DateTimeZone(TIMEZONE));
 		}
 		
@@ -156,7 +156,7 @@ class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventL
 			}
 		}
 		else {
-			$day = DateTime::createFromFormat('Y-m-d', $this->getFirstSQLDate());
+			$day = DateTime::createFromFormat('Y-m-d H:i:s', $this->getFirstSQLDate());
 			$day->setTimezone(new DateTimeZone(TIMEZONE));
 		}
 		
