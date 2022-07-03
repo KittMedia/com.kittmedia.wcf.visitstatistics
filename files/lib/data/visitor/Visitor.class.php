@@ -8,18 +8,16 @@ use wcf\page\AttachmentPage;
 use wcf\page\ConversationPage;
 use wcf\page\MediaPage;
 use wcf\system\WCF;
-use function filter_var;
 use function http_response_code;
 use function is_object;
 use function preg_match;
 use function strpos;
-use const FILTER_SANITIZE_STRING;
 
 /**
  * The User Visitor class.
  * 
  * @author	Matthias Kittsteiner
- * @copyright	2011-2020 KittMedia
+ * @copyright	2022 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  * 
@@ -28,7 +26,6 @@ use const FILTER_SANITIZE_STRING;
  * @property-read	boolean		$isRegistered `1` if the visit was from a registered user; otherwise `0`
  * @property-read	integer		$time unix timestamp where the request has been performed 
  */
-
 class Visitor extends DatabaseObject {
 	/**
 	 * @var	array A list with user agents we want to skip
@@ -84,11 +81,6 @@ class Visitor extends DatabaseObject {
 			return true;
 		}
 		
-		// skip if there is no valid user agent
-		if (!filter_var($_SERVER['HTTP_USER_AGENT'], FILTER_SANITIZE_STRING)) {
-			return true;
-		}
-		
 		// skip if the user is identified as spider
 		if (WCF::getSession()->spiderID) {
 			return true;
@@ -106,7 +98,7 @@ class Visitor extends DatabaseObject {
 			}
 		}
 		
-		// skip if we cannot be sure that it's a proper registered page
+		// skip if we cannot be sure that it's a properly registered page
 		if (!is_object(WCF::getActivePage())) {
 			return true;
 		}
