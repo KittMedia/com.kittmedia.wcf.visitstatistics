@@ -34,7 +34,11 @@ class VisitorListener implements IParameterizedEventListener {
 		if (!MODULE_USER_VISITOR) return;
 		if (Visitor::skipTracking()) return;
 		
-		$title = html_entity_decode(preg_replace(self::REGEX_FILTER_HTML, "$1", WCF::getTPL()->get('contentTitle')));
+		$title = '';
+		
+		if (WCF::getTPL()->get('contentTitle')) {
+			$title = html_entity_decode(preg_replace(self::REGEX_FILTER_HTML, "$1", WCF::getTPL()->get('contentTitle')));
+		}
 		
 		if (!$title) {
 			$title = html_entity_decode(preg_replace(self::REGEX_FILTER_HTML, "$1", WCF::getTPL()->get('pageTitle')));
@@ -95,5 +99,4 @@ class VisitorListener implements IParameterizedEventListener {
 		
 		return implode('&', $parts);
 	}
-	
 }
