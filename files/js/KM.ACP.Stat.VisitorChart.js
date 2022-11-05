@@ -57,32 +57,16 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 			$data.push($row);
 		}
 		
-		// set maximum/minimum date to prevent data overlapping with chart border
-		var $minDate = new Date(Math.min($data[0].data[0][0], $data[1].data[0][0]));
-		var $maxDate = new Date($data[0].data[$data[0].data.length - 1][0]);
-		$minDate.setHours(-9, -10, 0, 0);
-		$maxDate.setHours(13, 0, 0, 0);
-		var $diffInDays = ($maxDate - $minDate) / (1000 * 3600 * 24);
-		
-		var $lineGap = 1;
-		// maximum line width: 40
-		var $lineWidth = Math.min(Math.round((document.querySelector('.contentHeader + .section').clientWidth - 150) / $diffInDays - $lineGap, 0), 40);
-		
 		var options = {
 			colors: [
 				"#3a6d9c",
 				"#b0c8e0",
 			],
 			series: {
-				stack: true,
-				bars: {
-					lineWidth: $lineWidth,
+				lines: {
 					show: true
 				},
 				points: {
-					fill: false,
-					lineWidth: 0,
-					radius: 0,
 					show: true
 				}
 			},
@@ -90,8 +74,6 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 				hoverable: true
 			},
 			xaxis: {
-				max: $maxDate.getTime(),
-				min: $minDate.getTime(),
 				minTickSize: $minTickSize,
 				mode: "time",
 				monthNames: WCF.Language.get('__monthsShort'),
@@ -116,7 +98,7 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 				if (item) {
 					span.style.setProperty('top', item.pageY + 'px', '');
 					span.style.setProperty('left', item.pageX + 'px', '');
-					$("#chartTooltip").html(item.series.xaxis.tickFormatter(item.datapoint[0], item.series.xaxis) + ', ' + WCF.String.formatNumeric(item.datapoint[1] - item.datapoint[2]) + ' ' + item.series.label).show();
+					$("#chartTooltip").html(item.series.xaxis.tickFormatter(item.datapoint[0], item.series.xaxis) + ', ' + WCF.String.formatNumeric(item.datapoint[1]) + ' ' + item.series.label).show();
 					UiAlignment.set($("#chartTooltip")[0], span, {
 						verticalOffset: 5,
 						horizontal: 'center'
