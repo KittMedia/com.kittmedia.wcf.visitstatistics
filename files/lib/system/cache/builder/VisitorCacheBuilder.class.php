@@ -31,8 +31,10 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		'countAverage' => 0,
 		'countLastMonth' => 0,
 		'countLastWeek' => 0,
+		'countLastYear' => 0,
 		'countThisMonth' => 0,
 		'countThisWeek' => 0,
+		'countThisYear' => 0,
 		'countToday' => 0,
 		'countTotal' => 0,
 		'countYesterday' => 0
@@ -45,8 +47,10 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$this->calculateTodayStatistics();
 		$this->calculateLastMonthStatistics();
 		$this->calculateLastWeekStatistics();
+		$this->calculateLastYearStatistics();
 		$this->calculateThisMonthStatistics();
 		$this->calculateThisWeekStatistics();
+		$this->calculateThisYearStatistics();
 		$this->calculateTotalStatistics();
 		$this->calculateYesterdayStatistics();
 		$this->calculateAverageStatistics();
@@ -115,6 +119,19 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	}
 	
 	/**
+	 * Calculate statistics for last year.
+	 */
+	protected function calculateLastYearStatistics() {
+		// get last year's count
+		$sql = "SELECT		SUM(counter)
+			FROM		".Visitor::getDatabaseTableName()."_daily
+			WHERE		YEAR(date) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))";
+		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement->execute();
+		$this->statistics['countLastYear'] = (int) $statement->fetchColumn();
+	}
+	
+	/**
 	 * Calculate statistics for this month.
 	 */
 	protected function calculateThisMonthStatistics() {
@@ -141,6 +158,20 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		$this->statistics['countThisWeek'] = (int) $statement->fetchColumn() + $this->statistics['countToday'];
+	}
+	
+	/**
+	 * Calculate statistics for this year.
+	 */
+	protected function calculateThisYearStatistics() {
+		// get this year's count
+		$sql = "SELECT		SUM(counter)
+			FROM		".Visitor::getDatabaseTableName()."_daily
+			WHERE		YEAR(date) = YEAR(CURDATE())
+			AND		date < CURDATE()";
+		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement->execute();
+		$this->statistics['countThisYear'] = (int) $statement->fetchColumn() + $this->statistics['countToday'];
 	}
 	
 	/**

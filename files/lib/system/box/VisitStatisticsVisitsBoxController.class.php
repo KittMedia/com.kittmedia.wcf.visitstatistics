@@ -43,8 +43,10 @@ class VisitStatisticsVisitsBoxController extends AbstractDatabaseObjectListBoxCo
 		$data['countAverage'] = StringUtil::formatNumeric($data['countAverage']);
 		$data['countLastMonth'] = StringUtil::formatNumeric($data['countLastMonth']);
 		$data['countLastWeek'] = StringUtil::formatNumeric($data['countLastWeek']);
+		$data['countLastYear'] = StringUtil::formatNumeric($data['countLastYear']);
 		$data['countThisMonth'] = StringUtil::formatNumeric($data['countThisMonth']);
 		$data['countThisWeek'] = StringUtil::formatNumeric($data['countThisWeek']);
+		$data['countThisYear'] = StringUtil::formatNumeric($data['countThisYear']);
 		$data['countToday'] = StringUtil::formatNumeric($data['countToday']);
 		$data['countTotal'] = StringUtil::formatNumeric($data['countTotal']);
 		$data['countYesterday'] = StringUtil::formatNumeric($data['countYesterday']);
@@ -54,8 +56,10 @@ class VisitStatisticsVisitsBoxController extends AbstractDatabaseObjectListBoxCo
 				'hideAverage' => false,
 				'hideLastMonth' => false,
 				'hideLastWeek' => false,
+				'hideLastYear' => false,
 				'hideThisMonth' => false,
 				'hideThisWeek' => false,
+				'hideThisYear' => false,
 				'hideToday' => false,
 				'hideTotal' => false,
 				'hideYesterday' => false,

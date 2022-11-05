@@ -44,7 +44,7 @@
 	@media (min-width: 768px) {
 		.dataGridList {
 			display: inline-grid;
-			grid-template-columns: repeat(4, auto);
+			grid-template-columns: repeat(5, auto);
 		}
 		
 		.dataGridList > .lastMonth,
@@ -140,6 +140,10 @@
 				<dt>{lang}wcf.acp.visitor.thisMonth{/lang}</dt>
 				<dd>{$countThisMonth}</dd>
 			</dl>
+			<dl class="dataList plain thisYear">
+				<dt>{lang}wcf.acp.visitor.thisYear{/lang}</dt>
+				<dd>{$countThisYear}</dd>
+			</dl>
 			<dl class="dataList plain average">
 				<dt>{lang}wcf.acp.visitor.average{/lang}</dt>
 				<dd>Ø {$countAverage}</dd>
@@ -155,6 +159,10 @@
 			<dl class="dataList plain lastMonth">
 				<dt>{lang}wcf.acp.visitor.lastMonth{/lang}</dt>
 				<dd>{$countLastMonth}</dd>
+			</dl>
+			<dl class="dataList plain lastYear">
+				<dt>{lang}wcf.acp.visitor.lastYear{/lang}</dt>
+				<dd>{$countLastYear}</dd>
 			</dl>
 			<dl class="dataList plain total">
 				<dt>{lang}wcf.acp.visitor.total{/lang}</dt>

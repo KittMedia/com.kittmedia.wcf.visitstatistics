@@ -34,8 +34,10 @@ class VisitStatisticsTypeCondition extends AbstractSingleFieldCondition implemen
 		'average',
 		'lastMonth',
 		'lastWeek',
+		'lastYear',
 		'thisMonth',
 		'thisWeek',
+		'thisYear',
 		'today',
 		'total',
 		'yesterday'

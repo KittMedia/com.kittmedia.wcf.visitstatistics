@@ -24,6 +24,14 @@
 			<dt>{lang}wcf.visitor.visits.lastMonth{/lang}</dt>
 			<dd>{$countLastMonth}</dd>
 		{/if}
+		{if !$hideThisYear}
+			<dt>{lang}wcf.visitor.visits.thisYear{/lang}</dt>
+			<dd>{$countThisYear}</dd>
+		{/if}
+		{if !$hideLastYear}
+			<dt>{lang}wcf.visitor.visits.lastYear{/lang}</dt>
+			<dd>{$countLastYear}</dd>
+		{/if}
 		{if !$hideAverage}
 			<dt>{lang}wcf.visitor.visits.average{/lang}</dt>
 			<dd>{$countAverage} {lang}wcf.visitor.visits.average.perDay{/lang}</dd>
@@ -43,6 +51,8 @@
 		{if !$hideLastWeek}<li>{$countLastWeek} {lang}wcf.visitor.visits.lastWeek{/lang}</li>{/if}
 		{if !$hideThisMonth}<li>{$countThisMonth} {lang}wcf.visitor.visits.thisMonth{/lang}</li>{/if}
 		{if !$hideLastMonth}<li>{$countLastMonth} {lang}wcf.visitor.visits.lastMonth{/lang}</li>{/if}
+		{if !$hideThisYear}<li>{$countThisYear} {lang}wcf.visitor.visits.thisYear{/lang}</li>{/if}
+		{if !$hideLastYear}<li>{$countLastYear} {lang}wcf.visitor.visits.lastYear{/lang}</li>{/if}
 		{if !$hideAverage}<li>Ø {$countAverage} {lang}wcf.visitor.visits.average.perDay{/lang}</li>{/if}
 		{if !$hideTotal}<li>{$countTotal} {lang}wcf.visitor.visits.total{/lang}</li>{/if}
 	</ul>
