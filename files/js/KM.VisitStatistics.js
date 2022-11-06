@@ -26,7 +26,8 @@ KM.VisitStatistics = Class.extend({
 			data: {
 				actionName: 'track',
 				className: 'wcf\\system\\visitor\\VisitorHandler',
-				parameters: parameters
+				parameters: parameters,
+				showLoadingOverlay: false
 			},
 			url: 'index.php/AJAXInvoke/?t=' + SECURITY_TOKEN + SID_ARG_2ND
 		});
