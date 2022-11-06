@@ -36,7 +36,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 	/**
 	 * @inheritDoc
 	 */
-	public $allowGuestAccess = true;
+	public $allowGuestAccess = ['track'];
 	
 	/**
 	 * @inheritDoc
