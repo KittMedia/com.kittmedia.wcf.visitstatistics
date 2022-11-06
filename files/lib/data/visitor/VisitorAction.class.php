@@ -5,10 +5,17 @@ use DateTimeZone;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\UserInputException;
+use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
+use wcf\util\StringUtil;
+use function html_entity_decode;
+use function parse_url;
 use function preg_match;
+use function preg_replace;
+use function str_replace;
 use function strtotime;
+use const MODULE_USER_VISITOR;
 use const TIME_NOW;
 use const TIMEZONE;
 
@@ -24,6 +31,13 @@ use const TIMEZONE;
  * @method	Visitor			getSingleObject() 
  */
 class VisitorAction extends AbstractDatabaseObjectAction {
+	const REGEX_FILTER_HTML = '/\<\w[^<>]*?\>([^<>]+?)\<\/\w+?\>?|\<\/\w+?\>/';
+	
+	/**
+	 * @inheritDoc
+	 */
+	public $allowGuestAccess = true;
+	
 	/**
 	 * @inheritDoc
 	 */
@@ -168,6 +182,52 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 	}
 	
 	/**
+	 * Add a tracking entry.
+	 * 
+	 * @since	1.3.0
+	 */
+	public function track() {
+		if (!MODULE_USER_VISITOR) {
+			return;
+		}
+		
+		// get host
+		if (WCF::getActivePath() !== null) {
+			$urlParts = parse_url(WCF::getActivePath());
+			$host = $urlParts['scheme'] . '://' . $urlParts['host'];
+		}
+		else {
+			$host = WCF::getActiveApplication()->domainName;
+		}
+		
+		// get proper request URI
+		if ($this->parameters['hideURL'] === 'true') {
+			$requestURI = '';
+		}
+		else {
+			$requestURI = str_replace($host, '', $this->parameters['requestURL']);
+			
+			// convert to UTF-8
+			if (!StringUtil::isUTF8($requestURI)) {
+				$requestURI = mb_convert_encoding($requestURI, 'UTF-8');
+			}
+		}
+		
+		(new VisitorAction([], 'create', [
+			'data' => [
+				'requestURI' => StringUtil::truncate($requestURI, 191),
+				'title' => StringUtil::truncate(html_entity_decode(preg_replace(self::REGEX_FILTER_HTML, "$1", $this->parameters['title'])), 255),
+				'host' => StringUtil::truncate($host, 255),
+				'isRegistered' => WCF::getSession()->userID ? 1 : 0,
+				'languageID' => (!empty(WCF::getLanguage()->getObjectID()) ? WCF::getLanguage()->getObjectID() : LanguageFactory::getInstance()->getDefaultLanguageID()),
+				'pageID' => $this->parameters['pageID'] ?: null,
+				'pageObjectID' => $this->parameters['pageObjectID'] ?: null,
+				'time' => (DateUtil::getDateTimeByTimestamp(TIME_NOW))->setTimezone(new DateTimeZone(TIMEZONE))->getTimestamp()
+			]
+		]))->executeAction();
+	}
+	
+	/**
 	 * Validates the getData action.
 	 */
 	public function validateGetData() {
@@ -193,4 +253,11 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			throw new UserInputException('endDate');
 		}
 	}
+	
+	/**
+	 * Validates the track action.
+	 * 
+	 * @since	1.3.0
+	 */
+	public function validateTrack() {}
 }
