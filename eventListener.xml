@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <data xmlns="https://www.woltlab.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://www.woltlab.com https://www.woltlab.com/XSD/tornado/eventListener.xsd">
 	<import>
-		<eventlistener name="visitCounterUser">
-			<environment>user</environment>
-			<eventclassname>wcf\system\template\TemplateEngine</eventclassname>
-			<eventname>afterDisplay</eventname>
-			<listenerclassname>wcf\system\event\listener\VisitorListener</listenerclassname>
-		</eventlistener>
 		<eventlistener name="visitDailyCleanupAdmin">
 			<environment>admin</environment>
 			<eventclassname>wcf\system\cronjob\DailyCleanUpCronjob</eventclassname>
@@ -19,5 +13,20 @@
 			<eventname>execute</eventname>
 			<listenerclassname>wcf\system\event\listener\VisitStatisticsDailyCleanUpCronjobListener</listenerclassname>
 		</eventlistener>
+		<eventlistener name="visitStatisticsVariables">
+			<environment>user</environment>
+			<eventclassname>wcf\system\template\TemplateEngine</eventclassname>
+			<eventname>beforeDisplay</eventname>
+			<listenerclassname>wcf\system\event\listener\VisitStatisticsVariablesListener</listenerclassname>
+		</eventlistener>
 	</import>
+	
+	<delete>
+		<eventlistener name="visitCounterUser">
+			<environment>user</environment>
+			<eventclassname>wcf\system\template\TemplateEngine</eventclassname>
+			<eventname>afterDisplay</eventname>
+			<listenerclassname>wcf\system\event\listener\VisitorListener</listenerclassname>
+		</eventlistener>
+	</delete>
 </data>
