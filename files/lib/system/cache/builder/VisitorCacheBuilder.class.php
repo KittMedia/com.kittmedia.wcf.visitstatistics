@@ -120,6 +120,8 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	
 	/**
 	 * Calculate statistics for last year.
+	 * 
+	 * @since	1.3.0
 	 */
 	protected function calculateLastYearStatistics() {
 		// get last year's count
@@ -162,6 +164,8 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	
 	/**
 	 * Calculate statistics for this year.
+	 * 
+	 * @since	1.3.0
 	 */
 	protected function calculateThisYearStatistics() {
 		// get this year's count
