@@ -218,7 +218,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				'requestURI' => StringUtil::truncate($requestURI, 191),
 				'title' => StringUtil::truncate(html_entity_decode(preg_replace(self::REGEX_FILTER_HTML, "$1", $this->parameters['title'])), 255),
 				'host' => StringUtil::truncate($host, 255),
-				'isRegistered' => WCF::getSession()->userID ? 1 : 0,
+				'isRegistered' => (int) (bool) WCF::getUser()->getObjectID(),
 				'languageID' => (!empty(WCF::getLanguage()->getObjectID()) ? WCF::getLanguage()->getObjectID() : LanguageFactory::getInstance()->getDefaultLanguageID()),
 				'pageID' => $this->parameters['pageID'] ?: null,
 				'pageObjectID' => $this->parameters['pageObjectID'] ?: null,
