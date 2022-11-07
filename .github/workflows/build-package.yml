@@ -19,7 +19,7 @@ jobs:
           known_hosts: ${{ secrets.KNOWN_HOSTS }}
       # Transfer file to remote server
       - run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "mkdir -p ${{ secrets.REMOTE_PATH_BASE }}/${{ github.event.repository.name }}/${{ env.CUSTOM_REF }}"
-      - run: scp ${{ github.event.repository.name }}.tar.gz ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:${{ secrets.REMOTE_PATH_BASE }}/${{ github.event.repository.name }}/${{ github.sha }}
+      - run: scp ${{ github.event.repository.name }}.tar.gz ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:${{ secrets.REMOTE_PATH_BASE }}/${{ github.event.repository.name }}/${{ env.CUSTOM_REF }}
       - uses: actions/upload-artifact@v2
         with:
           name: ${{ github.event.repository.name }}.tar.gz
