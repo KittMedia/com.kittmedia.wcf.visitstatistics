@@ -3,6 +3,8 @@ namespace wcf\system\event\listener;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
+use function array_filter;
+use function array_map;
 use function explode;
 use function implode;
 use function preg_replace;
@@ -17,7 +19,7 @@ use function preg_replace;
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  */
-class VisitStatisticsVariablesListener implements IParameterizedEventListener {
+final class VisitStatisticsVariablesListener implements IParameterizedEventListener {
 	/**
 	 * @inheritDoc
 	 */
@@ -38,20 +40,18 @@ class VisitStatisticsVariablesListener implements IParameterizedEventListener {
 	 * @return	string
 	 */
 	private function removeQueryParameters($requestURI) {
-		$parts = explode('&', $requestURI);
-		
-		foreach ($parts as $key => &$part) {
+		$parts = array_filter(array_map(function($part) {
 			if (
 				StringUtil::startsWith($part, 's=')
 				|| StringUtil::startsWith($part, '?s=')
 				|| StringUtil::startsWith($part, 't=')
 				|| StringUtil::startsWith($part, '?t=')
 			) {
-				unset($parts[$key]);
+				return false;
 			}
 			
-			$part = preg_replace('/(\?|&)(s|t)\=([^&?]+)/', '', $part);
-		}
+			return preg_replace('/(\?|&)(s|t)\=([^&?]+)/', '', $part);
+		}, explode('&', $requestURI)));
 		
 		return implode('&', $parts);
 	}

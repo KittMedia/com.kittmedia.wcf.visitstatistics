@@ -18,7 +18,7 @@ use const WCF_N;
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  */
-class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventListener {
+final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterizedEventListener {
 	const DELETE_AFTER = 7;
 	
 	/**

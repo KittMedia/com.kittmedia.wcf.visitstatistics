@@ -9,8 +9,8 @@ use wcf\system\language\LanguageFactory;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
 use wcf\util\StringUtil;
+use wcf\util\Url;
 use function html_entity_decode;
-use function parse_url;
 use function preg_match;
 use function preg_replace;
 use function str_replace;
@@ -193,7 +193,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		
 		// get host
 		if (WCF::getActivePath() !== null) {
-			$urlParts = parse_url(WCF::getActivePath());
+			$urlParts = Url::parse(WCF::getActivePath());
 			$host = $urlParts['scheme'] . '://' . $urlParts['host'];
 		}
 		else {
@@ -209,7 +209,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			
 			// convert to UTF-8
 			if (!StringUtil::isUTF8($requestURI)) {
-				$requestURI = mb_convert_encoding($requestURI, 'UTF-8');
+				$requestURI = mb_convert_encoding($requestURI, 'UTF-8', 'UTF-8');
 			}
 		}
 		
@@ -222,7 +222,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				'languageID' => (!empty(WCF::getLanguage()->getObjectID()) ? WCF::getLanguage()->getObjectID() : LanguageFactory::getInstance()->getDefaultLanguageID()),
 				'pageID' => $this->parameters['pageID'] ?: null,
 				'pageObjectID' => $this->parameters['pageObjectID'] ?: null,
-				'time' => (DateUtil::getDateTimeByTimestamp(TIME_NOW))->setTimezone(new DateTimeZone(TIMEZONE))->getTimestamp()
+				'time' => TIME_NOW
 			]
 		]))->executeAction();
 	}
