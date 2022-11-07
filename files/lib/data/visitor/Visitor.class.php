@@ -58,7 +58,7 @@ class Visitor extends DatabaseObject {
 	 */
 	public static function hideTitle() {
 		// hide title of conversations
-		if (PackageCache::getInstance()->getPackageID('com.woltlab.wcf.conversation') !== null && WCF::getActivePage()->controller === ConversationPage::class) {
+		if (PackageCache::getInstance()->getPackageID('com.woltlab.wcf.conversation') !== null && WCF::getActivePage() && WCF::getActivePage()->controller === ConversationPage::class) {
 			return true;
 		}
 		
