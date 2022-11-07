@@ -2,7 +2,7 @@
 	<script data-relocate="true" async>
 		require(['KittMedia/VisitStatistics/Track'], function(Track) {
 			Track.init({
-				requestURL: '{if $canonicalURL}{$canonicalURL}{else}{$visitStatisticsRequestURL}{/if}',
+				requestURL: '{if $canonicalURL|isset}{$canonicalURL}{else}{$visitStatisticsRequestURL}{/if}',
 				title: '{if $visitStatisticsHideTitle}{lang}wcf.visitor.hidden{/lang}{else}{if $pageTitle}{@$pageTitle}{/if}{/if}',
 				pageID: {$visitStatisticsPageID},
 				pageObjectID: {$visitStatisticsPageObjectID},
