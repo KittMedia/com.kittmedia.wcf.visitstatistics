@@ -2,6 +2,7 @@
 namespace wcf\data\visitor;
 use DateTime;
 use DateTimeZone;
+use hisorange\BrowserDetect\Parser;
 use wcf\data\AbstractDatabaseObjectAction;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\UserInputException;
@@ -213,6 +214,9 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			}
 		}
 		
+		require_once __DIR__ . '/../../system/api/browser-detect/autoload.php';
+		$browser = (new Parser())->detect();
+		
 		(new VisitorAction([], 'create', [
 			'data' => [
 				'requestURI' => StringUtil::truncate($requestURI, 191),
@@ -222,7 +226,11 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				'languageID' => (!empty(WCF::getLanguage()->getObjectID()) ? WCF::getLanguage()->getObjectID() : LanguageFactory::getInstance()->getDefaultLanguageID()),
 				'pageID' => $this->parameters['pageID'] ?: null,
 				'pageObjectID' => $this->parameters['pageObjectID'] ?: null,
-				'time' => TIME_NOW
+				'time' => TIME_NOW,
+				'browserName' => $browser->browserFamily(),
+				'browserVersion' => $browser->browserVersionMajor(),
+				'osName' => $browser->platformFamily(),
+				'osVersion' => $browser->platformVersionMajor()
 			]
 		]))->executeAction();
 	}

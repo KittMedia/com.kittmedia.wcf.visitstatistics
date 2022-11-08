@@ -9,6 +9,10 @@ CREATE TABLE wcf1_visitor (
 	pageID		INT(10)			DEFAULT NULL,
 	pageObjectID	INT(10)			DEFAULT NULL,
 	time		INT(10)			NOT NULL,
+	browserName	VARCHAR(255)		NOT NULL,
+	browserVersion	INT(10)			DEFAULT NULL,
+	osName		VARCHAR(255)		NOT NULL,
+	osVersion	INT(10)			DEFAULT NULL,
 	
 	KEY (time)
 );

@@ -1,0 +1,8 @@
+{
+    "config": {
+        "vendor-dir": "files/lib/system/api/browser-detect"
+    },
+    "require": {
+        "hisorange/browser-detect": "^4.5"
+    }
+}
