@@ -6,6 +6,8 @@ use DateTimeZone;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
+use function array_map;
+use function serialize;
 use const TIME_NOW;
 use const TIMEZONE;
 use const WCF_N;
@@ -122,8 +124,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 		// delete old stats of the last 7 days
 		$this->deleteOldDailyStats($day);
 		
-		// get time zone
-		$sql = "INSERT IGNORE INTO	wcf".WCF_N."_visitor_daily
+		$sql = "INSERT IGNORE INTO	".Visitor::getDatabaseTableName()."_daily
 						(date, counter, isRegistered)
 			SELECT			CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d'), @@SESSION.time_zone, ?) AS date,
 						COUNT(*) AS counter,
@@ -136,6 +137,54 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 			$day->getTimestamp(),
 			$yesterday->getTimestamp()
 		]);
+		
+		// get system data for every day
+		$sql = "SELECT	browserName, browserVersion, isRegistered, osName, osVersion, CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d'), @@SESSION.time_zone, ?) AS date
+			FROM	".Visitor::getDatabaseTableName()."
+			WHERE	time >= ?";
+		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement->execute([
+			$day->format('P'),
+			$day->getTimestamp()
+		]);
+		$systemData = $statement->fetchAll();
+		$dayData = [];
+		$condition = '';
+		$values = [];
+		
+		// cumulate data by day and guest/registered users
+		foreach ($systemData as $item) {
+			if (empty($item['browserName'])) {
+				continue;
+			}
+			
+			if (empty($dayData[$item['date']][$item['isRegistered']][$item['browserName'] . ' ' . $item['browserVersion']])) {
+				$dayData[$item['date']][$item['isRegistered']][$item['browserName'] . ' ' . $item['browserVersion']] = 1;
+				$dayData[$item['date']][$item['isRegistered']][$item['osName'] . ' ' . $item['osVersion']] = 1;
+			}
+			else {
+				$dayData[$item['date']][$item['isRegistered']][$item['browserName'] . ' ' . $item['browserVersion']]++;
+				$dayData[$item['date']][$item['isRegistered']][$item['osName'] . ' ' . $item['osVersion']]++;
+			}
+		}
+		
+		// set the SQL conditions
+		foreach ($dayData as $date => $data) {
+			foreach ($data as $isRegistered => $dataPart) {
+				if (empty($condition)) {
+					$condition .= ' SET additionalData = CASE' . PHP_EOL;
+				}
+				
+				$condition .= ' WHEN date = ? AND isRegistered = ? THEN ?' . PHP_EOL;
+				$values[] = $date;
+				$values[] = $isRegistered;
+				$values[] = serialize($dataPart);
+			}
+		}
+		
+		$sql = "UPDATE	".Visitor::getDatabaseTableName()."_daily" . $condition . " END";
+		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement->execute($values);
 	}
 	
 	/**

@@ -230,7 +230,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				'browserName' => $browser->browserFamily(),
 				'browserVersion' => $browser->browserVersionMajor(),
 				'osName' => $browser->platformFamily(),
-				'osVersion' => $browser->platformVersionMajor()
+				'osVersion' => $browser->platformVersionMajor() . '.' . $browser->platformVersionMinor()
 			]
 		]))->executeAction();
 	}

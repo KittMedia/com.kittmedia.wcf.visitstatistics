@@ -23,6 +23,7 @@ CREATE TABLE wcf1_visitor_daily (
 	date		DATE		NOT NULL,
 	counter		INT(10)		NOT NULL DEFAULT 0,
 	isRegistered	TINYINT(1)	NOT NULL DEFAULT 0,
+	additionalData	MEDIUMTEXT	DEFAULT NULL,
 	
 	UNIQUE KEY (date, isRegistered)
 );

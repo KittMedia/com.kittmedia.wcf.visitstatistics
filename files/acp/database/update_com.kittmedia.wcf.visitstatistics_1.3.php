@@ -1,5 +1,8 @@
 <?php
+
+use wcf\system\database\table\column\FloatDatabaseTableColumn;
 use wcf\system\database\table\column\IntDatabaseTableColumn;
+use wcf\system\database\table\column\MediumtextDatabaseTableColumn;
 use wcf\system\database\table\column\VarcharDatabaseTableColumn;
 use wcf\system\database\table\PartialDatabaseTable;
 
@@ -22,7 +25,10 @@ return [
 			VarcharDatabaseTableColumn::create('osName')
 				->length(255)
 				->notNull(),
-			IntDatabaseTableColumn::create('osVersion')
-				->length(10)
+			FloatDatabaseTableColumn::create('osVersion')
+		]),
+	PartialDatabaseTable::create('wcf1_visitor_daily')
+		->columns([
+			MediumtextDatabaseTableColumn::create('additionalData')
 		]),
 ];
