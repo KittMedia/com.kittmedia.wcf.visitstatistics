@@ -8,7 +8,7 @@
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  */
-define(['Ajax', 'Core'], function(Ajax, Core) {
+define(['Ajax'], function(Ajax) {
 	"use strict";
 	
 	return {
@@ -18,22 +18,14 @@ define(['Ajax', 'Core'], function(Ajax, Core) {
 		 * @param	{object}	parameters
 		 */
 		init: function(parameters) {
-			Ajax.api(this, {
-				parameters: parameters,
-				showLoadingOverlay: false
-			});
-		},
-		
-		/**
-		 * @inheritDoc
-		 */
-		_ajaxSetup: function() {
-			return {
+			Ajax.apiOnce({
 				data: {
 					actionName: 'track',
 					className: 'wcf\\data\\visitor\\VisitorAction',
-				}
-			}
+					parameters: parameters,
+				},
+				silent: true
+			});
 		}
 	}
 });
