@@ -1,5 +1,6 @@
 <?php
 namespace wcf\system\event\listener;
+use Jaybizzle\CrawlerDetect\CrawlerDetect;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use wcf\util\StringUtil;
@@ -24,9 +25,12 @@ final class VisitStatisticsVariablesListener implements IParameterizedEventListe
 	 * @inheritDoc
 	 */
 	public function execute($eventObj, $className, $eventName, array &$parameters) {
+		require_once __DIR__ . '/../../api/visitStatistics/autoload.php';
+		
 		WCF::getTPL()->assign([
 			'visitStatisticsRequestURL' => $this->removeQueryParameters($_SERVER['REQUEST_URI']),
 			'visitStatisticsHideTitle' => Visitor::hideTitle(),
+			'visitStatisticsIsCrawler' => (new CrawlerDetect())->isCrawler(),
 			'visitStatisticsPageID' => (int) (!empty(WCF::getActivePage()->pageID) ? WCF::getActivePage()->pageID : null),
 			'visitStatisticsPageObjectID' => (int) (!empty($_REQUEST['id']) ? $_REQUEST['id'] : null),
 			'visitStatisticsSkipTracking' => Visitor::skipTracking(),

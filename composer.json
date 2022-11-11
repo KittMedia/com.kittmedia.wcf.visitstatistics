@@ -1,8 +1,9 @@
 {
     "config": {
-        "vendor-dir": "files/lib/system/api/browser-detect"
+        "vendor-dir": "files/lib/system/api/visitStatistics"
     },
     "require": {
-        "hisorange/browser-detect": "^4.5"
+        "hisorange/browser-detect": "^4.5",
+        "jaybizzle/crawler-detect": "^1.2"
     }
 }

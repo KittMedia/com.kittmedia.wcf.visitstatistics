@@ -1,4 +1,4 @@
-{if MODULE_USER_VISITOR && $__wcf->session->getPermission('user.profile.visitor.include')}
+{if MODULE_USER_VISITOR && $__wcf->session->getPermission('user.profile.visitor.include') && !$visitStatisticsIsCrawler}
 	<script data-relocate="true" async>
 		require(['KittMedia/VisitStatistics/Track'], function(Track) {
 			Track.init({

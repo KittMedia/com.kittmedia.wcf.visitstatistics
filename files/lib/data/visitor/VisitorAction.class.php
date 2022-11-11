@@ -214,7 +214,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			}
 		}
 		
-		require_once __DIR__ . '/../../system/api/browser-detect/autoload.php';
+		require_once __DIR__ . '/../../system/api/visitStatistics/autoload.php';
 		$browser = (new Parser())->detect();
 		
 		(new VisitorAction([], 'create', [
