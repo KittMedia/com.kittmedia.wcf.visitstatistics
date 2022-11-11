@@ -6,7 +6,6 @@ use DateTimeZone;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
-use function array_map;
 use function serialize;
 use const TIME_NOW;
 use const TIMEZONE;
