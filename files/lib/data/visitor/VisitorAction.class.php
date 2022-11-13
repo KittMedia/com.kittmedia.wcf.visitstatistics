@@ -89,7 +89,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$sql = "SELECT		counter, date, isRegistered, additionalData
 			FROM		" . Visitor::getDatabaseTableName() . "_daily
 			" . $conditionBuilder . "
-			GROUP BY	isRegistered, date, counter";
+			GROUP BY	isRegistered, date, counter, additionalData";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute($conditionBuilder->getParameters());
 		
