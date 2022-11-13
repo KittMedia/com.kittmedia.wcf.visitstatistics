@@ -18,15 +18,19 @@
 	
 	<category name="wcf.acp.visitor">
 		<item name="wcf.acp.visitor.average"><![CDATA[Durchschnitt]]></item>
+		<item name="wcf.acp.visitor.browsers"><![CDATA[Browser]]></item>
 		<item name="wcf.acp.visitor.count"><![CDATA[Anzahl]]></item>
 		<item name="wcf.acp.visitor.language"><![CDATA[Sprache]]></item>
 		<item name="wcf.acp.visitor.lastMonth"><![CDATA[Letzten Monat]]></item>
 		<item name="wcf.acp.visitor.lastUpdated"><![CDATA[Letzte Aktualisierung]]></item>
 		<item name="wcf.acp.visitor.lastWeek"><![CDATA[Letzte Woche]]></item>
 		<item name="wcf.acp.visitor.lastYear"><![CDATA[Letztes Jahr]]></item>
+		<item name="wcf.acp.visitor.name"><![CDATA[Name]]></item>
+		<item name="wcf.acp.visitor.noData"><![CDATA[Für diesen Zeitraum gibt es keine Daten.]]></item>
 		<item name="wcf.acp.visitor.noVisit.all"><![CDATA[Es gibt noch keine aufgerufene Seite.]]></item>
 		<item name="wcf.acp.visitor.noVisit.today"><![CDATA[Es gibt heute noch keine aufgerufene Seite.]]></item>
 		<item name="wcf.acp.visitor.overview.title"><![CDATA[Übersicht]]></item>
+		<item name="wcf.acp.visitor.percentage"><![CDATA[Prozentual]]></item>
 		<item name="wcf.acp.visitor.request"><![CDATA[Anfrage]]></item>
 		<item name="wcf.acp.visitor.settings.title"><![CDATA[Einstellungen]]></item>
 		<item name="wcf.acp.visitor.stat.display"><![CDATA[Darstellung]]></item>
@@ -36,6 +40,7 @@
 		<item name="wcf.acp.visitor.stat.period.end"><![CDATA[bis]]></item>
 		<item name="wcf.acp.visitor.stat.period.start"><![CDATA[von]]></item>
 		<item name="wcf.acp.visitor.statisticType"><![CDATA[Folgende Statistik-Typen nicht anzeigen]]></item>
+		<item name="wcf.acp.visitor.systems"><![CDATA[Systeme]]></item>
 		<item name="wcf.acp.visitor.thisMonth"><![CDATA[Diesen Monat]]></item>
 		<item name="wcf.acp.visitor.thisWeek"><![CDATA[Diese Woche]]></item>
 		<item name="wcf.acp.visitor.thisYear"><![CDATA[Dieses Jahr]]></item>
@@ -53,6 +58,7 @@
 	<category name="wcf.visitor">
 		<item name="wcf.visitor.hidden"><![CDATA[Versteckter Titel]]></item>
 		<item name="wcf.visitor.lastUpdated"><![CDATA[Letzte Aktualisierung]]></item>
+		<item name="wcf.visitor.unknown"><![CDATA[Unbekannt]]></item>
 		<item name="wcf.visitor.visits.average"><![CDATA[Durchschnitt]]></item>
 		<item name="wcf.visitor.visits.average.perDay"><![CDATA[pro Tag]]></item>
 		<item name="wcf.visitor.visits.lastMonth"><![CDATA[Letzten Monat]]></item>

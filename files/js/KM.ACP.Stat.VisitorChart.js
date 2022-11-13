@@ -47,8 +47,8 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 		var $timeFormat = WCF.Language.get('wcf.acp.stat.timeFormat.daily');
 		var $data = [ ];
 		
-		for (var $key in data.returnValues) {
-			var $row = data.returnValues[$key];
+		for (var $key in data.returnValues.visitors) {
+			var $row = data.returnValues.visitors[$key];
 			
 			for (var $i = 0; $i < $row.data.length; $i++) {
 				$row.data[$i][0] *= 1000;
@@ -113,5 +113,85 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 		if (!$data.length) {
 			$('#chart').append('<p style="position: absolute; font-size: 1.2rem; text-align: center; top: 50%; margin-top: -20px; width: 100%">' + WCF.Language.get('wcf.acp.stat.noData') + '</p>');
 		}
+		
+		var browserSection = document.getElementById('browserStats');
+		var systemSection = document.getElementById('systemStats');
+		
+		this._generateSystemDataTable(browserSection, data.returnValues.browsers);
+		this._generateSystemDataTable(systemSection, data.returnValues.systems);
+	},
+	
+	/**
+	 * Generate a new table for system data.
+	 * 
+	 * @param	{HTMLElement}	element
+	 * @param	{Array}		data
+	 * @private
+	 */
+	_generateSystemDataTable: function(element, data) {
+		const oldInfo = element.querySelector('.info');
+		const oldTable = element.querySelector('table');
+		
+		if (oldInfo) {
+			oldInfo.remove();
+		}
+		
+		if (oldTable) {
+			oldTable.remove();
+		}
+		
+		if (!data.length) {
+			const info = document.createElement('p');
+			
+			info.classList.add('info');
+			info.textContent = WCF.Language.get('wcf.acp.visitor.noData');
+			element.appendChild(info);
+			
+			return;
+		}
+		
+		const table = document.createElement('table');
+		const thead = document.createElement('thead');
+		const tbody = document.createElement('tbody');
+		const theadRow = document.createElement('tr');
+		const theadColumnCount = document.createElement('th');
+		const theadColumnName = document.createElement('th');
+		const theadColumnPercentage = document.createElement('th');
+		
+		theadColumnCount.classList.add('columnDigits');
+		theadColumnCount.width = 100;
+		theadColumnCount.textContent = WCF.Language.get('wcf.acp.visitor.count');
+		theadColumnName.textContent = WCF.Language.get('wcf.acp.visitor.name');
+		theadColumnPercentage.classList.add('columnDigits');
+		theadColumnPercentage.classList.add('columnPercentage');
+		theadColumnPercentage.width = 100;
+		theadColumnPercentage.textContent = WCF.Language.get('wcf.acp.visitor.percentage');
+		theadRow.appendChild(theadColumnName);
+		theadRow.appendChild(theadColumnPercentage);
+		theadRow.appendChild(theadColumnCount);
+		thead.appendChild(theadRow);
+		table.appendChild(thead);
+		table.classList.add('table');
+		
+		for (const row of data) {
+			const tableRow = document.createElement('tr');
+			const columnName = document.createElement('td');
+			const columnPercentage = document.createElement('td');
+			const columnValue = document.createElement('td');
+			
+			columnName.textContent = row.label;
+			columnPercentage.classList.add('columnDigits');
+			columnPercentage.textContent = row.percentage + ' %';
+			columnPercentage.textContent = columnPercentage.textContent.replace('.', WCF.Language.get('wcf.global.decimalPoint'));
+			columnValue.classList.add('columnDigits');
+			columnValue.textContent = row.data;
+			tableRow.appendChild(columnName);
+			tableRow.appendChild(columnPercentage);
+			tableRow.appendChild(columnValue);
+			tbody.appendChild(tableRow);
+		}
+		
+		table.appendChild(tbody);
+		element.appendChild(table);
 	}
 });

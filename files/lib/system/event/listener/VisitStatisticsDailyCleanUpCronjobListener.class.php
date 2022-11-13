@@ -151,19 +151,38 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 		$condition = '';
 		$values = [];
 		
-		// cumulate data by day and guest/registered users
+		// cumulate data by day and guests/registered users
 		foreach ($systemData as $item) {
-			if (empty($item['browserName'])) {
-				continue;
+			if (!empty($item['browserName'])) {
+				if ($item['browserName'] === 'Unknown') {
+					$name = WCF::getLanguage()->get('wcf.visitor.unknown');
+				}
+				else {
+					$name = $item['browserName'] . ' ' . $item['browserVersion'];
+				}
+				
+				if (empty($dayData[$item['date']][$item['isRegistered']]['browsers'][$name])) {
+					$dayData[$item['date']][$item['isRegistered']]['browsers'][$name] = 1;
+				}
+				else {
+					$dayData[$item['date']][$item['isRegistered']]['browsers'][$name]++;
+				}
 			}
 			
-			if (empty($dayData[$item['date']][$item['isRegistered']][$item['browserName'] . ' ' . $item['browserVersion']])) {
-				$dayData[$item['date']][$item['isRegistered']][$item['browserName'] . ' ' . $item['browserVersion']] = 1;
-				$dayData[$item['date']][$item['isRegistered']][$item['osName'] . ' ' . $item['osVersion']] = 1;
-			}
-			else {
-				$dayData[$item['date']][$item['isRegistered']][$item['browserName'] . ' ' . $item['browserVersion']]++;
-				$dayData[$item['date']][$item['isRegistered']][$item['osName'] . ' ' . $item['osVersion']]++;
+			if (!empty($item['osName'])) {
+				if ($item['osName'] === 'Unknown') {
+					$name = WCF::getLanguage()->get('wcf.visitor.unknown');
+				}
+				else {
+					$name = $item['osName'] . ' ' . $item['osVersion'];
+				}
+				
+				if (empty($dayData[$item['date']][$item['isRegistered']]['systems'][$name])) {
+					$dayData[$item['date']][$item['isRegistered']]['systems'][$name] = 1;
+				}
+				else {
+					$dayData[$item['date']][$item['isRegistered']]['systems'][$name]++;
+				}
 			}
 		}
 		

@@ -14,8 +14,12 @@ use wcf\util\Url;
 use function html_entity_decode;
 use function preg_match;
 use function preg_replace;
+use function round;
 use function str_replace;
+use function strcmp;
 use function strtotime;
+use function usort;
+use function unserialize;
 use const MODULE_USER_VISITOR;
 use const TIME_NOW;
 use const TIMEZONE;
@@ -77,17 +81,22 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$conditionBuilder->add('date BETWEEN ? AND ?', [$this->parameters['startDate'], $this->parameters['endDate']]);
 		
 		// get data
-		$data = [];
-		$sql = "SELECT		counter, date, isRegistered
+		$data = [
+			'browsers' => [],
+			'systems' => [],
+			'visitors' => []
+		];
+		$sql = "SELECT		counter, date, isRegistered, additionalData
 			FROM		" . Visitor::getDatabaseTableName() . "_daily
 			" . $conditionBuilder . "
 			GROUP BY	isRegistered, date, counter";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute($conditionBuilder->getParameters());
 		
-		$data[1]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.user');
-		$data[2]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.guest');
+		$data['visitors'][1]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.user');
+		$data['visitors'][2]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.guest');
 		$counts = [];
+		$systems = [];
 		
 		while ($row = $statement->fetchArray()) {
 			// to timestamp
@@ -101,11 +110,17 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				$counts[$row['dayTime']] = [];
 			}
 			
+			if (!isset($systems[$row['dayTime']])) {
+				$systems[$row['dayTime']] = [];
+			}
+			
 			if ($row['isRegistered']) {
 				$counts[$row['dayTime']]['user'] = $row['counter'];
+				$systems[$row['dayTime']]['user'] = unserialize($row['additionalData']);
 			}
 			else {
 				$counts[$row['dayTime']]['guest'] = $row['counter'];
+				$systems[$row['dayTime']]['guest'] = unserialize($row['additionalData']);
 			}
 		}
 		
@@ -127,13 +142,18 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		if ( strtotime($this->parameters['endDate']) >= strtotime('today midnight') ) {
 			$sql = "SELECT		COUNT(*) AS counter,
 						DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d') AS date,
-						isRegistered
+						isRegistered,
+						browserName,
+						browserVersion,
+						osName,
+						osVersion
 				FROM		" . Visitor::getDatabaseTableName() . "
 				" . $conditionBuilder . "
-				GROUP BY	isRegistered, date";
+				GROUP BY	isRegistered, date, browserName, browserVersion, osName, osVersion";
 			$statement = WCF::getDB()->prepareStatement($sql);
 			$statement->execute($conditionBuilder->getParameters());
 			$counts[$todayTimestamp] = [];
+			$systems[$todayTimestamp] = [];
 			
 			if ($this->parameters['displayGuests']) {
 				$counts[$todayTimestamp]['guest'] = 0;
@@ -146,38 +166,142 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		
 		while($row = $statement->fetchArray()) {
 			if ($row['isRegistered'] && $this->parameters['displayRegistered']) {
-				$counts[$todayTimestamp]['user'] = $row['counter'];
+				if (!isset($counts[$todayTimestamp]['user'])) {
+					$counts[$todayTimestamp]['user'] = 0;
+				}
+				
+				if (!isset($systems[$todayTimestamp]['user']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']])) {
+					$systems[$todayTimestamp]['user']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']] = 0;
+				}
+				
+				if (!isset($systems[$todayTimestamp]['user']['systems'][$row['osName'] . ' ' . $row['osVersion']])) {
+					$systems[$todayTimestamp]['user']['systems'][$row['osName'] . ' ' . $row['osVersion']] = 0;
+				}
+				
+				$counts[$todayTimestamp]['user'] += $row['counter'];
+				$systems[$todayTimestamp]['user']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']] += $row['counter'];
+				$systems[$todayTimestamp]['user']['systems'][$row['osName'] . ' ' . $row['osVersion']] += $row['counter'];
 			}
 			else if ($this->parameters['displayGuests']) {
-				$counts[$todayTimestamp]['guest'] = $row['counter'];
+				if (!isset($counts[$todayTimestamp]['guest'])) {
+					$counts[$todayTimestamp]['guest'] = 0;
+				}
+				
+				if (!isset($systems[$todayTimestamp]['guest']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']])) {
+					$systems[$todayTimestamp]['guest']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']] = 0;
+				}
+				
+				if (!isset($systems[$todayTimestamp]['guest']['systems'][$row['osName'] . ' ' . $row['osVersion']])) {
+					$systems[$todayTimestamp]['guest']['systems'][$row['osName'] . ' ' . $row['osVersion']] = 0;
+				}
+				
+				$counts[$todayTimestamp]['guest'] += $row['counter'];
+				$systems[$todayTimestamp]['guest']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']] += $row['counter'];
+				$systems[$todayTimestamp]['guest']['systems'][$row['osName'] . ' ' . $row['osVersion']] += $row['counter'];
 			}
 		}
 		
 		// sort data ASC by day
 		ksort($counts);
+		ksort($systems);
 		
-		// separate data for each data
+		// separate data for each date
 		foreach ($counts as $dayTime => $count) {
 			if ($this->parameters['displayRegistered']) {
-				$data[1]['data'][] = [
+				$data['visitors'][1]['data'][] = [
 					$dayTime,
 					$count['user'] ?? 0
 				];
 			}
 			else {
-				unset($data[1]);
+				unset($data['visitors'][1]);
 			}
 			
 			if ($this->parameters['displayGuests']) {
-				$data[2]['data'][] = [
+				$data['visitors'][2]['data'][] = [
 					$dayTime,
 					$count['guest'] ?? 0
 				];
 			}
 			else {
-				unset($data[2]);
+				unset($data['visitors'][2]);
 			}
 		}
+		
+		$overall = 0;
+		
+		foreach ($systems as $dayTime => $userData) {
+			$addCounts = true;
+			
+			foreach ($userData as $systemData) {
+				if (empty($systemData)) {
+					$addCounts = false;
+					
+					continue;
+				}
+				
+				foreach ($systemData as $type => $systemCounts) {
+					foreach ($systemCounts as $system => $count) {
+						if (empty($data[$type][$system])) {
+							$data[$type][$system] = $count;
+						}
+						else {
+							$data[$type][$system] += $count;
+						}
+					}
+				}
+			}
+			
+			if ($addCounts) {
+				if ($this->parameters['displayGuests']) {
+					$overall += $counts[$dayTime]['guest'] ?? 0;
+				}
+				
+				if ($this->parameters['displayRegistered']) {
+					$overall += $counts[$dayTime]['user'] ?? 0;
+				}
+			}
+		}
+		
+		foreach ($systems as $userData) {
+			foreach ($userData as $systemData) {
+				if (empty($systemData)) {
+					continue;
+				}
+				
+				foreach ($systemData as $type => $systemCounts) {
+					foreach ($systemCounts as $system => $count) {
+						if (!isset($data[$type][$system])) {
+							continue;
+						}
+						
+						$data[$type][] = [
+							'data' => $data[$type][$system],
+							'label' => $system,
+							'percentage' => $overall ? round(100 / $overall * $data[$type][$system], 2) : 0
+						];
+						
+						unset($data[$type][$system]);
+					}
+				}
+			}
+		}
+		
+		// sort DESC by data
+		usort($data['browsers'], function($a, $b) {
+			if ($a['data'] === $b['data']) {
+				return strcmp($a['label'], $b['label']);
+			}
+			
+			return $a['data'] < $b['data'];
+		});
+		usort($data['systems'], function($a, $b) {
+			if ($a['data'] === $b['data']) {
+				return strcmp($a['label'], $b['label']);
+			}
+			
+			return $a['data'] < $b['data'];
+		});
 		
 		return $data;
 	}

@@ -10,6 +10,11 @@
 		Language.addObject({
 			'wcf.acp.stat.timeFormat.daily': '{lang}wcf.acp.stat.timeFormat.daily{/lang}',
 			'wcf.acp.stat.noData': '{lang}wcf.acp.stat.noData{/lang}',
+			'wcf.acp.visitor.count': '{lang}wcf.acp.visitor.count{/lang}',
+			'wcf.acp.visitor.name': '{lang}wcf.acp.visitor.name{/lang}',
+			'wcf.acp.visitor.noData': '{lang}wcf.acp.visitor.noData{/lang}',
+			'wcf.acp.visitor.percentage': '{lang}wcf.acp.visitor.percentage{/lang}',
+			'wcf.global.decimalPoint': '{lang}wcf.global.decimalPoint{/lang}'
 		});
 		
 		new KM.ACP.Stat.VisitorChart();
@@ -43,7 +48,6 @@
 	
 	@media (min-width: 768px) {
 		.dataGridList {
-			display: inline-grid;
 			grid-template-columns: repeat(5, auto);
 		}
 		
@@ -196,6 +200,16 @@
 
 <div class="formSubmit">
 	<button class="buttonPrimary" id="visitorStatRefreshButton">{lang}wcf.global.button.refresh{/lang}</button>
+</div>
+
+<div class="section flexSection">
+	<section id="browserStats" class="section">
+		<h2 class="sectionTitle">{lang}wcf.acp.visitor.browsers{/lang}</h2>
+	</section>
+	
+	<section id="systemStats" class="section">
+		<h2 class="sectionTitle">{lang}wcf.acp.visitor.systems{/lang}</h2>
+	</section>
 </div>
 
 <div class="section flexSection">
