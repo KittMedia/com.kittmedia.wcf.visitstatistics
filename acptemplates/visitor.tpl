@@ -13,8 +13,7 @@
 			'wcf.acp.visitor.count': '{lang}wcf.acp.visitor.count{/lang}',
 			'wcf.acp.visitor.name': '{lang}wcf.acp.visitor.name{/lang}',
 			'wcf.acp.visitor.noData': '{lang}wcf.acp.visitor.noData{/lang}',
-			'wcf.acp.visitor.percentage': '{lang}wcf.acp.visitor.percentage{/lang}',
-			'wcf.global.decimalPoint': '{lang}wcf.global.decimalPoint{/lang}'
+			'wcf.acp.visitor.percentage': '{lang}wcf.acp.visitor.percentage{/lang}'
 		});
 		
 		new KM.ACP.Stat.VisitorChart();

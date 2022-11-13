@@ -182,7 +182,6 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 			columnName.textContent = row.label;
 			columnPercentage.classList.add('columnDigits');
 			columnPercentage.textContent = row.percentage + ' %';
-			columnPercentage.textContent = columnPercentage.textContent.replace('.', WCF.Language.get('wcf.global.decimalPoint'));
 			columnValue.classList.add('columnDigits');
 			columnValue.textContent = row.data;
 			tableRow.appendChild(columnName);

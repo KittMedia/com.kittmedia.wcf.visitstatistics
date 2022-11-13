@@ -12,6 +12,7 @@ use wcf\util\DateUtil;
 use wcf\util\StringUtil;
 use wcf\util\Url;
 use function html_entity_decode;
+use function number_format;
 use function preg_match;
 use function preg_replace;
 use function round;
@@ -278,7 +279,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 						$data[$type][] = [
 							'data' => $data[$type][$system],
 							'label' => $system,
-							'percentage' => $overall ? round(100 / $overall * $data[$type][$system], 2) : 0
+							'percentage' => $overall ? number_format(100 / $overall * $data[$type][$system], 2, WCF::getLanguage()->get('wcf.global.decimalPoint'),  WCF::getLanguage()->get('wcf.global.thousandsSeparator')) : 0
 						];
 						
 						unset($data[$type][$system]);
