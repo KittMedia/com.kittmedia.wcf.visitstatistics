@@ -37,7 +37,7 @@
 		<!-- files -->
 		<instruction type="acpTemplate" />
 		<instruction type="file" />
-		<instruction type="sql" />
+		<instruction type="database" run="standalone">acp/database/install_com.kittmedia.wcf.visitstatistics.php</instruction>
 		<instruction type="template" />
 	</instructions>
 	
