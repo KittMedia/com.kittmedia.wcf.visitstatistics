@@ -11,16 +11,15 @@ use wcf\system\WCF;
 use wcf\util\DateUtil;
 use wcf\util\StringUtil;
 use wcf\util\Url;
+use function array_map;
 use function array_slice;
 use function html_entity_decode;
-use function number_format;
 use function preg_match;
 use function preg_replace;
 use function str_replace;
 use function strcmp;
 use function strtotime;
 use function usort;
-use function unserialize;
 use const MODULE_USER_VISITOR;
 use const TIME_NOW;
 use const TIMEZONE;
@@ -287,29 +286,33 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 							$data['browsers'][$browserKey] = [
 								'data' => $system['counter'],
 								'label' => $system['browserName'] . ($system['browserVersion'] > 0 ? ' ' . $system['browserVersion'] : '' ),
-								'percentage' => $overall ? number_format(100 / $overall * $system['counter'], 2, WCF::getLanguage()->get('wcf.global.decimalPoint'), WCF::getLanguage()->get('wcf.global.thousandsSeparator')) : 0
+								'percentage' => $overall ? StringUtil::formatNumeric(100 / $overall * $system['counter']) : 0
 							];
 						}
 						else {
 							$data['browsers'][$browserKey]['data'] += $system['counter'];
-							$data['browsers'][$browserKey]['percentage'] = $overall ? number_format(100 / $overall * $data['browsers'][$browserKey]['data'], 2, WCF::getLanguage()->get('wcf.global.decimalPoint'), WCF::getLanguage()->get('wcf.global.thousandsSeparator')) : 0;
+							$data['browsers'][$browserKey]['percentage'] = $overall ? StringUtil::formatNumeric(100 / $overall * $data['browsers'][$browserKey]['data']) : 0;
 						}
 						
 						if (!isset($data['systems'][$systemKey])) {
 							$data['systems'][$systemKey] = [
 								'data' => $system['counter'],
 								'label' => $system['osName'] . ($system['osVersion'] > 0 ? ' ' . $system['osVersion'] : '' ),
-								'percentage' => $overall ? number_format(100 / $overall * $system['counter'], 2, WCF::getLanguage()->get('wcf.global.decimalPoint'), WCF::getLanguage()->get('wcf.global.thousandsSeparator')) : 0
+								'percentage' => $overall ? StringUtil::formatNumeric(100 / $overall * $system['counter']) : 0
 							];
 						}
 						else {
 							$data['systems'][$systemKey]['data'] += $system['counter'];
-							$data['systems'][$systemKey]['percentage'] = $overall ? number_format(100 / $overall * $data['systems'][$systemKey]['data'], 2, WCF::getLanguage()->get('wcf.global.decimalPoint'), WCF::getLanguage()->get('wcf.global.thousandsSeparator')) : 0;
+							$data['systems'][$systemKey]['percentage'] = $overall ? StringUtil::formatNumeric(100 / $overall * $data['systems'][$systemKey]['data']) : 0;
 						}
 					}
 				}
 			}
 		}
+		
+		// limit output to 15 items
+		$data['browsers'] = array_slice($data['browsers'], 0, 15);
+		$data['systems'] = array_slice($data['systems'], 0, 15);
 		
 		// sort DESC by data
 		usort($data['browsers'], function($a, $b) {
@@ -327,9 +330,17 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			return $a['data'] < $b['data'];
 		});
 		
-		// limit output to 15 items
-		$data['browsers'] = array_slice($data['browsers'], 0, 15);
-		$data['systems'] = array_slice($data['systems'], 0, 15);
+		// format data
+		$data['browsers'] = array_map(function($data) {
+			$data['data'] = StringUtil::formatNumeric($data['data']);
+			
+			return $data;
+		}, $data['browsers']);
+		$data['systems'] = array_map(function($data) {
+			$data['data'] = StringUtil::formatNumeric($data['data']);
+			
+			return $data;
+		}, $data['systems']);
 		
 		return $data;
 	}
