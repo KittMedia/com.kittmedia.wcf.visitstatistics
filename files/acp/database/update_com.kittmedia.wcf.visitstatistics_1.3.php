@@ -3,7 +3,7 @@
 use wcf\system\database\table\column\FloatDatabaseTableColumn;
 use wcf\system\database\table\column\IntDatabaseTableColumn;
 use wcf\system\database\table\column\MediumtextDatabaseTableColumn;
-use wcf\system\database\table\column\VarcharDatabaseTableColumn;
+use wcf\system\database\table\column\NotNullVarchar255DatabaseTableColumn;
 use wcf\system\database\table\PartialDatabaseTable;
 
 /**
@@ -17,14 +17,10 @@ use wcf\system\database\table\PartialDatabaseTable;
 return [
 	PartialDatabaseTable::create('wcf1_visitor')
 		->columns([
-			VarcharDatabaseTableColumn::create('browserName')
-				->length(255)
-				->notNull(),
+			NotNullVarchar255DatabaseTableColumn::create('browserName'),
 			IntDatabaseTableColumn::create('browserVersion')
 				->length(10),
-			VarcharDatabaseTableColumn::create('osName')
-				->length(255)
-				->notNull(),
+			NotNullVarchar255DatabaseTableColumn::create('osName'),
 			FloatDatabaseTableColumn::create('osVersion')
 		]),
 	PartialDatabaseTable::create('wcf1_visitor_daily')
