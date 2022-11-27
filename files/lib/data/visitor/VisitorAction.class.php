@@ -11,11 +11,11 @@ use wcf\system\WCF;
 use wcf\util\DateUtil;
 use wcf\util\StringUtil;
 use wcf\util\Url;
+use function array_slice;
 use function html_entity_decode;
 use function number_format;
 use function preg_match;
 use function preg_replace;
-use function round;
 use function str_replace;
 use function strcmp;
 use function strtotime;
@@ -87,10 +87,10 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			'systems' => [],
 			'visitors' => []
 		];
-		$sql = "SELECT		counter, date, isRegistered, additionalData
+		$sql = "SELECT		counter, date, isRegistered
 			FROM		" . Visitor::getDatabaseTableName() . "_daily
 			" . $conditionBuilder . "
-			GROUP BY	isRegistered, date, counter, additionalData";
+			GROUP BY	isRegistered, date, counter";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute($conditionBuilder->getParameters());
 		
@@ -98,6 +98,10 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$data['visitors'][2]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.guest');
 		$counts = [];
 		$systems = [];
+		$systemsOverall = [
+			'guest' => 0,
+			'user' => 0
+		];
 		
 		while ($row = $statement->fetchArray()) {
 			// to timestamp
@@ -117,11 +121,54 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			
 			if ($row['isRegistered']) {
 				$counts[$row['dayTime']]['user'] = $row['counter'];
-				$systems[$row['dayTime']]['user'] = unserialize($row['additionalData']);
 			}
 			else {
 				$counts[$row['dayTime']]['guest'] = $row['counter'];
-				$systems[$row['dayTime']]['guest'] = unserialize($row['additionalData']);
+			}
+		}
+		
+		$conditionBuilder = new PreparedStatementConditionBuilder();
+		
+		// display only guests
+		if ($this->parameters['displayGuests'] && !$this->parameters['displayRegistered']) {
+			$conditionBuilder->add('isRegistered = ?', [0]);
+		}
+		
+		// display only registered users
+		if (!$this->parameters['displayGuests'] && $this->parameters['displayRegistered']) {
+			$conditionBuilder->add('isRegistered = ?', [1]);
+		}
+		
+		$sql = "SELECT		counter, date, isRegistered, browserName, browserVersion, osName, osVersion
+			FROM		" . Visitor::getDatabaseTableName() . "_daily_system
+			" . $conditionBuilder . "
+			GROUP BY	isRegistered, date, isRegistered, browserName, browserVersion, osName, osVersion, counter";
+		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement->execute($conditionBuilder->getParameters());
+		
+		while ($row = $statement->fetchArray()) {
+			// to timestamp
+			$dayTime = DateTime::createFromFormat( 'Y-m-d', $row['date'] );
+			$dayTime->setTimezone(new DateTimeZone(TIMEZONE));
+			// add timezone offset since it's being used inside JavaScript
+			// where the timestamp represents the current timezone, not GMT
+			$row['dayTime'] = $dayTime->setTime(0, 0)->getTimestamp() + $dayTime->format('Z');
+			$systemData = [
+				'browserName' => $row['browserName'],
+				'browserVersion' => $row['browserVersion'],
+				'osName' => $row['osName'],
+				'osVersion' => $row['osVersion'],
+				'counter' => $row['counter']
+			];
+			$systemsKey = $row['browserName'] . '-' . $row['browserVersion'] . '-' . $row['osName'] . '-' . $row['osVersion'];
+			
+			if ($row['isRegistered']) {
+				$systems[$row['dayTime']]['user']['system'][$systemsKey] = $systemData;
+				$systemsOverall['user'] += $row['counter'];
+			}
+			else {
+				$systems[$row['dayTime']]['guest']['system'][$systemsKey] = $systemData;
+				$systemsOverall['guest'] += $row['counter'];
 			}
 		}
 		
@@ -163,42 +210,36 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			if ($this->parameters['displayRegistered']) {
 				$counts[$todayTimestamp]['user'] = 0;
 			}
-		}
-		
-		while($row = $statement->fetchArray()) {
-			if ($row['isRegistered'] && $this->parameters['displayRegistered']) {
-				if (!isset($counts[$todayTimestamp]['user'])) {
-					$counts[$todayTimestamp]['user'] = 0;
-				}
+			
+			
+			while ($row = $statement->fetchArray()) {
+				$systemsKey = $row['browserName'] . '-' . $row['browserVersion'] . '-' . $row['osName'] . '-' . $row['osVersion'];
+				$todaySystems = [
+					$systemsKey => [
+						'browserName' => $row['browserName'],
+						'browserVersion' => $row['browserVersion'],
+						'osName' => $row['osName'],
+						'osVersion' => $row['osVersion'],
+						'counter' => $row['counter']
+					]
+				];
 				
-				if (!isset($systems[$todayTimestamp]['user']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']])) {
-					$systems[$todayTimestamp]['user']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']] = 0;
+				if ($row['isRegistered'] && $this->parameters['displayRegistered']) {
+					if (!isset($counts[$todayTimestamp]['user'])) {
+						$counts[$todayTimestamp]['user'] = 0;
+					}
+					
+					$counts[$todayTimestamp]['user'] += $row['counter'];
+					$systems[$todayTimestamp]['user'] = $todaySystems;
 				}
-				
-				if (!isset($systems[$todayTimestamp]['user']['systems'][$row['osName'] . ' ' . $row['osVersion']])) {
-					$systems[$todayTimestamp]['user']['systems'][$row['osName'] . ' ' . $row['osVersion']] = 0;
+				else if ($this->parameters['displayGuests']) {
+					if (!isset($counts[$todayTimestamp]['guest'])) {
+						$counts[$todayTimestamp]['guest'] = 0;
+					}
+					
+					$counts[$todayTimestamp]['guest'] += $row['counter'];
+					$systems[$todayTimestamp]['guest'] = $todaySystems;
 				}
-				
-				$counts[$todayTimestamp]['user'] += $row['counter'];
-				$systems[$todayTimestamp]['user']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']] += $row['counter'];
-				$systems[$todayTimestamp]['user']['systems'][$row['osName'] . ' ' . $row['osVersion']] += $row['counter'];
-			}
-			else if ($this->parameters['displayGuests']) {
-				if (!isset($counts[$todayTimestamp]['guest'])) {
-					$counts[$todayTimestamp]['guest'] = 0;
-				}
-				
-				if (!isset($systems[$todayTimestamp]['guest']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']])) {
-					$systems[$todayTimestamp]['guest']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']] = 0;
-				}
-				
-				if (!isset($systems[$todayTimestamp]['guest']['systems'][$row['osName'] . ' ' . $row['osVersion']])) {
-					$systems[$todayTimestamp]['guest']['systems'][$row['osName'] . ' ' . $row['osVersion']] = 0;
-				}
-				
-				$counts[$todayTimestamp]['guest'] += $row['counter'];
-				$systems[$todayTimestamp]['guest']['browsers'][$row['browserName'] . ' ' . $row['browserVersion']] += $row['counter'];
-				$systems[$todayTimestamp]['guest']['systems'][$row['osName'] . ' ' . $row['osVersion']] += $row['counter'];
 			}
 		}
 		
@@ -229,60 +270,42 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			}
 		}
 		
-		$overall = 0;
-		
-		foreach ($systems as $dayTime => $userData) {
-			$addCounts = true;
-			
-			foreach ($userData as $systemData) {
-				if (empty($systemData)) {
-					$addCounts = false;
-					
-					continue;
-				}
-				
-				foreach ($systemData as $type => $systemCounts) {
-					foreach ($systemCounts as $system => $count) {
-						if (empty($data[$type][$system])) {
-							$data[$type][$system] = $count;
-						}
-						else {
-							$data[$type][$system] += $count;
-						}
-					}
-				}
-			}
-			
-			if ($addCounts) {
-				if ($this->parameters['displayGuests']) {
-					$overall += $counts[$dayTime]['guest'] ?? 0;
-				}
-				
-				if ($this->parameters['displayRegistered']) {
-					$overall += $counts[$dayTime]['user'] ?? 0;
-				}
-			}
-		}
+		$overall = $systemsOverall['guest'] + $systemsOverall['user'];
 		
 		foreach ($systems as $userData) {
 			foreach ($userData as $systemData) {
-				if (empty($systemData)) {
-					continue;
-				}
-				
-				foreach ($systemData as $type => $systemCounts) {
-					foreach ($systemCounts as $system => $count) {
-						if (!isset($data[$type][$system])) {
+				foreach ($systemData as $systemCounts) {
+					foreach ($systemCounts as $system) {
+						if (!isset($system['counter'])) {
 							continue;
 						}
 						
-						$data[$type][] = [
-							'data' => $data[$type][$system],
-							'label' => $system,
-							'percentage' => $overall ? number_format(100 / $overall * $data[$type][$system], 2, WCF::getLanguage()->get('wcf.global.decimalPoint'),  WCF::getLanguage()->get('wcf.global.thousandsSeparator')) : 0
-						];
+						$browserKey = $system['browserName'] . ' ' . $system['browserVersion'];
+						$systemKey = $system['osName'] . ' ' . $system['osVersion'];
 						
-						unset($data[$type][$system]);
+						if (!isset($data['browsers'][$browserKey])) {
+							$data['browsers'][$browserKey] = [
+								'data' => $system['counter'],
+								'label' => $system['browserName'] . ($system['browserVersion'] > 0 ? ' ' . $system['browserVersion'] : '' ),
+								'percentage' => $overall ? number_format(100 / $overall * $system['counter'], 2, WCF::getLanguage()->get('wcf.global.decimalPoint'), WCF::getLanguage()->get('wcf.global.thousandsSeparator')) : 0
+							];
+						}
+						else {
+							$data['browsers'][$browserKey]['data'] += $system['counter'];
+							$data['browsers'][$browserKey]['percentage'] = $overall ? number_format(100 / $overall * $data['browsers'][$browserKey]['data'], 2, WCF::getLanguage()->get('wcf.global.decimalPoint'), WCF::getLanguage()->get('wcf.global.thousandsSeparator')) : 0;
+						}
+						
+						if (!isset($data['systems'][$systemKey])) {
+							$data['systems'][$systemKey] = [
+								'data' => $system['counter'],
+								'label' => $system['osName'] . ($system['osVersion'] > 0 ? ' ' . $system['osVersion'] : '' ),
+								'percentage' => $overall ? number_format(100 / $overall * $system['counter'], 2, WCF::getLanguage()->get('wcf.global.decimalPoint'), WCF::getLanguage()->get('wcf.global.thousandsSeparator')) : 0
+							];
+						}
+						else {
+							$data['systems'][$systemKey]['data'] += $system['counter'];
+							$data['systems'][$systemKey]['percentage'] = $overall ? number_format(100 / $overall * $data['systems'][$systemKey]['data'], 2, WCF::getLanguage()->get('wcf.global.decimalPoint'), WCF::getLanguage()->get('wcf.global.thousandsSeparator')) : 0;
+						}
 					}
 				}
 			}
@@ -303,6 +326,10 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			
 			return $a['data'] < $b['data'];
 		});
+		
+		// limit output to 15 items
+		$data['browsers'] = array_slice($data['browsers'], 0, 15);
+		$data['systems'] = array_slice($data['systems'], 0, 15);
 		
 		return $data;
 	}
