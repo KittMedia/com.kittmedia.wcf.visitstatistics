@@ -1,5 +1,7 @@
 {include file='header' pageTitle='wcf.acp.visitor.title'}
 
+{include file='__visitorSystemStats' assign='visitorSystemStatsTemplate'}
+
 <script data-relocate="true" src="{@$__wcf->getPath()}js/3rdParty/flot/jquery.flot.js"></script>
 <script data-relocate="true" src="{@$__wcf->getPath()}js/3rdParty/flot/jquery.flot.time.js"></script>
 <script data-relocate="true" src="{@$__wcf->getPath()}js/3rdParty/flot/jquery.flot.resize.js"></script>
@@ -10,13 +12,13 @@
 		Language.addObject({
 			'wcf.acp.stat.timeFormat.daily': '{lang}wcf.acp.stat.timeFormat.daily{/lang}',
 			'wcf.acp.stat.noData': '{lang}wcf.acp.stat.noData{/lang}',
-			'wcf.acp.visitor.count': '{lang}wcf.acp.visitor.count{/lang}',
-			'wcf.acp.visitor.name': '{lang}wcf.acp.visitor.name{/lang}',
-			'wcf.acp.visitor.noData': '{lang}wcf.acp.visitor.noData{/lang}',
-			'wcf.acp.visitor.percentage': '{lang}wcf.acp.visitor.percentage{/lang}'
+			'wcf.acp.visitor.noVisit.browsers': '{lang}wcf.acp.visitor.noVisit.browsers{/lang}',
+			'wcf.acp.visitor.noVisit.systems': '{lang}wcf.acp.visitor.noVisit.systems{/lang}',
+			'wcf.acp.visitor.title.browsers': '{lang}wcf.acp.visitor.title.browsers{/lang}',
+			'wcf.acp.visitor.title.systems': '{lang}wcf.acp.visitor.title.systems{/lang}',
 		});
 		
-		new KM.ACP.Stat.VisitorChart();
+		new KM.ACP.Stat.VisitorChart('{@$visitorSystemStatsTemplate|encodeJS}');
 	});
 </script>
 

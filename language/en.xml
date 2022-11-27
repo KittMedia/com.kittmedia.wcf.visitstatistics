@@ -28,6 +28,8 @@
 		<item name="wcf.acp.visitor.name"><![CDATA[Name]]></item>
 		<item name="wcf.acp.visitor.noData"><![CDATA[There is no data for this time period.]]></item>
 		<item name="wcf.acp.visitor.noVisit.all"><![CDATA[There are currently no visited pages.]]></item>
+		<item name="wcf.acp.visitor.noVisit.browsers"><![CDATA[There is currently no browser data.]]></item>
+		<item name="wcf.acp.visitor.noVisit.systems"><![CDATA[There is currently no system data.]]></item>
 		<item name="wcf.acp.visitor.noVisit.today"><![CDATA[There are currently no visited pages for today.]]></item>
 		<item name="wcf.acp.visitor.overview.title"><![CDATA[Overview]]></item>
 		<item name="wcf.acp.visitor.percentage"><![CDATA[Percentage]]></item>
@@ -45,6 +47,8 @@
 		<item name="wcf.acp.visitor.thisWeek"><![CDATA[This Week]]></item>
 		<item name="wcf.acp.visitor.thisYear"><![CDATA[This Year]]></item>
 		<item name="wcf.acp.visitor.title"><![CDATA[Visit Statistics]]></item>
+		<item name="wcf.acp.visitor.title.browsers"><![CDATA[Browsers]]></item>
+		<item name="wcf.acp.visitor.title.systems"><![CDATA[Systems]]></item>
 		<item name="wcf.acp.visitor.today"><![CDATA[Today]]></item>
 		<item name="wcf.acp.visitor.total"><![CDATA[Total]]></item>
 		<item name="wcf.acp.visitor.url.title.all"><![CDATA[Frequently visited pages (all time)]]></item>
