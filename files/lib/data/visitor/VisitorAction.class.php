@@ -138,6 +138,8 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			$conditionBuilder->add('isRegistered = ?', [1]);
 		}
 		
+		$conditionBuilder->add('date BETWEEN ? AND ?', [$this->parameters['startDate'], $this->parameters['endDate']]);
+		
 		$sql = "SELECT		counter, date, isRegistered, browserName, browserVersion, osName, osVersion
 			FROM		" . Visitor::getDatabaseTableName() . "_daily_system
 			" . $conditionBuilder . "
