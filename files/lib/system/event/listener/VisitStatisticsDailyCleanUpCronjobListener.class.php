@@ -38,12 +38,12 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 	 * @param	DateTime	$minDate
 	 */
 	protected function deleteOldDailyStats($minDate) {
-		$sql = "DELETE FROM	wcf" . WCF_N . "_visitor_daily
+		$sql = "DELETE FROM	wcf1_visitor_daily
 			WHERE		date >= ?";
 		WCF::getDB()->prepareStatement($sql)->execute([
 			$minDate->format('Y-m-d')
 		]);
-		$sql = "DELETE FROM	wcf" . WCF_N . "_visitor_daily_system
+		$sql = "DELETE FROM	wcf1_visitor_daily_system
 			WHERE		date >= ?";
 		WCF::getDB()->prepareStatement($sql)->execute([
 			$minDate->format('Y-m-d')
@@ -57,7 +57,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 		$dateTime = DateUtil::getDateTimeByTimestamp(TIME_NOW);
 		$dateTime->setTimezone(new DateTimeZone(TIMEZONE));
 		$dateTime->sub(DateInterval::createFromDateString(self::DELETE_AFTER . ' day'));
-		$sql = "DELETE FROM	".Visitor::getDatabaseTableName()."
+		$sql = "DELETE FROM	wcf1_visitor
 			WHERE		time < ?";
 		WCF::getDB()->prepareStatement($sql)->execute([
 			$dateTime->getTimestamp()
@@ -87,7 +87,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 	 */
 	protected function getLastProcessedDay() {
 		$sql = "SELECT		MAX(date)
-			FROM		wcf".WCF_N."_visitor_daily";
+			FROM		wcf1_visitor_daily";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
 		
@@ -127,12 +127,12 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 		// delete old stats of the last 7 days
 		$this->deleteOldDailyStats($day);
 		
-		$sql = "INSERT IGNORE INTO	".Visitor::getDatabaseTableName()."_daily
+		$sql = "INSERT IGNORE INTO	wcf1_visitor_daily
 						(date, counter, isRegistered)
 			SELECT			CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d'), @@SESSION.time_zone, ?) AS date,
 						COUNT(*) AS counter,
 						isRegistered
-			FROM			".Visitor::getDatabaseTableName()."
+			FROM			wcf1_visitor
 			WHERE			time BETWEEN ? AND ?
 			GROUP BY		isRegistered, date";
 		WCF::getDB()->prepareStatement($sql)->execute([
@@ -141,7 +141,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 			$yesterday->getTimestamp()
 		]);
 		
-		$sql = "INSERT IGNORE INTO	".Visitor::getDatabaseTableName()."_daily_system
+		$sql = "INSERT IGNORE INTO	wcf1_visitor_daily_system
 						(date, browserName, browserVersion, osName, osVersion, counter, isRegistered)
 			SELECT			CONVERT_TZ(DATE_FORMAT(FROM_UNIXTIME(time), '%Y-%m-%d'), @@SESSION.time_zone, ?) AS date,
 						browserName,
@@ -150,7 +150,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 						osVersion,
 						COUNT(*) AS counter,
 						isRegistered
-			FROM			".Visitor::getDatabaseTableName()."
+			FROM			wcf1_visitor
 			WHERE			time BETWEEN ? AND ?
 			GROUP BY		isRegistered, browserName, browserVersion, osName, osVersion, date";
 		WCF::getDB()->prepareStatement($sql)->execute([
@@ -187,7 +187,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 		$yesterday->setTime(23, 59, 59);
 		$yesterday->modify('-24 hour');
 		
-		$sql = "INSERT INTO	wcf".WCF_N."_visitor_url
+		$sql = "INSERT INTO	wcf1_visitor_url
 					(requestURI, title, host, counter, isRegistered, languageID, pageID, pageObjectID)
 			SELECT		requestURI,
 					title,
@@ -197,7 +197,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 					languageID,
 					pageID,
 					pageObjectID
-			FROM		".Visitor::getDatabaseTableName()."
+			FROM		wcf1_visitor
 			WHERE		time BETWEEN ? AND ?
 			GROUP BY	requestURI, title, host, isRegistered, languageID, pageID, pageObjectID";
 		WCF::getDB()->prepareStatement($sql)->execute([

@@ -70,7 +70,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		
 		// get first date
 		$sql = "SELECT		date
-			FROM		".Visitor::getDatabaseTableName()."_daily
+			FROM		wcf1_visitor_daily
 			ORDER BY	date ASC";
 		$statement = WCF::getDB()->prepareStatement($sql, 1);
 		$statement->execute();
@@ -96,7 +96,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	protected function calculateLastMonthStatistics() {
 		// get last month's count
 		$sql = "SELECT		SUM(counter)
-			FROM		".Visitor::getDatabaseTableName()."_daily
+			FROM		wcf1_visitor_daily
 			WHERE		MONTH(date) = MONTH(CURDATE() - INTERVAL 1 MONTH)
 			AND		YEAR(date) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
 		$statement = WCF::getDB()->prepareStatement($sql);
@@ -110,7 +110,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	protected function calculateLastWeekStatistics() {
 		// get last week's count
 		$sql = "SELECT		SUM(counter)
-			FROM		".Visitor::getDatabaseTableName()."_daily
+			FROM		wcf1_visitor_daily
 			WHERE		date >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) + 6 DAY
 			AND		date < CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) - 1 DAY";
 		$statement = WCF::getDB()->prepareStatement($sql);
@@ -126,7 +126,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	protected function calculateLastYearStatistics() {
 		// get last year's count
 		$sql = "SELECT		SUM(counter)
-			FROM		".Visitor::getDatabaseTableName()."_daily
+			FROM		wcf1_visitor_daily
 			WHERE		YEAR(date) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
@@ -139,7 +139,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	protected function calculateThisMonthStatistics() {
 		// get this month's count
 		$sql = "SELECT		SUM(counter)
-			FROM		".Visitor::getDatabaseTableName()."_daily
+			FROM		wcf1_visitor_daily
 			WHERE		MONTH(date) = MONTH(CURDATE())
 			AND		YEAR(date) = YEAR(CURDATE())
 			AND		date < CURDATE()";
@@ -154,7 +154,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	protected function calculateThisWeekStatistics() {
 		// get this week's count
 		$sql = "SELECT		SUM(counter)
-			FROM		".Visitor::getDatabaseTableName()."_daily
+			FROM		wcf1_visitor_daily
 			WHERE		YEARWEEK(date, 1) = YEARWEEK(CURDATE(), 1)
 			AND		date < CURDATE()";
 		$statement = WCF::getDB()->prepareStatement($sql);
@@ -170,7 +170,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	protected function calculateThisYearStatistics() {
 		// get this year's count
 		$sql = "SELECT		SUM(counter)
-			FROM		".Visitor::getDatabaseTableName()."_daily
+			FROM		wcf1_visitor_daily
 			WHERE		YEAR(date) = YEAR(CURDATE())
 			AND		date < CURDATE()";
 		$statement = WCF::getDB()->prepareStatement($sql);
@@ -184,7 +184,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	protected function calculateTodayStatistics() {
 		// get today's count
 		$sql = "SELECT		COUNT(*)
-			FROM		".Visitor::getDatabaseTableName()."
+			FROM		wcf1_visitor
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
@@ -192,7 +192,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		
 		// get the most requested URIs
 		$sql = "SELECT		requestURI, title, host, languageID, pageID, pageObjectID, COUNT(*) AS requestCount
-			FROM		".Visitor::getDatabaseTableName()."
+			FROM		wcf1_visitor
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()
 			GROUP BY	requestURI, title, host, languageID, pageID, pageObjectID
 			ORDER BY	requestCount DESC, title";
@@ -213,7 +213,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	protected function calculateTotalStatistics() {
 		// get total count
 		$sql = "SELECT		SUM(counter)
-			FROM		".Visitor::getDatabaseTableName()."_daily
+			FROM		wcf1_visitor_daily
 			WHERE		date < CURDATE()";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();
@@ -221,7 +221,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		
 		// get the most requested URIs
 		$sql = "SELECT		requestURI, title, host, languageID, pageID, pageObjectID, SUM(counter) AS requestCount
-			FROM		".Visitor::getDatabaseTableName()."_url
+			FROM		wcf1_visitor_url
 			GROUP BY	requestURI, title, host, languageID, pageID, pageObjectID
 			ORDER BY	requestCount DESC, title";
 		$statement = WCF::getDB()->prepareStatement($sql, 20);
@@ -256,7 +256,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 	protected function calculateYesterdayStatistics() {
 		// get yesterday's count
 		$sql = "SELECT		COUNT(*)
-			FROM		".Visitor::getDatabaseTableName()."
+			FROM		wcf1_visitor
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE() - INTERVAL 1 DAY";
 		$statement = WCF::getDB()->prepareStatement($sql);
 		$statement->execute();

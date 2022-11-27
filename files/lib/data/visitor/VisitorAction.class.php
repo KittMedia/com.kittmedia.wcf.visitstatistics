@@ -87,7 +87,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			'visitors' => []
 		];
 		$sql = "SELECT		counter, date, isRegistered
-			FROM		" . Visitor::getDatabaseTableName() . "_daily
+			FROM		wcf1_visitor_daily
 			" . $conditionBuilder . "
 			GROUP BY	isRegistered, date, counter";
 		$statement = WCF::getDB()->prepareStatement($sql);
@@ -141,7 +141,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		$conditionBuilder->add('date BETWEEN ? AND ?', [$this->parameters['startDate'], $this->parameters['endDate']]);
 		
 		$sql = "SELECT		counter, date, isRegistered, browserName, browserVersion, osName, osVersion
-			FROM		" . Visitor::getDatabaseTableName() . "_daily_system
+			FROM		wcf1_visitor_daily_system
 			" . $conditionBuilder . "
 			GROUP BY	isRegistered, date, isRegistered, browserName, browserVersion, osName, osVersion, counter";
 		$statement = WCF::getDB()->prepareStatement($sql);
@@ -196,7 +196,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 						browserVersion,
 						osName,
 						osVersion
-				FROM		" . Visitor::getDatabaseTableName() . "
+				FROM		wcf1_visitor
 				" . $conditionBuilder . "
 				GROUP BY	isRegistered, date, browserName, browserVersion, osName, osVersion";
 			$statement = WCF::getDB()->prepareStatement($sql);
