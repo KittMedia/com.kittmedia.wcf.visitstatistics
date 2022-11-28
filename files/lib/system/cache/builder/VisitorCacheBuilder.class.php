@@ -72,7 +72,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$sql = "SELECT		date
 			FROM		wcf1_visitor_daily
 			ORDER BY	date ASC";
-		$statement = WCF::getDB()->prepareStatement($sql, 1);
+		$statement = WCF::getDB()->prepare($sql, 1);
 		$statement->execute();
 		
 		// get day difference
@@ -99,7 +99,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			FROM		wcf1_visitor_daily
 			WHERE		MONTH(date) = MONTH(CURDATE() - INTERVAL 1 MONTH)
 			AND		YEAR(date) = YEAR(CURDATE() - INTERVAL 1 MONTH)";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		$this->statistics['countLastMonth'] = (int) $statement->fetchColumn();
 	}
@@ -113,7 +113,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			FROM		wcf1_visitor_daily
 			WHERE		date >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) + 6 DAY
 			AND		date < CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) - 1 DAY";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		$this->statistics['countLastWeek'] = (int) $statement->fetchColumn();
 	}
@@ -128,7 +128,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$sql = "SELECT		SUM(counter)
 			FROM		wcf1_visitor_daily
 			WHERE		YEAR(date) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		$this->statistics['countLastYear'] = (int) $statement->fetchColumn();
 	}
@@ -143,7 +143,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			WHERE		MONTH(date) = MONTH(CURDATE())
 			AND		YEAR(date) = YEAR(CURDATE())
 			AND		date < CURDATE()";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		$this->statistics['countThisMonth'] = (int) $statement->fetchColumn() + $this->statistics['countToday'];
 	}
@@ -157,7 +157,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			FROM		wcf1_visitor_daily
 			WHERE		YEARWEEK(date, 1) = YEARWEEK(CURDATE(), 1)
 			AND		date < CURDATE()";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		$this->statistics['countThisWeek'] = (int) $statement->fetchColumn() + $this->statistics['countToday'];
 	}
@@ -173,7 +173,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			FROM		wcf1_visitor_daily
 			WHERE		YEAR(date) = YEAR(CURDATE())
 			AND		date < CURDATE()";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		$this->statistics['countThisYear'] = (int) $statement->fetchColumn() + $this->statistics['countToday'];
 	}
@@ -186,7 +186,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$sql = "SELECT		COUNT(*)
 			FROM		wcf1_visitor
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		$this->statistics['countToday'] = (int) $statement->fetchColumn();
 		
@@ -196,7 +196,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()
 			GROUP BY	requestURI, title, host, languageID, pageID, pageObjectID
 			ORDER BY	requestCount DESC, title";
-		$statement = WCF::getDB()->prepareStatement($sql, 20);
+		$statement = WCF::getDB()->prepare($sql, 20);
 		$statement->execute();
 		$this->statistics['requestList'] = [];
 		
@@ -215,7 +215,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$sql = "SELECT		SUM(counter)
 			FROM		wcf1_visitor_daily
 			WHERE		date < CURDATE()";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		$this->statistics['countTotal'] = (int) $statement->fetchColumn() + $this->statistics['countToday'];
 		
@@ -224,7 +224,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 			FROM		wcf1_visitor_url
 			GROUP BY	requestURI, title, host, languageID, pageID, pageObjectID
 			ORDER BY	requestCount DESC, title";
-		$statement = WCF::getDB()->prepareStatement($sql, 20);
+		$statement = WCF::getDB()->prepare($sql, 20);
 		$statement->execute();
 		$this->statistics['requestListAll'] = [];
 		
@@ -258,7 +258,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$sql = "SELECT		COUNT(*)
 			FROM		wcf1_visitor
 			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE() - INTERVAL 1 DAY";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		$this->statistics['countYesterday'] = (int) $statement->fetchColumn();
 	}

@@ -40,12 +40,12 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 	protected function deleteOldDailyStats($minDate) {
 		$sql = "DELETE FROM	wcf1_visitor_daily
 			WHERE		date >= ?";
-		WCF::getDB()->prepareStatement($sql)->execute([
+		WCF::getDB()->prepare($sql)->execute([
 			$minDate->format('Y-m-d')
 		]);
 		$sql = "DELETE FROM	wcf1_visitor_daily_system
 			WHERE		date >= ?";
-		WCF::getDB()->prepareStatement($sql)->execute([
+		WCF::getDB()->prepare($sql)->execute([
 			$minDate->format('Y-m-d')
 		]);
 	}
@@ -59,7 +59,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 		$dateTime->sub(DateInterval::createFromDateString(self::DELETE_AFTER . ' day'));
 		$sql = "DELETE FROM	wcf1_visitor
 			WHERE		time < ?";
-		WCF::getDB()->prepareStatement($sql)->execute([
+		WCF::getDB()->prepare($sql)->execute([
 			$dateTime->getTimestamp()
 		]);
 	}
@@ -74,7 +74,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 	 */
 	protected function getFirstSQLDate() {
 		$sql = "SELECT	FROM_UNIXTIME(0)";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		
 		return $statement->fetchSingleColumn();
@@ -88,7 +88,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 	protected function getLastProcessedDay() {
 		$sql = "SELECT		MAX(date)
 			FROM		wcf1_visitor_daily";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute();
 		
 		return $statement->fetchSingleColumn();
@@ -135,7 +135,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 			FROM			wcf1_visitor
 			WHERE			time BETWEEN ? AND ?
 			GROUP BY		isRegistered, date";
-		WCF::getDB()->prepareStatement($sql)->execute([
+		WCF::getDB()->prepare($sql)->execute([
 			$day->format('P'),
 			$day->getTimestamp(),
 			$yesterday->getTimestamp()
@@ -153,7 +153,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 			FROM			wcf1_visitor
 			WHERE			time BETWEEN ? AND ?
 			GROUP BY		isRegistered, browserName, browserVersion, osName, osVersion, date";
-		WCF::getDB()->prepareStatement($sql)->execute([
+		WCF::getDB()->prepare($sql)->execute([
 			$day->format('P'),
 			$day->getTimestamp(),
 			$yesterday->getTimestamp()
@@ -200,7 +200,7 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
 			FROM		wcf1_visitor
 			WHERE		time BETWEEN ? AND ?
 			GROUP BY	requestURI, title, host, isRegistered, languageID, pageID, pageObjectID";
-		WCF::getDB()->prepareStatement($sql)->execute([
+		WCF::getDB()->prepare($sql)->execute([
 			$day->getTimestamp(),
 			$yesterday->getTimestamp()
 		]);

@@ -90,7 +90,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			FROM		wcf1_visitor_daily
 			" . $conditionBuilder . "
 			GROUP BY	isRegistered, date, counter";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute($conditionBuilder->getParameters());
 		
 		$data['visitors'][1]['label'] = WCF::getLanguage()->get('wcf.acp.visitor.visits.user');
@@ -144,7 +144,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 			FROM		wcf1_visitor_daily_system
 			" . $conditionBuilder . "
 			GROUP BY	isRegistered, date, isRegistered, browserName, browserVersion, osName, osVersion, counter";
-		$statement = WCF::getDB()->prepareStatement($sql);
+		$statement = WCF::getDB()->prepare($sql);
 		$statement->execute($conditionBuilder->getParameters());
 		
 		while ($row = $statement->fetchArray()) {
@@ -199,7 +199,7 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				FROM		wcf1_visitor
 				" . $conditionBuilder . "
 				GROUP BY	isRegistered, date, browserName, browserVersion, osName, osVersion";
-			$statement = WCF::getDB()->prepareStatement($sql);
+			$statement = WCF::getDB()->prepare($sql);
 			$statement->execute($conditionBuilder->getParameters());
 			$counts[$todayTimestamp] = [];
 			$systems[$todayTimestamp] = [];
