@@ -5,6 +5,7 @@ use DateTimeZone;
 use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
+use wcf\util\StringUtil;
 use function round;
 use const TIME_NOW;
 use const TIMEZONE;
@@ -37,7 +38,8 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		'countThisYear' => 0,
 		'countToday' => 0,
 		'countTotal' => 0,
-		'countYesterday' => 0
+		'countYesterday' => 0,
+		'trends' => []
 	];
 	
 	/**
@@ -54,6 +56,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$this->calculateTotalStatistics();
 		$this->calculateYesterdayStatistics();
 		$this->calculateAverageStatistics();
+		$this->calculateTrendingStatistics();
 		
 		$this->statistics['rebuildTime'] = TIME_NOW;
 		
@@ -248,6 +251,158 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Calculate statistics for trending data.
+	 */
+	protected function calculateTrendingStatistics() {
+		$this->statistics['trends'] = [
+			'today' => [
+				'type' => 'neutral',
+				'percentage' => 0.00
+			],
+			'lastMonth' => [
+				'type' => 'neutral',
+				'percentage' => 0.00
+			],
+			'lastWeek' => [
+				'type' => 'neutral',
+				'percentage' => 0.00
+			],
+			'lastYear' => [
+				'type' => 'neutral',
+				'percentage' => 0.00
+			],
+			'thisMonth' => [
+				'type' => 'neutral',
+				'percentage' => 0.00
+			],
+			'thisWeek' => [
+				'type' => 'neutral',
+				'percentage' => 0.00
+			],
+			'thisYear' => [
+				'type' => 'neutral',
+				'percentage' => 0.00
+			],
+			'yesterday' => [
+				'type' => 'neutral',
+				'percentage' => 0.00
+			]
+		];
+		
+		$sql = "SELECT		COUNT(*)
+			FROM		wcf1_visitor
+			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE()";
+		$statement = WCF::getDB()->prepare($sql);
+		$statement->execute();
+		$todayCount = (int) $statement->fetchColumn();
+		
+		$yesterdayNow = new DateTime('1 day ago');
+		$sql = "SELECT		COUNT(*)
+			FROM		wcf1_visitor
+			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE() - INTERVAL 1 DAY
+			AND		time < ?";
+		$statement = WCF::getDB()->prepare($sql);
+		$statement->execute([$yesterdayNow->getTimestamp()]);
+		$yesterdayNowCount = (int) $statement->fetchColumn();
+		
+		$lastMonthNow = new DateTime('1 month ago');
+		$sql = "SELECT		SUM(counter)
+			FROM		wcf1_visitor_daily
+			WHERE		MONTH(date) = MONTH(CURDATE() - INTERVAL 1 MONTH)
+			AND		YEAR(date) = YEAR(CURDATE() - INTERVAL 1 MONTH)
+			AND		date <= ?";
+		$statement = WCF::getDB()->prepare($sql);
+		$statement->execute([$lastMonthNow->format('Y-m-d')]);
+		$lastMonthCount = (int) $statement->fetchColumn();
+		
+		$monthBeforeLastMonthNow = new DateTime('-2 months');
+		$sql = "SELECT		SUM(counter)
+			FROM		wcf1_visitor_daily
+			WHERE		MONTH(date) = MONTH(CURDATE() - INTERVAL 2 MONTH)
+			AND		YEAR(date) = YEAR(CURDATE() - INTERVAL 2 MONTH)
+			AND		date >= ?";
+		$statement = WCF::getDB()->prepare($sql);
+		$statement->execute([$monthBeforeLastMonthNow->format('Y-m-d')]);
+		$monthBeforeLastMonthCount = (int) $statement->fetchColumn();
+		
+		$lastWeekNow = new DateTime('1 week ago');
+		$sql = "SELECT		SUM(counter)
+			FROM		wcf1_visitor_daily
+			WHERE		date >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) + 6 DAY
+			AND		date < CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) - 1 DAY
+			AND		date <= ?";
+		$statement = WCF::getDB()->prepare($sql);
+		$statement->execute([$lastWeekNow->format('Y-m-d')]);
+		$lastWeekCount = (int) $statement->fetchColumn();
+		
+		$weekBeforeLastWeekNow = new DateTime('-2 weeks');
+		$sql = "SELECT		SUM(counter)
+			FROM		wcf1_visitor_daily
+			WHERE		date >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) + 15 DAY
+			AND		date <= ?";
+		$statement = WCF::getDB()->prepare($sql);
+		$statement->execute([$weekBeforeLastWeekNow->format('Y-m-d')]);
+		$weekBeforeLastWeekCount = (int) $statement->fetchColumn();
+		
+		$lastYearNow = new DateTime('1 year ago');
+		$sql = "SELECT		SUM(counter)
+			FROM		wcf1_visitor_daily
+			WHERE		YEAR(date) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
+			AND		date <= ?";
+		$statement = WCF::getDB()->prepare($sql);
+		$statement->execute([$lastYearNow->format('Y-m-d')]);
+		$lastYearCount = (int) $statement->fetchColumn();
+		
+		$yearBeforeLastYearNow = new DateTime('-2 years');
+		$sql = "SELECT		SUM(counter)
+			FROM		wcf1_visitor_daily
+			WHERE		YEAR(date) = YEAR(DATE_SUB(CURDATE(), INTERVAL 2 YEAR))
+			AND		date <= ?";
+		$statement = WCF::getDB()->prepare($sql);
+		$statement->execute([$yearBeforeLastYearNow->format('Y-m-d')]);
+		$yearBeforeLastYearCount = (int) $statement->fetchColumn();
+		
+		$sql = "SELECT		COUNT(*)
+			FROM		wcf1_visitor
+			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE() - INTERVAL 1 DAY";
+		$statement = WCF::getDB()->prepare($sql);
+		$statement->execute();
+		$yesterdayCount = (int) $statement->fetchColumn();
+		
+		$sql = "SELECT		COUNT(*)
+			FROM		wcf1_visitor
+			WHERE		DATE(FROM_UNIXTIME(time)) = CURDATE() - INTERVAL 2 DAY";
+		$statement = WCF::getDB()->prepare($sql);
+		$statement->execute();
+		$dayBeforeYesterdayCount = (int) $statement->fetchColumn();
+		
+		$percentage = 100 / $yesterdayNowCount * $todayCount;
+		$this->statistics['trends']['today']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+		$this->statistics['trends']['today']['percentage'] = StringUtil::formatNumeric($percentage - 100);
+		$percentage = 100 / $monthBeforeLastMonthCount * $lastMonthCount;
+		$this->statistics['trends']['lastMonth']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+		$this->statistics['trends']['lastMonth']['percentage'] = StringUtil::formatNumeric($percentage - 100);
+		$percentage = 100 / $weekBeforeLastWeekCount * $lastWeekCount;
+		$this->statistics['trends']['lastWeek']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+		$this->statistics['trends']['lastWeek']['percentage'] = StringUtil::formatNumeric($percentage - 100);
+		$percentage = 100 / $yearBeforeLastYearCount * $lastYearCount;
+		$this->statistics['trends']['lastYear']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+		$this->statistics['trends']['lastYear']['percentage'] = StringUtil::formatNumeric($percentage - 100);
+		$percentage = 100 / $lastMonthCount * $this->statistics['countThisMonth'];
+		$this->statistics['trends']['thisMonth']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+		$this->statistics['trends']['thisMonth']['percentage'] = StringUtil::formatNumeric($percentage - 100);
+		$percentage = 100 / $lastWeekCount * $this->statistics['countThisWeek'];
+		$this->statistics['trends']['thisWeek']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+		$this->statistics['trends']['thisWeek']['percentage'] = StringUtil::formatNumeric($percentage - 100);
+		$percentage = 100 / $lastYearCount * $this->statistics['countThisYear'];
+		$this->statistics['trends']['thisYear']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+		$this->statistics['trends']['thisYear']['percentage'] = StringUtil::formatNumeric($percentage - 100);
+		$percentage = 100 / $dayBeforeYesterdayCount * $yesterdayCount;
+		$this->statistics['trends']['yesterday']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+		$this->statistics['trends']['yesterday']['percentage'] = StringUtil::formatNumeric($percentage - 100);
 	}
 	
 	/**

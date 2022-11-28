@@ -154,7 +154,8 @@ class VisitorPage extends MultipleLinkPage {
 			'rebuildTime' => $this->data['rebuildTime'],
 			'requestList' => $this->data['requestList'],
 			'requestListAll' => $this->data['requestListAll'],
-			'startDate' => $this->startDate
+			'startDate' => $this->startDate,
+			'trends' => $this->data['trends']
 		]);
 	}
 	
