@@ -378,28 +378,28 @@ class VisitorCacheBuilder extends AbstractCacheBuilder {
 		$statement->execute();
 		$dayBeforeYesterdayCount = (int) $statement->fetchColumn();
 		
-		$percentage = 100 / $yesterdayNowCount * $todayCount;
+		$percentage = $yesterdayNowCount ? 100 / $yesterdayNowCount * $todayCount : 100;
 		$this->statistics['trends']['today']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
 		$this->statistics['trends']['today']['percentage'] = StringUtil::formatNumeric($percentage - 100);
-		$percentage = 100 / $monthBeforeLastMonthCount * $lastMonthCount;
+		$percentage = $monthBeforeLastMonthCount ? 100 / $monthBeforeLastMonthCount * $lastMonthCount : 100;
 		$this->statistics['trends']['lastMonth']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
 		$this->statistics['trends']['lastMonth']['percentage'] = StringUtil::formatNumeric($percentage - 100);
-		$percentage = 100 / $weekBeforeLastWeekCount * $lastWeekCount;
+		$percentage = $weekBeforeLastWeekCount ? 100 / $weekBeforeLastWeekCount * $lastWeekCount : 100;
 		$this->statistics['trends']['lastWeek']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
 		$this->statistics['trends']['lastWeek']['percentage'] = StringUtil::formatNumeric($percentage - 100);
-		$percentage = 100 / $yearBeforeLastYearCount * $lastYearCount;
+		$percentage = $yearBeforeLastYearCount ? 100 / $yearBeforeLastYearCount * $lastYearCount : 100;
 		$this->statistics['trends']['lastYear']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
 		$this->statistics['trends']['lastYear']['percentage'] = StringUtil::formatNumeric($percentage - 100);
-		$percentage = 100 / $lastMonthCount * $this->statistics['countThisMonth'];
+		$percentage = $lastMonthCount ? 100 / $lastMonthCount * $this->statistics['countThisMonth'] : 100;
 		$this->statistics['trends']['thisMonth']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
 		$this->statistics['trends']['thisMonth']['percentage'] = StringUtil::formatNumeric($percentage - 100);
-		$percentage = 100 / $lastWeekCount * $this->statistics['countThisWeek'];
+		$percentage = $lastWeekCount ? 100 / $lastWeekCount * $this->statistics['countThisWeek'] : 100;
 		$this->statistics['trends']['thisWeek']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
 		$this->statistics['trends']['thisWeek']['percentage'] = StringUtil::formatNumeric($percentage - 100);
-		$percentage = 100 / $lastYearCount * $this->statistics['countThisYear'];
+		$percentage = $lastYearCount ? 100 / $lastYearCount * $this->statistics['countThisYear'] : 100;
 		$this->statistics['trends']['thisYear']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
 		$this->statistics['trends']['thisYear']['percentage'] = StringUtil::formatNumeric($percentage - 100);
-		$percentage = 100 / $dayBeforeYesterdayCount * $yesterdayCount;
+		$percentage = $dayBeforeYesterdayCount ? 100 / $dayBeforeYesterdayCount * $yesterdayCount : 100;
 		$this->statistics['trends']['yesterday']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
 		$this->statistics['trends']['yesterday']['percentage'] = StringUtil::formatNumeric($percentage - 100);
 	}
