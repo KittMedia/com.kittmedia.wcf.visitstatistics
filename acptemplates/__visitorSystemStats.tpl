@@ -15,8 +15,8 @@
 				{foreach from=$systemData item='data'}
 					<tr>
 						<td>{$data.label}</td>
-						<td class="columnDigits columnPercentage">{$data.percentage}&thinsp;%</td>
-						<td class="columnDigits">{$data.data}</td>
+						<td class="columnDigits columnPercentage">{#$data.percentage}&thinsp;%</td>
+						<td class="columnDigits">{#$data.data}</td>
 					</tr>
 				{/foreach}
 			</tbody>

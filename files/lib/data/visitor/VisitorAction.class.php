@@ -16,6 +16,7 @@ use function array_slice;
 use function html_entity_decode;
 use function preg_match;
 use function preg_replace;
+use function round;
 use function str_replace;
 use function strcmp;
 use function strtotime;
@@ -288,24 +289,24 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 							$data['browsers'][$browserKey] = [
 								'data' => $system['counter'],
 								'label' => $system['browserName'] . ($system['browserVersion'] > 0 ? ' ' . $system['browserVersion'] : '' ),
-								'percentage' => $overall ? StringUtil::formatNumeric(100 / $overall * $system['counter']) : 0
+								'percentage' => $overall ? round(100 / $overall * $system['counter'], 2) : 0
 							];
 						}
 						else {
 							$data['browsers'][$browserKey]['data'] += $system['counter'];
-							$data['browsers'][$browserKey]['percentage'] = $overall ? StringUtil::formatNumeric(100 / $overall * $data['browsers'][$browserKey]['data']) : 0;
+							$data['browsers'][$browserKey]['percentage'] = $overall ? round(100 / $overall * $data['browsers'][$browserKey]['data'], 2) : 0;
 						}
 						
 						if (!isset($data['systems'][$systemKey])) {
 							$data['systems'][$systemKey] = [
 								'data' => $system['counter'],
 								'label' => $system['osName'] . ($system['osVersion'] > 0 ? ' ' . $system['osVersion'] : '' ),
-								'percentage' => $overall ? StringUtil::formatNumeric(100 / $overall * $system['counter']) : 0
+								'percentage' => $overall ? round(100 / $overall * $system['counter'], 2) : 0
 							];
 						}
 						else {
 							$data['systems'][$systemKey]['data'] += $system['counter'];
-							$data['systems'][$systemKey]['percentage'] = $overall ? StringUtil::formatNumeric(100 / $overall * $data['systems'][$systemKey]['data']) : 0;
+							$data['systems'][$systemKey]['percentage'] = $overall ? round(100 / $overall * $data['systems'][$systemKey]['data'], 2) : 0;
 						}
 					}
 				}
@@ -334,12 +335,12 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		
 		// format data
 		$data['browsers'] = array_map(function($data) {
-			$data['data'] = StringUtil::formatNumeric($data['data']);
+			$data['data'] = $data['data'];
 			
 			return $data;
 		}, $data['browsers']);
 		$data['systems'] = array_map(function($data) {
-			$data['data'] = StringUtil::formatNumeric($data['data']);
+			$data['data'] = $data['data'];
 			
 			return $data;
 		}, $data['systems']);

@@ -2,7 +2,6 @@
 namespace wcf\system\box;
 use wcf\system\cache\builder\VisitorCacheBuilder;
 use wcf\system\WCF;
-use wcf\util\StringUtil;
 use function array_merge;
 use function count;
 use function ucfirst;
@@ -40,16 +39,16 @@ class VisitStatisticsVisitsBoxController extends AbstractDatabaseObjectListBoxCo
 	protected function getTemplate() {
 		$conditions = $this->getBox()->getConditions();
 		$data = VisitorCacheBuilder::getInstance()->getData();
-		$data['countAverage'] = StringUtil::formatNumeric($data['countAverage']);
-		$data['countLastMonth'] = StringUtil::formatNumeric($data['countLastMonth']);
-		$data['countLastWeek'] = StringUtil::formatNumeric($data['countLastWeek']);
-		$data['countLastYear'] = StringUtil::formatNumeric($data['countLastYear']);
-		$data['countThisMonth'] = StringUtil::formatNumeric($data['countThisMonth']);
-		$data['countThisWeek'] = StringUtil::formatNumeric($data['countThisWeek']);
-		$data['countThisYear'] = StringUtil::formatNumeric($data['countThisYear']);
-		$data['countToday'] = StringUtil::formatNumeric($data['countToday']);
-		$data['countTotal'] = StringUtil::formatNumeric($data['countTotal']);
-		$data['countYesterday'] = StringUtil::formatNumeric($data['countYesterday']);
+		$data['countAverage'] = $data['countAverage'];
+		$data['countLastMonth'] = $data['countLastMonth'];
+		$data['countLastWeek'] = $data['countLastWeek'];
+		$data['countLastYear'] = $data['countLastYear'];
+		$data['countThisMonth'] = $data['countThisMonth'];
+		$data['countThisWeek'] = $data['countThisWeek'];
+		$data['countThisYear'] = $data['countThisYear'];
+		$data['countToday'] = $data['countToday'];
+		$data['countTotal'] = $data['countTotal'];
+		$data['countYesterday'] = $data['countYesterday'];
 		$templateData = array_merge(
 			$data,
 			[

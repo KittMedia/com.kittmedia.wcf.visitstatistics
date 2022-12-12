@@ -13,7 +13,6 @@ use wcf\system\language\LanguageFactory;
 use wcf\system\page\handler\IOnlineLocationPageHandler;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
-use wcf\util\StringUtil;
 use function preg_replace;
 use const TIME_NOW;
 use const TIMEZONE;
@@ -119,7 +118,7 @@ class VisitorPage extends MultipleLinkPage {
 		
 		if (!empty($this->data['requestList'])) {
 			foreach ($this->data['requestList'] as &$request) {
-				$request->requestCount = StringUtil::formatNumeric($request->requestCount);
+				$request->requestCount = $request->requestCount;
 			}
 		}
 		else {
@@ -128,7 +127,7 @@ class VisitorPage extends MultipleLinkPage {
 		
 		if (!empty($this->data['requestListAll'])) {
 			foreach ($this->data['requestListAll'] as &$request) {
-				$request->requestCount = StringUtil::formatNumeric($request->requestCount);
+				$request->requestCount = $request->requestCount;
 			}
 		}
 		else {
@@ -137,16 +136,16 @@ class VisitorPage extends MultipleLinkPage {
 		
 		WCF::getTPL()->assign([
 			'assetVersion' => PackageCache::getInstance()->getPackageByIdentifier('com.kittmedia.wcf.visitstatistics')->updateDate,
-			'countAverage' => StringUtil::formatNumeric($this->data['countAverage']),
-			'countLastMonth' => StringUtil::formatNumeric($this->data['countLastMonth']),
-			'countLastWeek' => StringUtil::formatNumeric($this->data['countLastWeek']),
-			'countLastYear' => StringUtil::formatNumeric($this->data['countLastYear']),
-			'countThisMonth' => StringUtil::formatNumeric($this->data['countThisMonth']),
-			'countThisWeek' => StringUtil::formatNumeric($this->data['countThisWeek']),
-			'countThisYear' => StringUtil::formatNumeric($this->data['countThisYear']),
-			'countToday' => StringUtil::formatNumeric($this->data['countToday']),
-			'countTotal' => StringUtil::formatNumeric($this->data['countTotal']),
-			'countYesterday' => StringUtil::formatNumeric($this->data['countYesterday']),
+			'countAverage' => $this->data['countAverage'],
+			'countLastMonth' => $this->data['countLastMonth'],
+			'countLastWeek' => $this->data['countLastWeek'],
+			'countLastYear' => $this->data['countLastYear'],
+			'countThisMonth' => $this->data['countThisMonth'],
+			'countThisWeek' => $this->data['countThisWeek'],
+			'countThisYear' => $this->data['countThisYear'],
+			'countToday' => $this->data['countToday'],
+			'countTotal' => $this->data['countTotal'],
+			'countYesterday' => $this->data['countYesterday'],
 			'displayGuests' => $this->displayGuests,
 			'displayRegistered' => $this->displayRegistered,
 			'endDate' => $this->endDate,

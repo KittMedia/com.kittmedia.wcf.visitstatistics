@@ -193,90 +193,90 @@
 			<dl class="dataList plain today">
 				<dt>{lang}wcf.acp.visitor.today{/lang}</dt>
 				<dd>
-					<span class="number">{$countToday}</span>
+					<span class="number">{#$countToday}</span>
 					<span class="trend {$trends.today.type}">
 						{if $trends.today.type == 'negative'}<span class="icon icon24 fa-caret-down"></span>{elseif $trends.today.type == 'positive'}<span class="icon icon24 fa-caret-up"></span>{else}<span class="icon icon24 fa-minus"></span>{/if}
-						<span class="percentage">{$trends.today.percentage} %</span>
+						<span class="percentage">{#$trends.today.percentage} %</span>
 					</span>
 				</dd>
 			</dl>
 			<dl class="dataList plain thisWeek">
 				<dt>{lang}wcf.acp.visitor.thisWeek{/lang}</dt>
 				<dd>
-					<span class="number">{$countThisWeek}</span>
+					<span class="number">{#$countThisWeek}</span>
 					<span class="trend {$trends.thisWeek.type}">
 						{if $trends.thisWeek.type == 'negative'}<span class="icon icon24 fa-caret-down"></span>{elseif $trends.thisWeek.type == 'positive'}<span class="icon icon24 fa-caret-up"></span>{else}<span class="icon icon24 fa-minus"></span>{/if}
-						<span class="percentage">{$trends.thisWeek.percentage} %</span>
+						<span class="percentage">{#$trends.thisWeek.percentage} %</span>
 					</span>
 				</dd>
 			</dl>
 			<dl class="dataList plain thisMonth">
 				<dt>{lang}wcf.acp.visitor.thisMonth{/lang}</dt>
 				<dd>
-					<span class="number">{$countThisMonth}</span>
+					<span class="number">{#$countThisMonth}</span>
 					<span class="trend {$trends.thisMonth.type}">
 						{if $trends.thisMonth.type == 'negative'}<span class="icon icon24 fa-caret-down"></span>{elseif $trends.thisMonth.type == 'positive'}<span class="icon icon24 fa-caret-up"></span>{else}<span class="icon icon24 fa-minus"></span>{/if}
-						<span class="percentage">{$trends.thisMonth.percentage} %</span>
+						<span class="percentage">{#$trends.thisMonth.percentage} %</span>
 					</span>
 				</dd>
 			</dl>
 			<dl class="dataList plain thisYear">
 				<dt>{lang}wcf.acp.visitor.thisYear{/lang}</dt>
 				<dd>
-					<span class="number">{$countThisYear}</span>
+					<span class="number">{#$countThisYear}</span>
 					<span class="trend {$trends.thisYear.type}">
 						{if $trends.thisYear.type == 'negative'}<span class="icon icon24 fa-caret-down"></span>{elseif $trends.thisYear.type == 'positive'}<span class="icon icon24 fa-caret-up"></span>{else}<span class="icon icon24 fa-minus"></span>{/if}
-						<span class="percentage">{$trends.thisYear.percentage} %</span>
+						<span class="percentage">{#$trends.thisYear.percentage} %</span>
 					</span>
 				</dd>
 			</dl>
 			<dl class="dataList plain average">
 				<dt>{lang}wcf.acp.visitor.average{/lang}</dt>
-				<dd>Ø {$countAverage}</dd>
+				<dd>Ø {#$countAverage}</dd>
 			</dl>
 			<dl class="dataList plain yesterday">
 				<dt>{lang}wcf.acp.visitor.yesterday{/lang}</dt>
 				<dd>
-					<span class="number">{$countYesterday}</span>
+					<span class="number">{#$countYesterday}</span>
 					<span class="trend {$trends.yesterday.type}">
 						{if $trends.yesterday.type == 'negative'}<span class="icon icon24 fa-caret-down"></span>{elseif $trends.yesterday.type == 'positive'}<span class="icon icon24 fa-caret-up"></span>{else}<span class="icon icon24 fa-minus"></span>{/if}
-						<span class="percentage">{$trends.yesterday.percentage} %</span>
+						<span class="percentage">{#$trends.yesterday.percentage} %</span>
 					</span>
 				</dd>
 			</dl>
 			<dl class="dataList plain lastWeek">
 				<dt>{lang}wcf.acp.visitor.lastWeek{/lang}</dt>
 				<dd>
-					<span class="number">{$countLastWeek}</span>
+					<span class="number">{#$countLastWeek}</span>
 					<span class="trend {$trends.lastWeek.type}">
 						{if $trends.lastWeek.type == 'negative'}<span class="icon icon24 fa-caret-down"></span>{elseif $trends.lastWeek.type == 'positive'}<span class="icon icon24 fa-caret-up"></span>{else}<span class="icon icon24 fa-minus"></span>{/if}
-						<span class="percentage">{$trends.lastWeek.percentage} %</span>
+						<span class="percentage">{#$trends.lastWeek.percentage} %</span>
 					</span>
 				</dd>
 			</dl>
 			<dl class="dataList plain lastMonth">
 				<dt>{lang}wcf.acp.visitor.lastMonth{/lang}</dt>
 				<dd>
-					<span class="number">{$countLastMonth}</span>
+					<span class="number">{#$countLastMonth}</span>
 					<span class="trend {$trends.lastMonth.type}">
 						{if $trends.lastMonth.type == 'negative'}<span class="icon icon24 fa-caret-down"></span>{elseif $trends.lastMonth.type == 'positive'}<span class="icon icon24 fa-caret-up"></span>{else}<span class="icon icon24 fa-minus"></span>{/if}
-						<span class="percentage">{$trends.lastMonth.percentage} %</span>
+						<span class="percentage">{#$trends.lastMonth.percentage} %</span>
 					</span>
 				</dd>
 			</dl>
 			<dl class="dataList plain lastYear">
 				<dt>{lang}wcf.acp.visitor.lastYear{/lang}</dt>
 				<dd>
-					<span class="number">{$countLastYear}</span>
+					<span class="number">{#$countLastYear}</span>
 					<span class="trend {$trends.lastYear.type}">
 						{if $trends.lastYear.type == 'negative'}<span class="icon icon24 fa-caret-down"></span>{elseif $trends.lastYear.type == 'positive'}<span class="icon icon24 fa-caret-up"></span>{else}<span class="icon icon24 fa-minus"></span>{/if}
-						<span class="percentage">{$trends.lastYear.percentage} %</span>
+						<span class="percentage">{#$trends.lastYear.percentage} %</span>
 					</span>
 				</dd>
 			</dl>
 			<dl class="dataList plain total">
 				<dt>{lang}wcf.acp.visitor.total{/lang}</dt>
-				<dd>{$countTotal}</dd>
+				<dd>{#$countTotal}</dd>
 			</dl>
 		</div>
 		
