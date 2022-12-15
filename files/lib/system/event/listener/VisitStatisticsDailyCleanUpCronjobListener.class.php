@@ -3,12 +3,10 @@ namespace wcf\system\event\listener;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
-use wcf\data\visitor\Visitor;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
 use const TIME_NOW;
 use const TIMEZONE;
-use const WCF_N;
 
 /**
  * Clean up data daily.
