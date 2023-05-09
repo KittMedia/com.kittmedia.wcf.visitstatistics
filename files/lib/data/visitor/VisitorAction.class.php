@@ -7,6 +7,7 @@ use wcf\data\AbstractDatabaseObjectAction;
 use wcf\system\database\util\PreparedStatementConditionBuilder;
 use wcf\system\exception\UserInputException;
 use wcf\system\language\LanguageFactory;
+use wcf\system\session\SessionHandler;
 use wcf\system\WCF;
 use wcf\util\DateUtil;
 use wcf\util\StringUtil;
@@ -29,7 +30,7 @@ use const TIMEZONE;
  * Provides functions for user visits.
  * 
  * @author	Matthias Kittsteiner
- * @copyright	2022 KittMedia
+ * @copyright	2023 KittMedia
  * @license	Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package	com.kittmedia.wcf.visitstatistics
  * 
@@ -380,10 +381,22 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		}
 		
 		require_once __DIR__ . '/../../system/api/visitStatistics/autoload.php';
+		
 		$browser = (new Parser())->detect();
+		$browserData = SessionHandler::getInstance()->getVar('visitStatisticsBrowserData');
+		
+		if ( $browserData === null ) {
+			$browserData = [
+				'browserName' => $browser->browserFamily(),
+				'browserVersion' => $browser->browserVersionMajor(),
+				'osName' => $browser->platformFamily(),
+				'osVersion' => $browser->platformVersionMajor() . '.' . $browser->platformVersionMinor()
+			];
+			SessionHandler::getInstance()->register('visitStatisticsBrowserData', $browserData);
+		}
 		
 		(new VisitorAction([], 'create', [
-			'data' => [
+			'data' => array_merge([
 				'requestURI' => StringUtil::truncate($requestURI, 191),
 				'title' => StringUtil::truncate(html_entity_decode(preg_replace(self::REGEX_FILTER_HTML, "$1", $this->parameters['title'])), 255),
 				'host' => StringUtil::truncate($host, 255),
@@ -391,12 +404,8 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				'languageID' => (!empty(WCF::getLanguage()->getObjectID()) ? WCF::getLanguage()->getObjectID() : LanguageFactory::getInstance()->getDefaultLanguageID()),
 				'pageID' => $this->parameters['pageID'] ?: null,
 				'pageObjectID' => $this->parameters['pageObjectID'] ?: null,
-				'time' => TIME_NOW,
-				'browserName' => $browser->browserFamily(),
-				'browserVersion' => $browser->browserVersionMajor(),
-				'osName' => $browser->platformFamily(),
-				'osVersion' => $browser->platformVersionMajor() . '.' . $browser->platformVersionMinor()
-			]
+				'time' => TIME_NOW
+			], $browserData)
 		]))->executeAction();
 	}
 	
