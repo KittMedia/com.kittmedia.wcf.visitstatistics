@@ -10,12 +10,12 @@
 <script data-relocate="true">
 	require(['Language'], function(Language) {
 		Language.addObject({
-			'wcf.acp.stat.timeFormat.daily': '{lang}wcf.acp.stat.timeFormat.daily{/lang}',
-			'wcf.acp.stat.noData': '{lang}wcf.acp.stat.noData{/lang}',
-			'wcf.acp.visitor.noVisit.browsers': '{lang}wcf.acp.visitor.noVisit.browsers{/lang}',
-			'wcf.acp.visitor.noVisit.systems': '{lang}wcf.acp.visitor.noVisit.systems{/lang}',
-			'wcf.acp.visitor.title.browsers': '{lang}wcf.acp.visitor.title.browsers{/lang}',
-			'wcf.acp.visitor.title.systems': '{lang}wcf.acp.visitor.title.systems{/lang}',
+			'wcf.acp.stat.timeFormat.daily': '{jslang}wcf.acp.stat.timeFormat.daily{/jslang}',
+			'wcf.acp.stat.noData': '{jslang}wcf.acp.stat.noData{/jslang}',
+			'wcf.acp.visitor.noVisit.browsers': '{jslang}wcf.acp.visitor.noVisit.browsers{/jslang}',
+			'wcf.acp.visitor.noVisit.systems': '{jslang}wcf.acp.visitor.noVisit.systems{/jslang}',
+			'wcf.acp.visitor.title.browsers': '{jslang}wcf.acp.visitor.title.browsers{/jslang}',
+			'wcf.acp.visitor.title.systems': '{jslang}wcf.acp.visitor.title.systems{/jslang}',
 		});
 		
 		new KM.ACP.Stat.VisitorChart('{@$visitorSystemStatsTemplate|encodeJS}');
