@@ -213,17 +213,14 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				$counts[$todayTimestamp]['user'] = 0;
 			}
 			
-			
 			while ($row = $statement->fetchArray()) {
 				$systemsKey = $row['browserName'] . '-' . $row['browserVersion'] . '-' . $row['osName'] . '-' . $row['osVersion'];
-				$todaySystems = [
-					$systemsKey => [
-						'browserName' => $row['browserName'],
-						'browserVersion' => $row['browserVersion'],
-						'osName' => $row['osName'],
-						'osVersion' => $row['osVersion'],
-						'counter' => $row['counter']
-					]
+				$currentSystem = [
+					'browserName' => $row['browserName'],
+					'browserVersion' => $row['browserVersion'],
+					'osName' => $row['osName'],
+					'osVersion' => $row['osVersion'],
+					'counter' => $row['counter']
 				];
 				
 				if ($row['isRegistered'] && $this->parameters['displayRegistered']) {
@@ -232,7 +229,8 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 					}
 					
 					$counts[$todayTimestamp]['user'] += $row['counter'];
-					$systems[$todayTimestamp]['user'] = $todaySystems;
+					$systemsOverall['user'] += $row['counter'];
+					$systems[$todayTimestamp]['user']['system'][$systemsKey] = $currentSystem;
 				}
 				else if ($this->parameters['displayGuests']) {
 					if (!isset($counts[$todayTimestamp]['guest'])) {
@@ -240,7 +238,8 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 					}
 					
 					$counts[$todayTimestamp]['guest'] += $row['counter'];
-					$systems[$todayTimestamp]['guest'] = $todaySystems;
+					$systemsOverall['guest'] += $row['counter'];
+					$systems[$todayTimestamp]['guest']['system'][$systemsKey] = $currentSystem;
 				}
 			}
 		}
@@ -323,14 +322,14 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 				return strcmp($a['label'], $b['label']);
 			}
 			
-			return $a['data'] < $b['data'];
+			return $b['data'] <=> $a['data'];
 		});
 		usort($data['systems'], function($a, $b) {
 			if ($a['data'] === $b['data']) {
 				return strcmp($a['label'], $b['label']);
 			}
 			
-			return $a['data'] < $b['data'];
+			return $b['data'] <=> $a['data'];
 		});
 		
 		// format data
