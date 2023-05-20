@@ -382,10 +382,10 @@ class VisitorAction extends AbstractDatabaseObjectAction {
 		
 		require_once __DIR__ . '/../../system/api/visitStatistics/autoload.php';
 		
-		$browser = (new Parser())->detect();
 		$browserData = SessionHandler::getInstance()->getVar('visitStatisticsBrowserData');
 		
-		if ( $browserData === null ) {
+		if ($browserData === null) {
+			$browser = (new Parser())->detect();
 			$browserData = [
 				'browserName' => $browser->browserFamily(),
 				'browserVersion' => $browser->browserVersionMajor(),
