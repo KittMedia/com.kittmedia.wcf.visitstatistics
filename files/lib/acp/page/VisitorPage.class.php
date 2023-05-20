@@ -5,6 +5,7 @@ use DateTimeZone;
 use wcf\data\package\PackageCache;
 use wcf\data\page\PageCache;
 use wcf\data\user\online\UserOnline;
+use wcf\data\visitor\Visitor;
 use wcf\data\visitor\VisitorAction;
 use wcf\data\visitor\VisitorList;
 use wcf\page\MultipleLinkPage;
@@ -188,7 +189,10 @@ class VisitorPage extends MultipleLinkPage {
 		}
 		
 		$page = PageCache::getInstance()->getPage($request->pageID);
-		$title = $this->getTitle($page, $userOnline);
+		
+		if (!Visitor::hideTitle($page)) {
+			$title = $this->getTitle($page, $userOnline);
+		}
 		
 		if (!empty($title)) {
 			$request->title = preg_replace(VisitorAction::REGEX_FILTER_HTML, "$1", $title);

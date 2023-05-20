@@ -4,6 +4,7 @@ use wcf\action\AJAXProxyAction;
 use wcf\action\BackgroundQueuePerformAction;
 use wcf\data\DatabaseObject;
 use wcf\data\package\PackageCache;
+use wcf\data\page\Page;
 use wcf\page\AttachmentPage;
 use wcf\page\ConversationPage;
 use wcf\page\MediaPage;
@@ -54,11 +55,16 @@ class Visitor extends DatabaseObject {
 	/**
 	 * Hide the titles for certain requests.
 	 * 
+	 * @param	null|Page	$page
 	 * @return	bool
 	 */
-	public static function hideTitle() {
+	public static function hideTitle(?Page $page = null) {
+		if ($page === null) {
+			$page = WCF::getActivePage();
+		}
+		
 		// hide title of conversations
-		if (PackageCache::getInstance()->getPackageID('com.woltlab.wcf.conversation') !== null && WCF::getActivePage() && WCF::getActivePage()->controller === ConversationPage::class) {
+		if (PackageCache::getInstance()->getPackageID('com.woltlab.wcf.conversation') !== null && $page && $page->controller === ConversationPage::class) {
 			return true;
 		}
 		
