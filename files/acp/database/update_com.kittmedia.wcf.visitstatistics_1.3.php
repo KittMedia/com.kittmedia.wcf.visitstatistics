@@ -3,8 +3,8 @@
 /**
  * Add named database table indexes.
  *
- * @author Matthias Kittsteiner
- * @copyright 2023 KittMedia
+ * @author  Matthias Kittsteiner
+ * @copyright   2023 KittMedia
  * @license Free <https://shop.kittmedia.com/core/licenses/#licenseFree>
  * @package com.kittmedia.wcf.visitstatistics
  */
