@@ -25,14 +25,16 @@ KM.ACP.Stat.VisitorChart = Class.extend({
 	_systemStatsTemplate: '',
 	
 	init: function(templateCode) {
-		this._systemStatsTemplate = new WCF.Template(templateCode);
-		this._proxy = new WCF.Action.Proxy({
-			success: $.proxy(this._success, this)
+		require(['WoltLabSuite/Core/Template'], (Template) => {
+			this._systemStatsTemplate = new Template(templateCode);
+			this._proxy = new WCF.Action.Proxy({
+				success: $.proxy(this._success, this)
+			});
+			
+			$('#visitorStatRefreshButton').click($.proxy(this._refresh, this));
+			
+			this._refresh();
 		});
-		
-		$('#visitorStatRefreshButton').click($.proxy(this._refresh, this));
-		
-		this._refresh();
 	},
 	
 	_refresh: function() {
