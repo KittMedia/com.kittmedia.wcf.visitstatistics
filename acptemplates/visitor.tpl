@@ -205,7 +205,7 @@
 				<dd>
 					<span class="number">{#$countThisWeek}</span>
 					<span class="trend {$trends.thisWeek.type}">
-						{if $trends.thisWeek.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.thisWeek.type == 'positive'}{icon size=24 name='caret-down' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
+						{if $trends.thisWeek.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.thisWeek.type == 'positive'}{icon size=24 name='caret-up' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
 						<span class="percentage">{#$trends.thisWeek.percentage} %</span>
 					</span>
 				</dd>
@@ -215,7 +215,7 @@
 				<dd>
 					<span class="number">{#$countThisMonth}</span>
 					<span class="trend {$trends.thisMonth.type}">
-						{if $trends.thisMonth.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.thisMonth.type == 'positive'}{icon size=24 name='caret-down' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
+						{if $trends.thisMonth.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.thisMonth.type == 'positive'}{icon size=24 name='caret-up' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
 						<span class="percentage">{#$trends.thisMonth.percentage} %</span>
 					</span>
 				</dd>
@@ -225,7 +225,7 @@
 				<dd>
 					<span class="number">{#$countThisYear}</span>
 					<span class="trend {$trends.thisYear.type}">
-						{if $trends.thisYear.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.thisYear.type == 'positive'}{icon size=24 name='caret-down' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
+						{if $trends.thisYear.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.thisYear.type == 'positive'}{icon size=24 name='caret-up' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
 						<span class="percentage">{#$trends.thisYear.percentage} %</span>
 					</span>
 				</dd>
@@ -239,7 +239,7 @@
 				<dd>
 					<span class="number">{#$countYesterday}</span>
 					<span class="trend {$trends.yesterday.type}">
-						{if $trends.yesterday.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.yesterday.type == 'positive'}{icon size=24 name='caret-down' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
+						{if $trends.yesterday.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.yesterday.type == 'positive'}{icon size=24 name='caret-up' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
 						<span class="percentage">{#$trends.yesterday.percentage} %</span>
 					</span>
 				</dd>
@@ -249,7 +249,7 @@
 				<dd>
 					<span class="number">{#$countLastWeek}</span>
 					<span class="trend {$trends.lastWeek.type}">
-						{if $trends.lastWeek.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.lastWeek.type == 'positive'}{icon size=24 name='caret-down' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
+						{if $trends.lastWeek.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.lastWeek.type == 'positive'}{icon size=24 name='caret-up' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
 						<span class="percentage">{#$trends.lastWeek.percentage} %</span>
 					</span>
 				</dd>
@@ -259,7 +259,7 @@
 				<dd>
 					<span class="number">{#$countLastMonth}</span>
 					<span class="trend {$trends.lastMonth.type}">
-						{if $trends.lastMonth.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.lastMonth.type == 'positive'}{icon size=24 name='caret-down' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
+						{if $trends.lastMonth.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.lastMonth.type == 'positive'}{icon size=24 name='caret-up' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
 						<span class="percentage">{#$trends.lastMonth.percentage} %</span>
 					</span>
 				</dd>
@@ -269,7 +269,7 @@
 				<dd>
 					<span class="number">{#$countLastYear}</span>
 					<span class="trend {$trends.lastYear.type}">
-						{if $trends.lastYear.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.lastYear.type == 'positive'}{icon size=24 name='caret-down' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
+						{if $trends.lastYear.type == 'negative'}{icon size=24 name='caret-down' type='solid'}{elseif $trends.lastYear.type == 'positive'}{icon size=24 name='caret-up' type='solid'}{else}{icon size=24 name='minus' type='solid'}{/if}
 						<span class="percentage">{#$trends.lastYear.percentage} %</span>
 					</span>
 				</dd>
