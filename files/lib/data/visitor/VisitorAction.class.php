@@ -364,7 +364,7 @@ class VisitorAction extends AbstractDatabaseObjectAction
         }
 
         // get proper request URI
-        if ($this->parameters['hideURL'] === 'true') {
+        if (!empty($this->parameters['hideURL']) && $this->parameters['hideURL'] === 'true') {
             $requestURI = '';
         }
         else {
