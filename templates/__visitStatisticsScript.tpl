@@ -2,8 +2,8 @@
 	<script data-relocate="true" async>
 		require(['KittMedia/VisitStatistics/Track'], function(Track) {
 			Track.init({
-				requestURL: '{if $canonicalURL|isset && $canonicalURL}{$canonicalURL}{else}{$visitStatisticsRequestURL}{/if}',
-				title: '{if $visitStatisticsHideTitle}{lang}wcf.visitor.hidden{/lang}{else}{if $pageTitle}{@$pageTitle}{/if}{/if}',
+				requestURL: '{if $canonicalURL|isset && $canonicalURL}{$canonicalURL|encodeJS}{else}{$visitStatisticsRequestURL|encodeJS}{/if}',
+				title: '{if $visitStatisticsHideTitle}{lang}wcf.visitor.hidden{/lang}{else}{if $pageTitle}{@$pageTitle|encodeJS}{/if}{/if}',
 				pageID: {$visitStatisticsPageID},
 				pageObjectID: {$visitStatisticsPageObjectID},
 				skip: {if $visitStatisticsSkipTracking}true{else}false{/if},
