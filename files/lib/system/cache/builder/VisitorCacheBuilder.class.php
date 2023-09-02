@@ -317,7 +317,8 @@ class VisitorCacheBuilder extends AbstractCacheBuilder
         $statement->execute();
         $todayCount = (int) $statement->fetchColumn();
 
-        $yesterdayNow = new DateTime('1 day ago');
+        $dateTimeZone = new DateTimeZone(TIMEZONE);
+        $yesterdayNow = new DateTime('1 day ago', $dateTimeZone);
         $sql = "SELECT  COUNT(*)
                 FROM    wcf1_visitor
                 WHERE   DATE(FROM_UNIXTIME(time)) = CURDATE() - INTERVAL 1 DAY
@@ -326,7 +327,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder
         $statement->execute([$yesterdayNow->getTimestamp()]);
         $yesterdayNowCount = (int) $statement->fetchColumn();
 
-        $lastMonthNow = new DateTime('1 month ago');
+        $lastMonthNow = new DateTime('1 month ago', $dateTimeZone);
         $sql = "SELECT  SUM(counter)
                 FROM    wcf1_visitor_daily
                 WHERE   MONTH(date) = MONTH(CURDATE() - INTERVAL 1 MONTH)
@@ -336,7 +337,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder
         $statement->execute([$lastMonthNow->format('Y-m-d')]);
         $lastMonthCount = (int) $statement->fetchColumn();
 
-        $monthBeforeLastMonthNow = new DateTime('-2 months');
+        $monthBeforeLastMonthNow = new DateTime('-2 months', $dateTimeZone);
         $sql = "SELECT  SUM(counter)
                 FROM    wcf1_visitor_daily
                 WHERE   MONTH(date) = MONTH(CURDATE() - INTERVAL 2 MONTH)
@@ -346,7 +347,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder
         $statement->execute([$monthBeforeLastMonthNow->format('Y-m-d')]);
         $monthBeforeLastMonthCount = (int) $statement->fetchColumn();
 
-        $lastWeekNow = new DateTime('1 week ago');
+        $lastWeekNow = new DateTime('1 week ago', $dateTimeZone);
         $sql = "SELECT  SUM(counter)
                 FROM    wcf1_visitor_daily
                 WHERE   date >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) + 6 DAY
@@ -356,7 +357,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder
         $statement->execute([$lastWeekNow->format('Y-m-d')]);
         $lastWeekCount = (int) $statement->fetchColumn();
 
-        $weekBeforeLastWeekNow = new DateTime('-2 weeks');
+        $weekBeforeLastWeekNow = new DateTime('-2 weeks', $dateTimeZone);
         $sql = "SELECT  SUM(counter)
                 FROM    wcf1_visitor_daily
                 WHERE   date >= CURDATE() - INTERVAL DAYOFWEEK(CURDATE()) + 15 DAY
@@ -365,7 +366,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder
         $statement->execute([$weekBeforeLastWeekNow->format('Y-m-d')]);
         $weekBeforeLastWeekCount = (int) $statement->fetchColumn();
 
-        $lastYearNow = new DateTime('1 year ago');
+        $lastYearNow = new DateTime('1 year ago', $dateTimeZone);
         $sql = "SELECT  SUM(counter)
                 FROM    wcf1_visitor_daily
                 WHERE   YEAR(date) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 YEAR))
@@ -374,7 +375,7 @@ class VisitorCacheBuilder extends AbstractCacheBuilder
         $statement->execute([$lastYearNow->format('Y-m-d')]);
         $lastYearCount = (int) $statement->fetchColumn();
 
-        $yearBeforeLastYearNow = new DateTime('-2 years');
+        $yearBeforeLastYearNow = new DateTime('-2 years', $dateTimeZone);
         $sql = "SELECT  SUM(counter)
                 FROM    wcf1_visitor_daily
                 WHERE   YEAR(date) = YEAR(DATE_SUB(CURDATE(), INTERVAL 2 YEAR))
