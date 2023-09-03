@@ -5,8 +5,8 @@
 		<packagename language="de">KittMedia Besuchsstatistiken</packagename>
 		<packagedescription><![CDATA[Show how many visits you’ve got and what your most famous content is.]]></packagedescription>
 		<packagedescription language="de"><![CDATA[Zeige an, wie viele Seitenaufrufe du hast und welche deine erfolgreichsten Inhalte sind.]]></packagedescription>
-		<version>1.3.0</version>
-		<date>2023-05-20</date>
+		<version>1.3.1</version>
+		<date>2023-09-03</date>
 	</packageinformation>
 	
 	<authorinformation>
@@ -57,13 +57,9 @@
 		<instruction type="database" run="standalone">acp/database/update_com.kittmedia.wcf.visitstatistics_1.3.php</instruction>
 	</instructions>
 	
-	<instructions type="update" fromversion="1.3.0 RC 4">
+	<instructions type="update" fromversion="1.3.0">
 		<!-- files -->
-		<instruction type="acpTemplate" />
 		<instruction type="file" />
 		<instruction type="template" />
-		
-		<!-- installer -->
-		<instruction type="database" run="standalone">acp/database/update_com.kittmedia.wcf.visitstatistics_1.3.php</instruction>
 	</instructions>
 </package>
