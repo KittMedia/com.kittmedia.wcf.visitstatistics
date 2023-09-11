@@ -24,6 +24,7 @@ define(['Ajax'], function(Ajax) {
 					className: 'wcf\\data\\visitor\\VisitorAction',
 					parameters: parameters,
 				},
+				ignoreErrors: true,
 				silent: true
 			});
 		}
