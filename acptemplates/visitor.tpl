@@ -337,7 +337,7 @@
 							<tr>
 								<td><a href="{$visitor->host}{$visitor->requestURI}">{@$visitor->title}</a></td>
 								{if $isMultilingual}<td>{$visitor->language}</td>{/if}
-								<td class="columnDigits">{$visitor->requestCount}</td>
+								<td class="columnDigits">{#$visitor->requestCount}</td>
 							</tr>
 						{/foreach}
 					{/content}
@@ -366,7 +366,7 @@
 							<tr>
 								<td><a href="{$visitor->host}{$visitor->requestURI}">{@$visitor->title}</a></td>
 								{if $isMultilingual}<td>{$visitor->language}</td>{/if}
-								<td class="columnDigits">{$visitor->requestCount}</td>
+								<td class="columnDigits">{#$visitor->requestCount}</td>
 							</tr>
 						{/foreach}
 					{/content}
