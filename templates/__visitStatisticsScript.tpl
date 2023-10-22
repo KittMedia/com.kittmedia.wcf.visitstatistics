@@ -1,5 +1,5 @@
 {if !OFFLINE || $__wcf->session->getPermission('admin.general.canViewPageDuringOfflineMode')}
-	{if MODULE_USER_VISITOR && $__wcf->session->getPermission('user.profile.visitor.include') && !$visitStatisticsIsCrawler}
+	{if MODULE_USER_VISITOR && $__wcf->session->getPermission('user.profile.visitor.include') && $visitStatisticsIsCrawler|isset && !$visitStatisticsIsCrawler}
 		<script data-relocate="true" async>
 			require(['KittMedia/VisitStatistics/Track'], function(Track) {
 				Track.init({
