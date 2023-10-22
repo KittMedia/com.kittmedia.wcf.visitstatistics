@@ -189,10 +189,6 @@ class VisitorPage extends MultipleLinkPage
             return $request;
         }
 
-        if (!empty($request->pageObjectID)) {
-            $userOnline->pageObjectID = $request->pageObjectID;
-        }
-
         $page = PageCache::getInstance()->getPage($request->pageID);
 
         if (!Visitor::hideTitle($page)) {
