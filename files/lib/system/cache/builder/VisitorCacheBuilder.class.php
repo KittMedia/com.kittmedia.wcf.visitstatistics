@@ -399,28 +399,28 @@ class VisitorCacheBuilder extends AbstractCacheBuilder
         $dayBeforeYesterdayCount = (int) $statement->fetchColumn();
 
         $percentage = $yesterdayNowCount ? 100 / $yesterdayNowCount * $todayCount : 100;
-        $this->statistics['trends']['today']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+        $this->statistics['trends']['today']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral')); // phpcs:ignore Generic.Files.LineLength.TooLong
         $this->statistics['trends']['today']['percentage'] = round($percentage - 100, 2);
         $percentage = $monthBeforeLastMonthCount ? 100 / $monthBeforeLastMonthCount * $lastMonthCount : 100;
-        $this->statistics['trends']['lastMonth']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+        $this->statistics['trends']['lastMonth']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral')); // phpcs:ignore Generic.Files.LineLength.TooLong
         $this->statistics['trends']['lastMonth']['percentage'] = round($percentage - 100, 2);
         $percentage = $weekBeforeLastWeekCount ? 100 / $weekBeforeLastWeekCount * $lastWeekCount : 100;
-        $this->statistics['trends']['lastWeek']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+        $this->statistics['trends']['lastWeek']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral')); // phpcs:ignore Generic.Files.LineLength.TooLong
         $this->statistics['trends']['lastWeek']['percentage'] = round($percentage - 100, 2);
         $percentage = $yearBeforeLastYearCount ? 100 / $yearBeforeLastYearCount * $lastYearCount : 100;
-        $this->statistics['trends']['lastYear']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+        $this->statistics['trends']['lastYear']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral')); // phpcs:ignore Generic.Files.LineLength.TooLong
         $this->statistics['trends']['lastYear']['percentage'] = round($percentage - 100, 2);
         $percentage = $lastMonthCount ? 100 / $lastMonthCount * $this->statistics['countThisMonth'] : 100;
-        $this->statistics['trends']['thisMonth']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+        $this->statistics['trends']['thisMonth']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral')); // phpcs:ignore Generic.Files.LineLength.TooLong
         $this->statistics['trends']['thisMonth']['percentage'] = round($percentage - 100, 2);
         $percentage = $lastWeekCount ? 100 / $lastWeekCount * $this->statistics['countThisWeek'] : 100;
-        $this->statistics['trends']['thisWeek']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+        $this->statistics['trends']['thisWeek']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral')); // phpcs:ignore Generic.Files.LineLength.TooLong
         $this->statistics['trends']['thisWeek']['percentage'] = round($percentage - 100, 2);
         $percentage = $lastYearCount ? 100 / $lastYearCount * $this->statistics['countThisYear'] : 100;
-        $this->statistics['trends']['thisYear']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+        $this->statistics['trends']['thisYear']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral')); // phpcs:ignore Generic.Files.LineLength.TooLong
         $this->statistics['trends']['thisYear']['percentage'] = round($percentage - 100, 2);
         $percentage = $dayBeforeYesterdayCount ? 100 / $dayBeforeYesterdayCount * $yesterdayCount : 100;
-        $this->statistics['trends']['yesterday']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral'));
+        $this->statistics['trends']['yesterday']['type'] = ($percentage > 105 ? 'positive' : ($percentage < 95 ? 'negative' : 'neutral')); // phpcs:ignore Generic.Files.LineLength.TooLong
         $this->statistics['trends']['yesterday']['percentage'] = round($percentage - 100, 2);
     }
 

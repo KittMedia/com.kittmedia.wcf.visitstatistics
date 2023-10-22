@@ -41,7 +41,7 @@ class VisitStatisticsVisitsBoxController extends AbstractDatabaseObjectListBoxCo
      */
     protected function getTemplate()
     {
-        $conditions = $this->getBox()->getConditions();
+        $conditions = $this->getBox()->getControllerConditions();
         $data = VisitorCacheBuilder::getInstance()->getData();
         $data['countAverage'] = $data['countAverage'];
         $data['countLastMonth'] = $data['countLastMonth'];

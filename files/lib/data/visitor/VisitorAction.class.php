@@ -158,7 +158,7 @@ class VisitorAction extends AbstractDatabaseObjectAction
                 'osVersion' => $row['osVersion'],
                 'counter' => $row['counter']
             ];
-            $systemsKey = $row['browserName'] . '-' . $row['browserVersion'] . '-' . $row['osName'] . '-' . $row['osVersion'];
+            $systemsKey = $row['browserName'] . '-' . $row['browserVersion'] . '-' . $row['osName'] . '-' . $row['osVersion']; // phpcs:ignore Generic.Files.LineLength.TooLong
 
             if ($row['isRegistered']) {
                 $systems[$row['dayTime']]['user']['system'][$systemsKey] = $systemData;
@@ -210,7 +210,7 @@ class VisitorAction extends AbstractDatabaseObjectAction
             }
 
             while ($row = $statement->fetchArray()) {
-                $systemsKey = $row['browserName'] . '-' . $row['browserVersion'] . '-' . $row['osName'] . '-' . $row['osVersion'];
+                $systemsKey = $row['browserName'] . '-' . $row['browserVersion'] . '-' . $row['osName'] . '-' . $row['osVersion']; // phpcs:ignore Generic.Files.LineLength.TooLong
                 $currentSystem = [
                     'browserName' => $row['browserName'],
                     'browserVersion' => $row['browserVersion'],
@@ -283,25 +283,25 @@ class VisitorAction extends AbstractDatabaseObjectAction
                         if (!isset($data['browsers'][$browserKey])) {
                             $data['browsers'][$browserKey] = [
                                 'data' => $system['counter'],
-                                'label' => $system['browserName'] . ($system['browserVersion'] > 0 ? ' ' . $system['browserVersion'] : '' ),
+                                'label' => $system['browserName'] . ($system['browserVersion'] > 0 ? ' ' . $system['browserVersion'] : '' ), // phpcs:ignore Generic.Files.LineLength.TooLong
                                 'percentage' => $overall ? round(100 / $overall * $system['counter'], 2) : 0
                             ];
                         }
                         else {
                             $data['browsers'][$browserKey]['data'] += $system['counter'];
-                            $data['browsers'][$browserKey]['percentage'] = $overall ? round(100 / $overall * $data['browsers'][$browserKey]['data'], 2) : 0;
+                            $data['browsers'][$browserKey]['percentage'] = $overall ? round(100 / $overall * $data['browsers'][$browserKey]['data'], 2) : 0; // phpcs:ignore Generic.Files.LineLength.TooLong
                         }
 
                         if (!isset($data['systems'][$systemKey])) {
                             $data['systems'][$systemKey] = [
                                 'data' => $system['counter'],
-                                'label' => $system['osName'] . ($system['osVersion'] > 0 ? ' ' . $system['osVersion'] : '' ),
+                                'label' => $system['osName'] . ($system['osVersion'] > 0 ? ' ' . $system['osVersion'] : '' ), // phpcs:ignore Generic.Files.LineLength.TooLong
                                 'percentage' => $overall ? round(100 / $overall * $system['counter'], 2) : 0
                             ];
                         }
                         else {
                             $data['systems'][$systemKey]['data'] += $system['counter'];
-                            $data['systems'][$systemKey]['percentage'] = $overall ? round(100 / $overall * $data['systems'][$systemKey]['data'], 2) : 0;
+                            $data['systems'][$systemKey]['percentage'] = $overall ? round(100 / $overall * $data['systems'][$systemKey]['data'], 2) : 0; // phpcs:ignore Generic.Files.LineLength.TooLong
                         }
                     }
                 }
@@ -350,7 +350,7 @@ class VisitorAction extends AbstractDatabaseObjectAction
      */
     public function track()
     {
-        if (!MODULE_USER_VISITOR) {
+        if (!\MODULE_USER_VISITOR) {
             return;
         }
 
@@ -394,10 +394,10 @@ class VisitorAction extends AbstractDatabaseObjectAction
         (new VisitorAction([], 'create', [
             'data' => array_merge([
                 'requestURI' => StringUtil::truncate($requestURI, 191),
-                'title' => StringUtil::truncate(html_entity_decode(preg_replace(self::REGEX_FILTER_HTML, "$1", $this->parameters['title'])), 255),
+                'title' => StringUtil::truncate(html_entity_decode(preg_replace(self::REGEX_FILTER_HTML, "$1", $this->parameters['title'])), 255), // phpcs:ignore Generic.Files.LineLength.TooLong
                 'host' => StringUtil::truncate($host, 255),
                 'isRegistered' => (int) (bool) WCF::getUser()->getObjectID(),
-                'languageID' => (!empty(WCF::getLanguage()->getObjectID()) ? WCF::getLanguage()->getObjectID() : LanguageFactory::getInstance()->getDefaultLanguageID()),
+                'languageID' => (!empty(WCF::getLanguage()->getObjectID()) ? WCF::getLanguage()->getObjectID() : LanguageFactory::getInstance()->getDefaultLanguageID()), // phpcs:ignore Generic.Files.LineLength.TooLong
                 'pageID' => $this->parameters['pageID'] ?: null,
                 'pageObjectID' => $this->parameters['pageObjectID'] ?: null,
                 'time' => TIME_NOW

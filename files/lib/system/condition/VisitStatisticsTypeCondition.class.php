@@ -91,7 +91,7 @@ HTML;
         $returnValue = '';
 
         foreach ($this->types as $type) {
-            $returnValue .= '<label><input type="checkbox" name="' . $this->fieldName . '[]" value="' . $type . '"' . (!empty($this->fieldValue[$type]) ? ' checked' : '') . '> ' . WCF::getLanguage()->get('wcf.acp.visitor.' . $type) . '</label>';
+            $returnValue .= '<label><input type="checkbox" name="' . $this->fieldName . '[]" value="' . $type . '"' . (!empty($this->fieldValue[$type]) ? ' checked' : '') . '> ' . WCF::getLanguage()->get('wcf.acp.visitor.' . $type) . '</label>'; // phpcs:ignore Generic.Files.LineLength.TooLong
         }
 
         return $returnValue;

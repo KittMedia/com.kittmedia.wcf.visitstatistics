@@ -40,11 +40,13 @@ final class VisitStatisticsVariablesListener implements IParameterizedEventListe
             SessionHandler::getInstance()->register('visitStatisticsIsCrawler', $isCrawler);
         }
 
+        $pageID = (int) !empty(WCF::getActivePage()->pageID) ? WCF::getActivePage()->pageID : 0;
+
         WCF::getTPL()->assign([
             'visitStatisticsRequestURL' => $this->removeQueryParameters($_SERVER['REQUEST_URI']),
             'visitStatisticsHideTitle' => Visitor::hideTitle(),
             'visitStatisticsIsCrawler' => $isCrawler,
-            'visitStatisticsPageID' => (int) (!empty(WCF::getActivePage()->pageID) ? WCF::getActivePage()->pageID : null),
+            'visitStatisticsPageID' => $pageID,
             'visitStatisticsPageObjectID' => (int) (!empty($_REQUEST['id']) ? $_REQUEST['id'] : null),
             'visitStatisticsSkipTracking' => Visitor::skipTracking(),
         ]);
@@ -60,10 +62,10 @@ final class VisitStatisticsVariablesListener implements IParameterizedEventListe
     {
         $parts = array_filter(array_map(function ($part) {
             if (
-                StringUtil::startsWith($part, 's=')
-                || StringUtil::startsWith($part, '?s=')
-                || StringUtil::startsWith($part, 't=')
-                || StringUtil::startsWith($part, '?t=')
+                \str_starts_with($part, 's=')
+                || \str_starts_with($part, '?s=')
+                || \str_starts_with($part, 't=')
+                || \str_starts_with($part, '?t=')
             ) {
                 return false;
             }

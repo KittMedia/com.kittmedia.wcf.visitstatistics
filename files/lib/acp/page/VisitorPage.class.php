@@ -141,7 +141,7 @@ class VisitorPage extends MultipleLinkPage
         }
 
         WCF::getTPL()->assign([
-            'assetVersion' => PackageCache::getInstance()->getPackageByIdentifier('com.kittmedia.wcf.visitstatistics')->updateDate,
+            'assetVersion' => PackageCache::getInstance()->getPackageByIdentifier('com.kittmedia.wcf.visitstatistics')->updateDate, // phpcs:ignore Generic.Files.LineLength.TooLong
             'countAverage' => $this->data['countAverage'],
             'countLastMonth' => $this->data['countLastMonth'],
             'countLastWeek' => $this->data['countLastWeek'],
