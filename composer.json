@@ -3,7 +3,7 @@
         "vendor-dir": "files/lib/system/api/visitStatistics"
     },
     "require": {
-        "hisorange/browser-detect": "^4.5",
+        "hisorange/browser-detect": "^5.0",
         "jaybizzle/crawler-detect": "^1.2"
     },
     "replace": {
