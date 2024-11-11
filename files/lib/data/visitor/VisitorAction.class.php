@@ -354,6 +354,11 @@ class VisitorAction extends AbstractDatabaseObjectAction
             return;
         }
 
+        // request has been altered unexpectedly
+        if (!isset($this->parameters['url'])) {
+            return;
+        }
+
         // get host
         if (WCF::getActivePath() !== null) {
             $urlParts = Url::parse(WCF::getActivePath());
@@ -368,7 +373,7 @@ class VisitorAction extends AbstractDatabaseObjectAction
             $requestURI = '';
         }
         else {
-            $requestURI = str_replace($host, '', $this->parameters['requestURL']);
+            $requestURI = str_replace($host, '', $this->parameters['url']);
 
             // convert to UTF-8
             if (!StringUtil::isUTF8($requestURI)) {
