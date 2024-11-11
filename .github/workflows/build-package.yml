@@ -8,7 +8,7 @@ jobs:
       - name: Set env variables
         run: if [[ $GITHUB_REF_TYPE == "tag" ]]; then echo "CUSTOM_REF=${GITHUB_REF_NAME}" >> $GITHUB_ENV; else echo "CUSTOM_REF=${GITHUB_SHA}" >> $GITHUB_ENV; fi
       # Create package
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: WoltLab Suite Package Creation
         uses: KittMedia/action-wsc-package-create@main
       # Install SSH key
@@ -20,7 +20,7 @@ jobs:
       # Transfer file to remote server
       - run: ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} "mkdir -p ${{ secrets.REMOTE_PATH_BASE }}/${{ github.event.repository.name }}/${{ env.CUSTOM_REF }}"
       - run: scp ${{ github.event.repository.name }}.tar.gz ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }}:${{ secrets.REMOTE_PATH_BASE }}/${{ github.event.repository.name }}/${{ env.CUSTOM_REF }}
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           name: ${{ github.event.repository.name }}.tar.gz
           path: ${{ github.event.repository.name }}.tar.gz
@@ -41,6 +41,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: release
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         with:
           name: ${{ github.event.repository.name }}.tar.gz
