@@ -336,7 +336,7 @@
 						{foreach from=$requestList item=visitor}
 							<tr>
 								<td><a href="{$visitor->host}{$visitor->requestURI}">{@$visitor->title}</a></td>
-								{if $isMultilingual}<td>{$visitor->language}</td>{/if}
+								{if $isMultilingual}<td>{if $visitor->language}{$visitor->language}{/if}</td>{/if}
 								<td class="columnDigits">{#$visitor->requestCount}</td>
 							</tr>
 						{/foreach}
