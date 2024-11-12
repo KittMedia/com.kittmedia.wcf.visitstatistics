@@ -45,5 +45,6 @@
 		<!-- files -->
 		<instruction type="acpTemplate" />
 		<instruction type="file" />
+		<instruction type="template" />
 	</instructions>
 </package>
