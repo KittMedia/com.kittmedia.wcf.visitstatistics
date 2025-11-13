@@ -396,6 +396,10 @@ class VisitorAction extends AbstractDatabaseObjectAction
             SessionHandler::getInstance()->register('visitStatisticsBrowserData', $browserData);
         }
 
+        if (!StringUtil::isUTF8($this->parameters['title'])) {
+            $this->parameters['title'] = mb_convert_encoding($this->parameters['title'], 'UTF-8', 'UTF-8');
+        }
+
         (new VisitorAction([], 'create', [
             'data' => array_merge([
                 'requestURI' => StringUtil::truncate($requestURI, 191),
