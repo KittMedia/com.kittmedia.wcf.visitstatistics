@@ -5,8 +5,8 @@
 		<packagename language="de">KittMedia Besuchsstatistiken</packagename>
 		<packagedescription><![CDATA[Show how many visits you’ve got and what your most famous content is.]]></packagedescription>
 		<packagedescription language="de"><![CDATA[Zeige an, wie viele Seitenaufrufe du hast und welche deine erfolgreichsten Inhalte sind.]]></packagedescription>
-		<version>1.4.2</version>
-		<date>2024-11-11</date>
+		<version>1.4.3</version>
+		<date>2026-03-14</date>
 	</packageinformation>
 	
 	<authorinformation>
@@ -15,11 +15,11 @@
 	</authorinformation>
 	
 	<requiredpackages>
-		<requiredpackage minversion="6.0.15">com.woltlab.wcf</requiredpackage>
+		<requiredpackage minversion="6.0.24">com.woltlab.wcf</requiredpackage>
 	</requiredpackages>
 	
 	<excludedpackages>
-		<excludedpackage version="6.2.0 Alpha 1">com.woltlab.wcf</excludedpackage>
+		<excludedpackage version="6.3.0 Alpha 1">com.woltlab.wcf</excludedpackage>
 	</excludedpackages>
 	
 	<instructions type="install">
@@ -41,10 +41,8 @@
 		<instruction type="template" />
 	</instructions>
 	
-	<instructions type="update" fromversion="1.4.1">
+	<instructions type="update" fromversion="1.4.2">
 		<!-- files -->
-		<instruction type="acpTemplate" />
 		<instruction type="file" />
-		<instruction type="template" />
 	</instructions>
 </package>
