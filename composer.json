@@ -4,7 +4,7 @@
     },
     "require": {
         "hisorange/browser-detect": "^5.0",
-        "jaybizzle/crawler-detect": "^1.2"
+        "jaybizzle/crawler-detect": "^1.3"
     },
     "replace": {
       "chrisjean/php-ico": "1.0.4",
