@@ -5,6 +5,7 @@ namespace wcf\acp\page;
 use DateInterval;
 use DateTimeZone;
 use wcf\data\package\PackageCache;
+use wcf\data\page\Page;
 use wcf\data\page\PageCache;
 use wcf\data\user\online\UserOnline;
 use wcf\data\visitor\Visitor;
@@ -190,6 +191,7 @@ class VisitorPage extends MultipleLinkPage
         }
 
         $page = PageCache::getInstance()->getPage($request->pageID);
+        assert($page instanceof Page);
 
         if (!Visitor::hideTitle($page)) {
             $title = $this->getTitle($page, $userOnline);
@@ -205,7 +207,7 @@ class VisitorPage extends MultipleLinkPage
     /**
      * Get the location title of a page.
      *
-     * @param   PageCache   $page
+     * @param   Page   $page
      * @param   UserOnline  $userOnline
      * @return  string
      */
