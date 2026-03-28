@@ -72,14 +72,14 @@ final class VisitStatisticsDailyCleanUpCronjobListener implements IParameterized
     /**
      * Get the first datetime from SQL.
      *
-     * Depending on the timezone, FROM_UNIXTIME(0) returns something different,
+     * Depending on the timezone, FROM_UNIXTIME() returns something different,
      * so we need the live value.
      *
      * @return  string
      */
     protected function getFirstSQLDate()
     {
-        $sql = "SELECT  FROM_UNIXTIME(0)";
+        $sql = "SELECT  COALESCE(FROM_UNIXTIME(0), FROM_UNIXTIME(1))";
         $statement = WCF::getDB()->prepare($sql);
         $statement->execute();
 
