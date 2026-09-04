@@ -191,7 +191,7 @@ class VisitorPage extends MultipleLinkPage
         }
 
         $page = PageCache::getInstance()->getPage($request->pageID);
-        assert($page instanceof Page);
+        \assert($page !== null);
 
         if (!Visitor::hideTitle($page)) {
             $title = $this->getTitle($page, $userOnline);
